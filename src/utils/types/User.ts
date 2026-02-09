@@ -1,10 +1,9 @@
-export type User = {
-  id: number;
+export type UserCreate = {
   displayName: string;
   email: string;
   firstName: string;
   lastName: string;
-  secretWord:string;
   createdAt: string;
   updatedAt: string;
+  secretWord: string;
 };
