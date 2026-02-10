@@ -2,17 +2,19 @@ import { Box, TextField, Stack, Button } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllUsers } from "../api/userController";
+import type { User } from "../api/userTypes";
+import { useUserContext } from "../components/context/UserContext";
 
 export const LogInPage = () => {
   const { data = [] } = useGetAllUsers();
-
+  const { handleLogin } = useUserContext();
   const navigate = useNavigate();
   const [message, setMessage] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   async function logIn() {
-    const user = data.find((x) => x.email == email);
+    const user: User = data.find((x: User) => x.email == email);
 
     if (typeof user === "undefined") {
       setMessage(true);
@@ -20,9 +22,11 @@ export const LogInPage = () => {
     }
 
     if (user.secretWord == password) {
-      localStorage.setItem("userName", user.displayName);
-      localStorage.setItem("email", user.email);
-      localStorage.setItem("secretWord", user.secretWord);
+      handleLogin({
+        email: user.email,
+        secretWord: user.secretWord,
+        userName: user.displayName,
+      });
 
       navigate("/");
     }

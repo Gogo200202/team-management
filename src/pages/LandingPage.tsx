@@ -1,14 +1,9 @@
 import { Box } from "@mui/material";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../components/context/UserContext";
+
 export const LandingPage = () => {
-  const navigate = useNavigate();
-  if (localStorage.getItem("secretWord") == undefined) {
+  const { currentUser } = useUserContext();
 
-    useEffect(() => {
-       navigate("/auth/logIn");
-    }, []);
-  }
-
+  console.log(currentUser);
   return <Box>Landing</Box>;
 };

@@ -1,11 +1,13 @@
 import { Box, TextField, Stack, Button } from "@mui/material";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateUser } from "../api/userController";
+import { useUserContext } from "../components/context/UserContext";
 
 export const Register = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState(false);
+  const { handleLogin } = useUserContext();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -13,9 +15,11 @@ export const Register = () => {
   const { mutate } = useCreateUser();
 
   function tryRegister() {
-    localStorage.setItem("userName", firstName + " " + lastName);
-    localStorage.setItem("email", email);
-    localStorage.setItem("secretWord", password);
+    handleLogin({
+      email: email,
+      secretWord: password,
+      userName: firstName + " " + lastName,
+    });
 
     mutate({
       displayName: firstName + " " + lastName,
@@ -57,11 +61,10 @@ export const Register = () => {
           label="password"
           variant="outlined"
         />
-
+        <Link to="/auth/login">Log in</Link>
         <Button variant="contained" onClick={tryRegister}>
           Register
         </Button>
-        {message ? <div>not valid email or password</div> : <div></div>}
       </Stack>
     </Box>
   );

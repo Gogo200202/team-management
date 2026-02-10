@@ -1,28 +1,36 @@
 import { Outlet, type RouteObject } from "react-router-dom";
 import { LandingPage } from "./LandingPage";
-import { Layout } from "../components/layout/Layout";
 import ErrorPage from "./ErrorPage";
 import { TeamsPage } from "./TeamsPage";
 import { LogInPage } from "./LogInPage";
 import { Register } from "./Register";
+import withAuth from "../middleware/withAuth";
+import Layout from "../components/layout/Layout";
+import { ProtectedRoute } from "../middleware/ProtectedRoute";
+
+const LayoutComponent = withAuth(Layout);
 
 export const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Layout />,
+    element: <LayoutComponent />,
     errorElement: <ErrorPage />,
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: (
+          <ProtectedRoute>
+            <LandingPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "teams",
         element: <TeamsPage />,
       },
     ],
-    
   },
+  // Wrapper to check if there is logged in user -> No Keep the page, NO: Redirect to home
   {
     path: "/auth",
     element: <Outlet />,
@@ -34,7 +42,7 @@ export const routes: RouteObject[] = [
       {
         path: "register",
         element: <Register />,
-      }
+      },
     ],
   },
 ];
