@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
@@ -18,12 +19,14 @@ export type UserStored = {
 };
 
 type UserContextType = {
+  isCheckCompleted: boolean;
   currentUser: UserStored | null;
   handleLogin: (data: UserStored) => void;
   handleLogOut: () => void;
 };
 
 const initialValues = {
+  isCheckCompleted: false,
   currentUser: null,
 
   handleLogin: () => null,
@@ -35,6 +38,8 @@ export const UserContext = createContext<UserContextType>(initialValues);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data = [] } = useGetAllUsers();
+
+  const [isCheckCompleted, setIsCheckCompleted] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserStored | null>(
     initialValues.currentUser,
   );
@@ -49,31 +54,42 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setCurrentUser(null);
     localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
   };
-
   useEffect(() => {
-    if (data?.length === 0 || !localStorage.getItem(LOCAL_STORAGE_KEYS.USER)) {
+    if (data?.length === 0) {
+      return;
+    }
+
+    if (!localStorage.getItem(LOCAL_STORAGE_KEYS.USER)) {
+      setIsCheckCompleted(true);
       return;
     }
     const user: UserStored = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEYS.USER) || "",
     );
 
-    const checkIfDb: UserStored = data.find((x: User) => x.email == user.email);
+    const checkIfDb = data.find((x: User) => x.email == user.email);
 
-    if (checkIfDb.secretWord != user.secretWord) {
+    if (checkIfDb?.secretWord != user.secretWord) {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
     }
 
     if (checkIfDb) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCurrentUser(checkIfDb);
+      setCurrentUser({
+        email: checkIfDb.email,
+        secretWord: checkIfDb.secretWord,
+        userName: checkIfDb.displayName,
+      });
     } else {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
     }
+
+    setIsCheckCompleted(true);
   }, [data]);
 
   return (
-    <UserContext value={{ currentUser, handleLogin, handleLogOut }}>
+    <UserContext
+      value={{ isCheckCompleted, currentUser, handleLogin, handleLogOut }}
+    >
       {children}
     </UserContext>
   );

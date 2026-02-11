@@ -6,9 +6,10 @@ import { LogInPage } from "./LogInPage";
 import { Register } from "./Register";
 import withAuth from "../middleware/withAuth";
 import Layout from "../components/layout/Layout";
-import { ProtectedRoute } from "../middleware/ProtectedRoute";
+import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
 
 const LayoutComponent = withAuth(Layout);
+const OutletLogInCheck = RedirectRegisterUsers(Outlet);
 
 export const routes: RouteObject[] = [
   {
@@ -18,11 +19,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: (
-          <ProtectedRoute>
-            <LandingPage />
-          </ProtectedRoute>
-        ),
+        element: <LandingPage />,
       },
       {
         path: "teams",
@@ -30,10 +27,9 @@ export const routes: RouteObject[] = [
       },
     ],
   },
-  // Wrapper to check if there is logged in user -> No Keep the page, NO: Redirect to home
-  {
+ {
     path: "/auth",
-    element: <Outlet />,
+    element: <OutletLogInCheck />,
     children: [
       {
         path: "login",

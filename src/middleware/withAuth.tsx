@@ -1,16 +1,20 @@
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../components/context/UserContext";
+import { useEffect } from "react";
 
-// ! Check
-const withAuth = (Component: any) => {
-  const AuthenticatedComponent = (props) => {
-    const { currentUser } = useUserContext();
+const withAuth = (Component: React.ComponentType) => {
+  const AuthenticatedComponent = (props: any) => {
+    const { currentUser, isCheckCompleted } = useUserContext();
+
+    const navigate = useNavigate();
+
     const isAuthenticated = !!currentUser;
 
-    if (!isAuthenticated) {
-      redirect("/auth/login");
-      return null;
-    }
+    useEffect(() => {
+      if (!isAuthenticated && isCheckCompleted) {
+        navigate("/auth/login");
+      }
+    }, [isAuthenticated, isCheckCompleted]);
 
     return <Component {...props} />;
   };

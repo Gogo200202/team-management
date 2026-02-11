@@ -14,7 +14,7 @@ export const LogInPage = () => {
   const [password, setPassword] = useState<string>("");
 
   async function logIn() {
-    const user: User = data.find((x: User) => x.email == email);
+    const user = data.find((x: User) => x.email == email);
 
     if (typeof user === "undefined") {
       setMessage(true);
