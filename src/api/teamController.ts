@@ -26,6 +26,7 @@ export const useGetAllTeams = () => {
 
       return data;
     },
+    enabled: false,
   });
 };
 

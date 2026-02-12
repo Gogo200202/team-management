@@ -33,8 +33,11 @@ dayjs.extend(timezone);
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
   const { mutate } = useCreateTeams();
-  const { data: allTeams = [] } = useGetAllTeams();
+  const { data: allTeams = [], refetch } = useGetAllTeams();
 
+  if (allTeams.length == 0) {
+    refetch();
+  }
   const [open, setOpen] = useState<boolean>(false);
 
   const { handleSubmit, control } = useForm<TeamForm>();
@@ -88,6 +91,8 @@ export const TeamsPage = () => {
       name: data.TeamName,
       users: idsOfUser,
     });
+
+    refetch();
   };
 
   const handleClickOpen = () => {
@@ -170,6 +175,7 @@ export const TeamsPage = () => {
               team={team.team}
               allUsers={team.allUsers}
               teamUsers={team.teamUsers}
+              
             ></TeamCard>
           ))}
         </Grid>
