@@ -29,8 +29,8 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
           {userNames.map((userName, index) => (
             <Box key={index}>{userName}</Box>
           ))}
-          createdAt:{team.createdAt}
-          updatedAt: {team.updatedAt}
+          <Box>createdAt: {team.createdAt}</Box>
+          <Box>updatedAt: {team.updatedAt}</Box>
         </Typography>
       </CardContent>
     </Card>

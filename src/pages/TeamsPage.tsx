@@ -3,6 +3,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import {
   Autocomplete,
   Box,
@@ -24,6 +27,8 @@ type TeamForm = {
   TeamName: string;
   Users: User[];
 };
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
@@ -47,9 +52,21 @@ export const TeamsPage = () => {
     return userNames;
   }
 
+  function getTime(time: string): string {
+    const timestampCreatedAt = time;
+    const dayjsLocalCreatedAt = dayjs(timestampCreatedAt);
+    const dayjsIstCreatedAt = dayjsLocalCreatedAt.tz(
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+    );
+    return dayjsIstCreatedAt.format("YYYY-MM-DD HH:mm:ss");
+  }
+
   for (let i = 0; i < allTeams.length; i++) {
+    const currentTeamProp = allTeams[i];
+    currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
+    currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
     const currentTeam: TeamCardProps = new TeamCardProps(
-      allTeams[i],
+      currentTeamProp,
       getUserNameFromTeam(allTeams[i]),
     );
 
