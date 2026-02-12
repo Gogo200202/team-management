@@ -6,10 +6,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {
   Autocomplete,
   Box,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
   Grid,
   Stack,
   TextField,
@@ -21,8 +17,8 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Form } from "react-router-dom";
 import { useGetAllUsers } from "../api/userController";
 import { useCreateTeams, useGetAllTeams } from "../api/teamController";
-
-
+import TeamCard, { TeamCardProps } from "../components/common/TeamCard";
+import type { Team } from "../api/teamTypes";
 
 type TeamForm = {
   TeamName: string;
@@ -37,10 +33,27 @@ export const TeamsPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { handleSubmit, control } = useForm<TeamForm>();
 
-  let TeamsCard = [];
+  const teamsCard: TeamCardProps[] = [];
+  function getUserNameFromTeam(team: Team): string[] {
+    const idsOfUser = team.users;
+    const userNames: string[] = [];
+    for (let i = 0; i < idsOfUser.length; i++) {
+      const user = selectUsers.find((x) => x.id == idsOfUser[i]);
+      if (user != undefined) {
+        userNames.push(user?.firstName);
+      }
+    }
+
+    return userNames;
+  }
+
   for (let i = 0; i < allTeams.length; i++) {
-    
-    
+    const currentTeam: TeamCardProps = new TeamCardProps(
+      allTeams[i],
+      getUserNameFromTeam(allTeams[i]),
+    );
+
+    teamsCard.push(currentTeam);
   }
 
   const onSubmit: SubmitHandler<TeamForm> = (data) => {
@@ -128,25 +141,14 @@ export const TeamsPage = () => {
           </Form>
         </Dialog>
       </Box>
-
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={25} columns={3}>
-          {allTeams.map((team) => (
-            <Card sx={{ maxWidth: 345 }}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {team.name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  textAlign={"center"}
-                  sx={{ color: "text.secondary" }}
-                >
-                  createdAt:{team.createdAt}
-                  updatedAt: {team.updatedAt}
-                </Typography>
-              </CardContent>
-            </Card>
+          {teamsCard.map((team, index) => (
+            <TeamCard
+              key={index}
+              team={team.team}
+              userNames={team.userNames}
+            ></TeamCard>
           ))}
         </Grid>
       </Box>
