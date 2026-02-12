@@ -38,3 +38,22 @@ export const useCreateTeams = () => {
     },
   });
 };
+
+export const useUpdateTeam = () => {
+  return useMutation({
+    mutationFn: async (data: Team) =>
+      await axiosClient.patch(`/teams/${data.id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
+    },
+  });
+};
+
+export const useDeleteTeam = () => {
+  return useMutation({
+    mutationFn: async (id: number) => await axiosClient.delete(`/teams/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
+    },
+  });
+};

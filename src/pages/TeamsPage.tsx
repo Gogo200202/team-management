@@ -23,7 +23,7 @@ import { useCreateTeams, useGetAllTeams } from "../api/teamController";
 import TeamCard, { TeamCardProps } from "../components/common/TeamCard";
 import type { Team } from "../api/teamTypes";
 
-type TeamForm = {
+export type TeamForm = {
   TeamName: string;
   Users: User[];
 };
@@ -36,20 +36,22 @@ export const TeamsPage = () => {
   const { data: allTeams = [] } = useGetAllTeams();
 
   const [open, setOpen] = useState<boolean>(false);
+
   const { handleSubmit, control } = useForm<TeamForm>();
 
   const teamsCard: TeamCardProps[] = [];
-  function getUserNameFromTeam(team: Team): string[] {
+
+  function getUserFromTeam(team: Team): User[] {
     const idsOfUser = team.users;
-    const userNames: string[] = [];
+    const users: User[] = [];
     for (let i = 0; i < idsOfUser.length; i++) {
       const user = selectUsers.find((x) => x.id == idsOfUser[i]);
       if (user != undefined) {
-        userNames.push(user?.firstName);
+        users.push(user);
       }
     }
 
-    return userNames;
+    return users;
   }
 
   function getTime(time: string): string {
@@ -65,9 +67,11 @@ export const TeamsPage = () => {
     const currentTeamProp = allTeams[i];
     currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
     currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
+
     const currentTeam: TeamCardProps = new TeamCardProps(
       currentTeamProp,
-      getUserNameFromTeam(allTeams[i]),
+      getUserFromTeam(allTeams[i]),
+      selectUsers,
     );
 
     teamsCard.push(currentTeam);
@@ -164,7 +168,8 @@ export const TeamsPage = () => {
             <TeamCard
               key={index}
               team={team.team}
-              userNames={team.userNames}
+              allUsers={team.allUsers}
+              teamUsers={team.teamUsers}
             ></TeamCard>
           ))}
         </Grid>
