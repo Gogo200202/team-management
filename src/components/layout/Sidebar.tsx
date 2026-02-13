@@ -55,7 +55,11 @@ export const Sidebar = () => {
                 key={item.label}
                 component={NavLink}
                 to={item.path || "/"}
-                onClick={() => setShowInfo(true)}
+                onClick={() => {
+                  if (!item.path) {
+                    setShowInfo(true);
+                  }
+                }}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />
