@@ -1,27 +1,14 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import {
-  Autocomplete,
-  Box,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import type { User } from "../api/userTypes";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { Form } from "react-router-dom";
 import { useGetAllUsers } from "../api/userController";
-import { useCreateTeams, useGetAllTeams } from "../api/teamController";
+import { useGetAllTeams } from "../api/teamController";
 import TeamCard, { type TeamCardProps } from "../components/common/TeamCard";
 import type { Team } from "../api/teamTypes";
+import TeamFormComponent from "../components/common/TeamFormComponent";
+import { useState } from "react";
 
 export type TeamForm = {
   teamName: string;
@@ -32,12 +19,8 @@ dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
-  const { mutate } = useCreateTeams();
+
   const { data: allTeams = [] } = useGetAllTeams();
-
-  const [open, setOpen] = useState<boolean>(false);
-
-  const { handleSubmit, control } = useForm<TeamForm>();
 
   const teamsCard: TeamCardProps[] = [];
 
@@ -76,27 +59,7 @@ export const TeamsPage = () => {
 
     teamsCard.push(currentTeam);
   }
-
-  const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
-    const idsOfUser: number[] = users.map(function (v) {
-      return v.id;
-    });
-
-    mutate({
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      name: teamName,
-      users: idsOfUser,
-    });
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
     <Box>
@@ -109,58 +72,16 @@ export const TeamsPage = () => {
       >
         <Typography textAlign={"center"}>Teams Page</Typography>
 
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <TeamFormComponent
+          allUsers={selectUsers}
+          selectedUsers={[]}
+          OpenDialog={open}
+          setOpenDialog={setOpen}
+        ></TeamFormComponent>
+        
+        <Button variant="outlined" onClick={() => setOpen(true)}>
           Add new team
         </Button>
-
-        <Dialog open={open} keepMounted onClose={handleClose}>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <DialogTitle>{"Create teams"}</DialogTitle>
-            <DialogContent>
-              <Stack spacing={2}>
-                <Controller
-                  control={control}
-                  name="teamName"
-                  render={({ field: { onChange, value } }) => (
-                    <TextField
-                      value={value}
-                      label="Team name"
-                      onChange={onChange}
-                    />
-                  )}
-                />
-                <Controller
-                  control={control}
-                  name="users"
-                  render={({ field: { onChange, value } }) => (
-                    <Autocomplete
-                      multiple
-                      options={selectUsers}
-                      getOptionLabel={(option) => option.firstName}
-                      filterSelectedOptions
-                      onChange={(_event, value) => onChange(value)}
-                      value={value}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="SelectUsers"
-                          placeholder="Favorites"
-                        />
-                      )}
-                    />
-                  )}
-                />
-              </Stack>
-            </DialogContent>
-
-            <DialogActions>
-              <Button onClick={handleClose}>Disagree</Button>
-              <Button onClick={handleClose} type="submit">
-                Agree
-              </Button>
-            </DialogActions>
-          </Form>
-        </Dialog>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={25} columns={3}>

@@ -1,51 +1,65 @@
-import { Alert, AlertTitle, Box, Button } from "@mui/material";
-import * as React from "react";
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import Snackbar, { type SnackbarCloseReason } from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  type Dispatch,
+  type FunctionComponent,
+  type SetStateAction,
+} from "react";
+import React from "react";
 
-import Switch from "@mui/material/Switch";
-import Paper from "@mui/material/Paper";
-import Fade from "@mui/material/Fade";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { useState } from "react";
+type AlertProps = {
+  typeOfAlert: string;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+};
+export const AlertComponent: FunctionComponent<AlertProps> = ({
+  typeOfAlert,
+  open,
+  setOpen,
+}) => {
+  const handleUndo = (reason?: SnackbarCloseReason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-const icon = (
-  <Paper sx={{ m: 1, width: 100, height: 100 }} elevation={4}>
-    <svg width="100" height="100">
-      <Box
-        component="polygon"
-        points="0,100 50,00, 100,100"
-        sx={(theme) => ({
-          fill: theme.palette.common.white,
-          stroke: theme.palette.divider,
-          strokeWidth: 1,
-        })}
-      />
-    </svg>
-  </Paper>
-);
+    setOpen(false);
+  };
+  const handleClose = (reason?: SnackbarCloseReason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-export const AlertComponent = () => {
-  // the alert is displayed by default
-  // const [checked, setChecked] = useState(isVisibility);
-  const fadeTime = 300;
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleUndo}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <Box>
-      <Box sx={{ display: "flex" }}>
-        <Fade
-          //in={checked}
-          timeout={{
-            enter: fadeTime * 2,
-            exit: fadeTime * 2,
-          }}
-        >
-          {
-            <Alert severity="success">
-              <AlertTitle>Success</AlertTitle>
-              This is a success Alert with an encouraging title.
-            </Alert>
-          }
-        </Fade>
-      </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={1500}
+        onClose={handleClose}
+        message={`You perform ${typeOfAlert}`}
+        action={action}
+      />
     </Box>
   );
 };
