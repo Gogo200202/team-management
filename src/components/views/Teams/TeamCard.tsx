@@ -8,13 +8,14 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import type { Team } from "../../api/teamTypes";
 import { useState, type FunctionComponent } from "react";
 import EditIcon from "@mui/icons-material/Edit";
-import { useDeleteTeam } from "../../api/teamController";
-import type { User } from "../../api/userTypes";
-import TeamFormComponent from "./TeamFormComponent";
 import dayjs from "dayjs";
+import { useDeleteTeam } from "../../../api/teamController";
+import type { Team } from "../../../api/teamTypes";
+import type { User } from "../../../api/userTypes";
+import TeamFormComponent from "./TeamFormComponent";
+import DeleteComponent, { TypesOfDeletion } from "../../common/DeleteComponent";
 
 export type TeamCardProps = {
   team: Team;
@@ -30,25 +31,8 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
   const [open, setOpen] = useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mutate: deleteTeam } = useDeleteTeam();
 
   const [openDelete, setOpenDelete] = useState(false);
-
-  const handleClickOpenDelete = () => {
-    setOpenDelete(true);
-  };
-
-  const handleClose = async () => {
-    deleteTeam(team.id);
-
-    setOpenDelete(false);
-  };
-
-  const handleDelete = async () => {
-    deleteTeam(team.id);
-
-    handleClose();
-  };
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -60,13 +44,11 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
           {teamUsers.map((user, index) => (
             <Box key={index}>{user.firstName}</Box>
           ))}
-          <Box>
-            Created at: {dayjs(team.createdAt).format("DD, MMMM YYYY")}
-          </Box>
+          <Box>Created at: {dayjs(team.createdAt).format("DD, MMMM YYYY")}</Box>
           <Box>Updated at: {team.updatedAt}</Box>
 
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Button variant="outlined" onClick={handleClickOpenDelete}>
+            <Button variant="outlined" onClick={() => setOpenDelete(true)}>
               delete
             </Button>
 
@@ -89,23 +71,12 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
         setOpenDialog={setOpen}
       />
 
-      <Dialog
+      <DeleteComponent
         open={openDelete}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Do you want to delete this team"}
-        </DialogTitle>
-
-        <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleDelete} autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
+        setOpen={setOpenDelete}
+        typeOfToDelete={TypesOfDeletion.Team}
+        id={team.id}
+      />
     </Card>
   );
 };

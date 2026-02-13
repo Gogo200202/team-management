@@ -66,3 +66,7 @@ export const useDeleteTeam = () => {
     },
   });
 };
+
+export const lastActionTeams = () => {
+  console.log(queryClient.getQueriesData({ queryKey: teamKeys.allTeams }));
+};

@@ -15,7 +15,7 @@ type AlertProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
-export const AlertComponent: FunctionComponent<AlertProps> = ({
+export const SnackbarComponent: FunctionComponent<AlertProps> = ({
   typeOfAlert,
   open,
   setOpen,
@@ -57,7 +57,7 @@ export const AlertComponent: FunctionComponent<AlertProps> = ({
         open={open}
         autoHideDuration={1500}
         onClose={handleClose}
-        message={`You perform ${typeOfAlert}`}
+        message={`You perform ${typeOfAlert} action`}
         action={action}
       />
     </Box>

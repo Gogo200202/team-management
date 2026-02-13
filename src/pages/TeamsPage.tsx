@@ -5,10 +5,12 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import type { User } from "../api/userTypes";
 import { useGetAllUsers } from "../api/userController";
 import { useGetAllTeams } from "../api/teamController";
-import TeamCard, { type TeamCardProps } from "../components/common/TeamCard";
 import type { Team } from "../api/teamTypes";
-import TeamFormComponent from "../components/common/TeamFormComponent";
+import TeamFormComponent from "../components/views/Teams/TeamFormComponent";
 import { useState } from "react";
+import TeamCard, {
+  type TeamCardProps,
+} from "../components/views/Teams/TeamCard";
 
 export type TeamForm = {
   teamName: string;
@@ -77,8 +79,8 @@ export const TeamsPage = () => {
           selectedUsers={[]}
           OpenDialog={open}
           setOpenDialog={setOpen}
-        ></TeamFormComponent>
-        
+        />
+
         <Button variant="outlined" onClick={() => setOpen(true)}>
           Add new team
         </Button>

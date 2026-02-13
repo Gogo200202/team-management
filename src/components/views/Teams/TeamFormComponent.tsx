@@ -9,16 +9,18 @@ import {
   TextField,
 } from "@mui/material";
 import {
+  useState,
   type Dispatch,
   type FunctionComponent,
   type SetStateAction,
 } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Form } from "react-router-dom";
-import { useCreateTeams, useUpdateTeam } from "../../api/teamController";
-import type { TeamForm } from "../../pages/TeamsPage";
-import type { User } from "../../api/userTypes";
-import type { Team } from "../../api/teamTypes";
+import { useCreateTeams, useUpdateTeam } from "../../../api/teamController";
+import type { TeamForm } from "../../../pages/TeamsPage";
+import type { User } from "../../../api/userTypes";
+import type { Team } from "../../../api/teamTypes";
+import { SnackbarComponent } from "../../common/SnackbarComponent";
 
 type TeamFormDialog = {
   allUsers: User[];
@@ -35,11 +37,26 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
   OpenDialog,
   setOpenDialog,
 }) => {
+  let dialogText: string;
+  if (!team) {
+    dialogText = "Create";
+  } else {
+    dialogText = "Edit";
+  }
+
+  const [openSnack, setOpenSnack] = useState<boolean>(false);
   const { mutate: createTeam } = useCreateTeams();
   const { mutate: updateTeam } = useUpdateTeam();
-  const { handleSubmit, control } = useForm<TeamForm>({
+  const { handleSubmit, control, reset } = useForm<TeamForm>({
     defaultValues: { teamName: team?.name || "", users: selectedUsers || [] },
   });
+
+  const handleClose = () => {
+    if (!team) {
+      reset();
+    }
+    setOpenDialog(false);
+  };
 
   const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
     const idsOfUser: number[] = users.map(function (v) {
@@ -59,16 +76,15 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
         users: idsOfUser,
       });
     }
-  };
+    setOpenSnack(true);
 
-  const handleClose = () => {
-    setOpenDialog(false);
+    handleClose();
   };
 
   return (
     <>
       <Dialog open={OpenDialog} keepMounted onClose={handleClose} maxWidth="xl">
-        <DialogTitle>{"Create teams"}</DialogTitle>
+        <DialogTitle>{dialogText + " Team"}</DialogTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Stack spacing={2} mt={2} width="100%">
@@ -110,12 +126,15 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
 
           <DialogActions>
             <Button onClick={handleClose}>Disagree</Button>
-            <Button onClick={handleClose} type="submit">
-              Agree
-            </Button>
+            <Button type="submit">Agree</Button>
           </DialogActions>
         </Form>
       </Dialog>
+      <SnackbarComponent
+        open={openSnack}
+        setOpen={setOpenSnack}
+        typeOfAlert={dialogText}
+      />
     </>
   );
 };
