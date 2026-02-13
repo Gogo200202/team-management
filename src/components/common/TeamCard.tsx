@@ -22,43 +22,34 @@ import type { TeamForm } from "../../pages/TeamsPage";
 import { useDeleteTeam, useUpdateTeam } from "../../api/teamController";
 import type { User } from "../../api/userTypes";
 
-export class TeamCardProps {
+export type TeamCardProps = {
   team: Team;
   teamUsers: User[];
   allUsers: User[];
-  constructor(t: Team, u: User[], uAll: User[]) {
-    this.team = t;
-    this.teamUsers = u;
-    this.allUsers = uAll;
-  }
-  resetTeams: () => void;
-}
+};
 
 export const TeamCard: FunctionComponent<TeamCardProps> = ({
   team,
   teamUsers,
   allUsers,
-  resetTeams,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const { handleSubmit, control } = useForm<TeamForm>();
-  const { mutateAsync } = useUpdateTeam();
+  const { mutate: editTeam } = useUpdateTeam();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mutateAsync: deleteTeam } = useDeleteTeam();
+  const { mutate: deleteTeam } = useDeleteTeam();
   const onSubmit: SubmitHandler<TeamForm> = async (data) => {
     const idsOfUser: number[] = data.Users.map(function (v) {
       return v.id;
     });
 
-    await mutateAsync({
+    editTeam({
       id: team.id,
       name: data.TeamName,
       createdAt: team.createdAt,
       users: idsOfUser,
       updatedAt: new Date().toISOString(),
     });
-
-    await resetTeams();
   };
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -69,8 +60,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
 
   const handleCloseDelete = async (e: any) => {
     if (e.nativeEvent.target.textContent == "Agree") {
-      await deleteTeam(team.id);
-      await resetTeams();
+      deleteTeam(team.id);
     }
     setOpenDelete(false);
   };

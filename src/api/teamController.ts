@@ -20,20 +20,22 @@ type createTeams = {
 
 export const useGetAllTeams = () => {
   return useQuery<Team[]>({
-    queryKey: [teamKeys.allTeams],
+    queryKey: teamKeys.allTeams,
     queryFn: async () => {
       const { data } = await axiosClient.get(`/teams`);
 
       return data;
     },
-    enabled: false,
   });
 };
 
 export const useCreateTeams = () => {
   return useMutation({
-    mutationFn: async (data: createTeams) =>
-      await axiosClient.post("/teams", data),
+    mutationFn: async (createBody: createTeams) => {
+      const { data } = await axiosClient.post("/teams", createBody);
+
+      return data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
     },

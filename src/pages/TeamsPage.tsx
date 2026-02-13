@@ -20,24 +20,21 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Form } from "react-router-dom";
 import { useGetAllUsers } from "../api/userController";
 import { useCreateTeams, useGetAllTeams } from "../api/teamController";
-import TeamCard, { TeamCardProps } from "../components/common/TeamCard";
+import TeamCard, { type TeamCardProps } from "../components/common/TeamCard";
 import type { Team } from "../api/teamTypes";
 
 export type TeamForm = {
-  TeamName: string;
-  Users: User[];
+  teamName: string;
+  users: User[];
 };
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
-  const { mutateAsync } = useCreateTeams();
-  const { data: allTeams = [], refetch } = useGetAllTeams();
+  const { mutate } = useCreateTeams();
+  const { data: allTeams = [] } = useGetAllTeams();
 
-  if (allTeams.length == 0) {
-    refetch();
-  }
   const [open, setOpen] = useState<boolean>(false);
 
   const { handleSubmit, control } = useForm<TeamForm>();
@@ -71,27 +68,26 @@ export const TeamsPage = () => {
     currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
     currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
 
-    const currentTeam: TeamCardProps = new TeamCardProps(
-      currentTeamProp,
-      getUserFromTeam(allTeams[i]),
-      selectUsers,
-    );
+    const currentTeam: TeamCardProps = {
+      team: currentTeamProp,
+      allUsers: selectUsers,
+      teamUsers: getUserFromTeam(allTeams[i]),
+    };
 
     teamsCard.push(currentTeam);
   }
 
-  const onSubmit: SubmitHandler<TeamForm> = async (data) => {
-    const idsOfUser: number[] = data.Users.map(function (v) {
+  const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
+    const idsOfUser: number[] = users.map(function (v) {
       return v.id;
     });
 
-    await mutateAsync({
+    mutate({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      name: data.TeamName,
+      name: teamName,
       users: idsOfUser,
     });
-    refetch();
   };
 
   const handleClickOpen = () => {
@@ -124,7 +120,7 @@ export const TeamsPage = () => {
               <Stack spacing={2}>
                 <Controller
                   control={control}
-                  name="TeamName"
+                  name="teamName"
                   render={({ field: { onChange, value } }) => (
                     <TextField
                       value={value}
@@ -135,7 +131,7 @@ export const TeamsPage = () => {
                 />
                 <Controller
                   control={control}
-                  name="Users"
+                  name="users"
                   render={({ field: { onChange, value } }) => (
                     <Autocomplete
                       multiple
@@ -174,7 +170,6 @@ export const TeamsPage = () => {
               team={team.team}
               allUsers={team.allUsers}
               teamUsers={team.teamUsers}
-              resetTeams={refetch}
             ></TeamCard>
           ))}
         </Grid>

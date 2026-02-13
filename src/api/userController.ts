@@ -11,7 +11,7 @@ export const userKeys = {
 
 export const useGetAllUsers = () => {
   return useQuery<User[]>({
-    queryKey: [userKeys.allUsers],
+    queryKey: userKeys.allUsers,
     queryFn: async () => {
       const { data } = await axiosClient.get(`/users`);
 
@@ -29,6 +29,7 @@ export const useCreateUser = () => {
     },
   });
 };
+
 export const useDeleteUser = () => {
   return useMutation({
     mutationFn: async (id: number) => await axiosClient.delete(`/users${id}`),
