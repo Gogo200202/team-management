@@ -31,30 +31,34 @@ export class TeamCardProps {
     this.teamUsers = u;
     this.allUsers = uAll;
   }
+  resetTeams: () => void;
 }
 
 export const TeamCard: FunctionComponent<TeamCardProps> = ({
   team,
   teamUsers,
   allUsers,
+  resetTeams,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const { handleSubmit, control } = useForm<TeamForm>();
-  const { mutate } = useUpdateTeam();
+  const { mutateAsync } = useUpdateTeam();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mutate: deleteTeam } = useDeleteTeam();
-  const onSubmit: SubmitHandler<TeamForm> = (data) => {
+  const { mutateAsync: deleteTeam } = useDeleteTeam();
+  const onSubmit: SubmitHandler<TeamForm> = async (data) => {
     const idsOfUser: number[] = data.Users.map(function (v) {
       return v.id;
     });
 
-    mutate({
+    await mutateAsync({
       id: team.id,
       name: data.TeamName,
       createdAt: team.createdAt,
       users: idsOfUser,
       updatedAt: new Date().toISOString(),
     });
+
+    await resetTeams();
   };
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -63,9 +67,10 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
     setOpenDelete(true);
   };
 
-  const handleCloseDelete = (e: any) => {
+  const handleCloseDelete = async (e: any) => {
     if (e.nativeEvent.target.textContent == "Agree") {
-      deleteTeam(team.id);
+      await deleteTeam(team.id);
+      await resetTeams();
     }
     setOpenDelete(false);
   };

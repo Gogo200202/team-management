@@ -32,7 +32,7 @@ dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
-  const { mutate } = useCreateTeams();
+  const { mutateAsync } = useCreateTeams();
   const { data: allTeams = [], refetch } = useGetAllTeams();
 
   if (allTeams.length == 0) {
@@ -80,18 +80,17 @@ export const TeamsPage = () => {
     teamsCard.push(currentTeam);
   }
 
-  const onSubmit: SubmitHandler<TeamForm> = (data) => {
+  const onSubmit: SubmitHandler<TeamForm> = async (data) => {
     const idsOfUser: number[] = data.Users.map(function (v) {
       return v.id;
     });
 
-    mutate({
+    await mutateAsync({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       name: data.TeamName,
       users: idsOfUser,
     });
-
     refetch();
   };
 
@@ -175,7 +174,7 @@ export const TeamsPage = () => {
               team={team.team}
               allUsers={team.allUsers}
               teamUsers={team.teamUsers}
-              
+              resetTeams={refetch}
             ></TeamCard>
           ))}
         </Grid>
