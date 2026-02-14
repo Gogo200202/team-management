@@ -15,7 +15,7 @@ import { useDeleteTeam } from "../../../api/teamController";
 import type { Team } from "../../../api/teamTypes";
 import type { User } from "../../../api/userTypes";
 import TeamFormComponent from "./TeamFormComponent";
-import DeleteComponent, { TypesOfDeletion } from "../../common/DeleteComponent";
+import DeleteComponent from "../../common/DeleteComponent";
 
 export type TeamCardProps = {
   team: Team;
@@ -74,7 +74,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
       <DeleteComponent
         open={openDelete}
         setOpen={setOpenDelete}
-        typeOfToDelete={TypesOfDeletion.Team}
+        typeOfToDelete={"Team"}
         id={team.id}
       />
     </Card>

@@ -14,6 +14,7 @@ type DeleteProps = {
   title: string;
   onAgree: () => void;
   handleClose: () => void;
+  typeOfToDelete: string;
 };
 
 const DeleteComponent: FunctionComponent<DeleteProps> = ({
@@ -29,7 +30,7 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
   };
 
   const handleDelete = async () => {
-    if (typeOfToDelete == TypesOfDeletion.Team) {
+    if (typeOfToDelete == "Team") {
       deleteTeam(id);
     }
     setOpen(false);
@@ -45,7 +46,7 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"Do you want to delete this " + TypesOfDeletion[typeOfToDelete]}
+            {"Do you want to delete this " + typeOfToDelete}
           </DialogTitle>
 
           <DialogActions>
