@@ -36,7 +36,7 @@ export const useCreateTeams = () => {
         createdAt: dayjs().toISOString(),
         updatedAt: dayjs().toISOString(),
       });
-
+      
       return data;
     },
     onSuccess: () => {
@@ -67,6 +67,3 @@ export const useDeleteTeam = () => {
   });
 };
 
-export const lastActionTeams = () => {
-  console.log(queryClient.getQueriesData({ queryKey: teamKeys.allTeams }));
-};

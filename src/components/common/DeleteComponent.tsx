@@ -13,7 +13,7 @@ type DeleteProps = {
   open: boolean;
   title: string;
   onAgree: () => void;
-  handleClose: () => void;
+ // handleClose: () => void;
   typeOfToDelete: string;
 };
 
@@ -22,6 +22,9 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
   setOpen,
   id,
   typeOfToDelete,
+ // handleClose,
+  onAgree,
+  title
 }) => {
   const [openSnack, setOpenSnack] = useState<boolean>(false);
   const { mutate: deleteTeam } = useDeleteTeam();

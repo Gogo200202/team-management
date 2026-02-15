@@ -70,8 +70,9 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
         name: teamName,
         users: idsOfUser,
       });
+      
     } else {
-      createTeam({
+       createTeam({
         name: teamName,
         users: idsOfUser,
       });
