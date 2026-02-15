@@ -7,6 +7,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./config/queryClient.config";
 import { UserProvider } from "./components/context/UserContext";
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const router = createBrowserRouter(routes);
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <RouterProvider router={router} />
         </ThemeProvider>
       </UserProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
