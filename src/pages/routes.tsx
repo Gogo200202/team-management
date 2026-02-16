@@ -1,6 +1,5 @@
 import { Outlet, type RouteObject } from "react-router-dom";
 
-
 import ErrorPage from "./ErrorPage";
 import { RoadmapPage } from "./RoadmapPage";
 import { TeamsPage } from "./TeamsPage";
@@ -9,6 +8,7 @@ import { Register } from "./Register";
 import withAuth from "../middleware/withAuth";
 import Layout from "../components/layout/Layout";
 import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
+import { EditUserPage } from "./EditUserPage";
 
 const LayoutComponent = withAuth(Layout);
 const OutletLogInCheck = RedirectRegisterUsers(Outlet);
@@ -29,6 +29,11 @@ export const routes: RouteObject[] = [
       },
     ],
   },
+  {
+    path: "/edit",
+    element: <EditUserPage />,
+  },
+
   {
     path: "/auth",
     element: <OutletLogInCheck />,

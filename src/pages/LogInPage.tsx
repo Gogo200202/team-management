@@ -31,6 +31,7 @@ export const LogInPage = () => {
 
     if (user.secretWord == password) {
       handleLogin({
+        id: user.id,
         email: user.email,
         secretWord: user.secretWord,
         userName: user.displayName,

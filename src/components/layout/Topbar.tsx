@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 type TopbarProps = {
   title?: string;
@@ -17,7 +18,7 @@ type TopbarProps = {
 
 export const Topbar = ({ title = "Team Management" }: TopbarProps) => {
   const { currentUser, handleLogOut } = useUserContext();
-
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -26,6 +27,11 @@ export const Topbar = ({ title = "Team Management" }: TopbarProps) => {
 
   const LogoutUser = () => {
     handleLogOut();
+  };
+
+  const handleEditPage = () => {
+    navigate("/edit");
+    setAnchorEl(null);
   };
 
   const handleClose = () => {
@@ -70,7 +76,8 @@ export const Topbar = ({ title = "Team Management" }: TopbarProps) => {
               id="account-menu"
               open={open}
               onClose={handleClose}
-              onClick={handleClose}
+              //onClick={() => console.log(3)}
+              onClick={handleEditPage}
               slotProps={{
                 paper: {
                   elevation: 0,

@@ -3,10 +3,11 @@ import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
 import type { UserCreate } from "../utils/types/User";
 import type { User } from "./userTypes";
+import dayjs from "dayjs";
 
 export const userKeys = {
   allUsers: ["allUsers"],
-  userDetails: (userId: number) => [userKeys.allUsers, `userDetails-${userId}`],
+  userDetails: (userId: string) => [userKeys.allUsers, `userDetails-${userId}`],
 };
 
 export const useGetAllUsers = () => {
@@ -20,10 +21,34 @@ export const useGetAllUsers = () => {
   });
 };
 
+export const useGetUser = (userId: number) => {
+  return useQuery<User>({
+    queryKey: userKeys.userDetails(userId.toString()),
+    queryFn: async () => {
+      const { data } = await axiosClient.get(`/users/${userId}`);
+
+      return data as User;
+    },
+  });
+};
+
 export const useCreateUser = () => {
   return useMutation({
     mutationFn: async (data: UserCreate) =>
       await axiosClient.post("/users", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.allUsers });
+    },
+  });
+};
+
+export const useEditUser = () => {
+  return useMutation({
+    mutationFn: async (user: User) =>
+      await axiosClient.patch(`/users/${user.id}`, {
+        ...user,
+        updatedAt: dayjs().toISOString(),
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.allUsers });
     },

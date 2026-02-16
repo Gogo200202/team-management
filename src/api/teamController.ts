@@ -36,7 +36,7 @@ export const useCreateTeams = () => {
         createdAt: dayjs().toISOString(),
         updatedAt: dayjs().toISOString(),
       });
-      
+
       return data;
     },
     onSuccess: () => {
@@ -66,4 +66,3 @@ export const useDeleteTeam = () => {
     },
   });
 };
-

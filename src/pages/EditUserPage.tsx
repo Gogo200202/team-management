@@ -1,14 +1,16 @@
-import { Box, TextField, Stack, Button } from "@mui/material";
-import { useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
-import { useCreateUser, useGetAllUsers } from "../api/user.controller";
+import { Box, Button, Stack, TextField } from "@mui/material";
+import { useUserContext } from "../components/context/UserContext";
+import { Form, useNavigate } from "react-router-dom";
+import { DevTool } from "@hookform/devtools";
 import {
-  useUserContext,
-  type UserStored,
-} from "../components/context/UserContext";
+  useEditUser,
+  useGetAllUsers,
+  useGetUser,
+} from "../api/user.controller";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 
-type RegisterForm = {
+type EditForm = {
   firstName: string;
   lastName: string;
   email: string;
@@ -16,24 +18,28 @@ type RegisterForm = {
   retypePassword: string;
 };
 
-export const Register = () => {
+export const EditUserPage = () => {
+  const { currentUser, handleLogin } = useUserContext();
   const navigate = useNavigate();
-  const { handleLogin } = useUserContext();
-  const { data = [] } = useGetAllUsers();
-  const { mutateAsync } = useCreateUser();
-
+  if (currentUser == undefined) {
+    navigate("/");
+    return;
+  }
+  const { data: allUsers } = useGetAllUsers();
+  const { mutate: editUser } = useEditUser();
+  const { data: userFromDB, refetch } = useGetUser(currentUser?.id);
+  refetch();
   const [message, setMessage] = useState<string>("");
-
-  const { handleSubmit, control } = useForm<RegisterForm>({
+  const { handleSubmit, control } = useForm<EditForm>({
     defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      retypePassword: "",
+      email: userFromDB?.email,
+      firstName: userFromDB?.firstName,
+      lastName: userFromDB?.lastName,
+      password: userFromDB?.secretWord,
+      retypePassword: userFromDB?.secretWord,
     },
   });
-  const onSubmit: SubmitHandler<RegisterForm> = async ({
+  const onSubmit: SubmitHandler<EditForm> = async ({
     firstName,
     lastName,
     email,
@@ -44,32 +50,35 @@ export const Register = () => {
       setMessage("Not valid password or retypePassword");
       return;
     }
-    const alreadyUsedEmail = data.find((x) => x.email == email);
-    if (alreadyUsedEmail != null) {
+    const alreadyUsedEmail = allUsers!.find((x) => x.email == email);
+
+    if (
+      alreadyUsedEmail != null &&
+      userFromDB?.email != alreadyUsedEmail.email
+    ) {
       setMessage("This email is already used");
       return;
     }
 
-    const { data: createdUser } = await mutateAsync({
-      displayName: firstName + " " + lastName,
-      email: email,
+    editUser({
+      id: userFromDB?.id,
       firstName: firstName,
       lastName: lastName,
-      createdAt: new Date().toISOString(),
+      createdAt: userFromDB?.createdAt,
+      displayName: firstName + " " + lastName,
+      email: email,
       secretWord: password,
-      updatedAt: new Date().toISOString(),
     });
 
     handleLogin({
-      id: createdUser.id,
+      id: userFromDB.id,
       email: email,
       secretWord: password,
       userName: firstName + " " + lastName,
     });
-
+    refetch();
     navigate("/");
   };
-
   return (
     <Box>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -138,12 +147,11 @@ export const Register = () => {
             )}
           />
 
-          <Link to="/auth/login">{"Log in"}</Link>
-          <div>{message}</div>
           <Button variant="contained" type="submit">
-            Register
+            Edit
           </Button>
         </Stack>
+        <DevTool control={control} /> {/* set up the dev tool */}
       </Form>
     </Box>
   );

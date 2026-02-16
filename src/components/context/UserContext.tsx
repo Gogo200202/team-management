@@ -13,6 +13,7 @@ import { useGetAllUsers } from "../../api/user.controller";
 import type { User } from "../../api/userTypes";
 
 export type UserStored = {
+  id: number;
   userName: string;
   email: string;
   secretWord: string;
@@ -75,6 +76,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
     if (checkIfDb) {
       setCurrentUser({
+        id: checkIfDb.id,
         email: checkIfDb.email,
         secretWord: checkIfDb.secretWord,
         userName: checkIfDb.displayName,
