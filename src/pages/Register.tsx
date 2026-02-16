@@ -1,7 +1,7 @@
 import { Box, TextField, Stack, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCreateUser, useGetAllUsers } from "../api/userController";
+import { useCreateUser, useGetAllUsers } from "../api/user.controller";
 import { useUserContext } from "../components/context/UserContext";
 
 export const Register = () => {

@@ -9,7 +9,7 @@ import {
 } from "react";
 
 import { LOCAL_STORAGE_KEYS } from "../../config/localStorage.config";
-import { useGetAllUsers } from "../../api/userController";
+import { useGetAllUsers } from "../../api/user.controller";
 import type { User } from "../../api/userTypes";
 
 export type UserStored = {

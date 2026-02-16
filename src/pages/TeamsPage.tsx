@@ -3,7 +3,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import type { User } from "../api/userTypes";
-import { useGetAllUsers } from "../api/userController";
+import { useGetAllUsers } from "../api/user.controller";
 import { useGetAllTeams } from "../api/teamController";
 import type { Team } from "../api/teamTypes";
 import TeamFormComponent from "../components/views/Teams/TeamFormComponent";

@@ -7,7 +7,7 @@ system where users, teams, projects, and tasks can be created, updated,
 and linked together using relational-style data stored in **JSON
 Server**.
 
-This dashboard includes:
+The application will include the following features:
 
 - Team management
 - User management
@@ -47,7 +47,7 @@ This dashboard includes:
 
 ---
 
-## Technologies Used
+## Technologies To Be Used
 
 ### **Frontend**
 
@@ -72,6 +72,8 @@ Technology Purpose Link
 **Axios** HTTP client https://axios-http.com/
 
 **React Router** Routing/navigation https://reactrouter.com/
+
+**DayJS** Working with dates https://day.js.org/
 
 ---
 
@@ -101,7 +103,9 @@ Tool Purpose Link
 ---
 
 **ESLint** Code linting https://eslint.org/
+
 **Prettier** Code formatting https://prettier.io/
+
 **Vitest** Unit testing https://vitest.dev/
 
 ---
@@ -109,6 +113,8 @@ Tool Purpose Link
 ## Environment Variables
 
 ### `.env.example`
+
+### Create `.env.local` and add the following:
 
 VITE_API_URL=http://localhost:4000
 
@@ -131,5 +137,4 @@ npm run server
 
 ## 🧭 Roadmap
 
-See full roadmap here:\
-`TODOS.md` (feature-by-feature development plan)
+See full roadmap on the project main page.

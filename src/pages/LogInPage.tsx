@@ -1,7 +1,7 @@
 import { Box, TextField, Stack, Button } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetAllUsers } from "../api/userController";
+import { useGetAllUsers } from "../api/user.controller";
 import type { User } from "../api/userTypes";
 import { useUserContext } from "../components/context/UserContext";
 

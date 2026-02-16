@@ -1,6 +1,8 @@
 import { Outlet, type RouteObject } from "react-router-dom";
-import { LandingPage } from "./LandingPage";
+
+
 import ErrorPage from "./ErrorPage";
+import { RoadmapPage } from "./RoadmapPage";
 import { TeamsPage } from "./TeamsPage";
 import { LogInPage } from "./LogInPage";
 import { Register } from "./Register";
@@ -19,7 +21,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: <RoadmapPage />,
       },
       {
         path: "teams",
@@ -27,7 +29,7 @@ export const routes: RouteObject[] = [
       },
     ],
   },
- {
+  {
     path: "/auth",
     element: <OutletLogInCheck />,
     children: [

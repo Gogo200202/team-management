@@ -1,8 +1,8 @@
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
 import type { UserCreate } from "../utils/types/User";
 import type { User } from "./userTypes";
-import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const userKeys = {
   allUsers: ["allUsers"],
