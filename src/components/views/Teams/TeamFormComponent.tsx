@@ -25,7 +25,6 @@ import type { TeamForm } from "../../../pages/TeamsPage";
 import type { User } from "../../../api/userTypes";
 import type { Team } from "../../../api/teamTypes";
 import { SnackbarComponent } from "../../common/SnackbarComponent";
-import { DevTool } from "@hookform/devtools";
 
 type TeamFormDialog = {
   allUsers: User[];
@@ -136,7 +135,6 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
             <Button onClick={handleClose}>Disagree</Button>
             <Button type="submit">Agree</Button>
           </DialogActions>
-          <DevTool control={control} /> {/* set up the dev tool */}
         </Form>
       </Dialog>
       <SnackbarComponent
