@@ -9,20 +9,44 @@ import {
   type SetStateAction,
 } from "react";
 import React from "react";
+import {
+  teamKeys,
+  useCreateTeams,
+  useDeleteTeam,
+  useUpdateTeam,
+} from "../../api/teamController";
+import type { Team } from "../../api/teamTypes";
 
 type AlertProps = {
   typeOfAlert: string;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  lastTeam: Team;
+  keysForQuery: string[];
 };
 export const SnackbarComponent: FunctionComponent<AlertProps> = ({
   typeOfAlert,
   open,
   setOpen,
+  lastTeam,
+  keysForQuery,
 }) => {
+  const { mutate: deleteTeam } = useDeleteTeam();
+  const { mutate: updateTeam } = useUpdateTeam();
+  const { mutate: createTeam } = useCreateTeams();
+
   const handleUndo = (reason?: SnackbarCloseReason) => {
     if (reason === "clickaway") {
       return;
+    }
+    if (keysForQuery == teamKeys.allTeams) {
+      if (typeOfAlert == "Create") {
+        deleteTeam(lastTeam.id);
+      } else if (typeOfAlert == "Edit") {
+        updateTeam(lastTeam);
+      } else if (typeOfAlert == "Delete") {
+        createTeam(lastTeam);
+      }
     }
 
     setOpen(false);

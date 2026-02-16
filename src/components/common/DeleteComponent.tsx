@@ -1,44 +1,42 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import {
-  useState,
-  type Dispatch,
-  type FunctionComponent,
-  type SetStateAction,
-} from "react";
+import { type Dispatch, type FunctionComponent } from "react";
 import { useDeleteTeam } from "../../api/teamController";
-import { SnackbarComponent } from "./SnackbarComponent";
+import type { Team } from "../../api/teamTypes";
 
-// deletion implementation
+
 type DeleteProps = {
+  team: Team;
+
   open: boolean;
-  title: string;
-  onAgree: () => void;
- // handleClose: () => void;
+
+  handleClose: () => void;
+  handleOpenSnack: () => void;
   typeOfToDelete: string;
+  setTeamToDelete: Dispatch<React.SetStateAction<Team | undefined>>;
 };
 
 const DeleteComponent: FunctionComponent<DeleteProps> = ({
   open,
-  setOpen,
-  id,
+  team,
   typeOfToDelete,
- // handleClose,
-  onAgree,
-  title
+  handleOpenSnack,
+  handleClose,
+  setTeamToDelete,
 }) => {
-  const [openSnack, setOpenSnack] = useState<boolean>(false);
   const { mutate: deleteTeam } = useDeleteTeam();
-  const handleClose = async () => {
-    setOpen(false);
-  };
 
   const handleDelete = async () => {
+    let lastTeam = team;
     if (typeOfToDelete == "Team") {
-      deleteTeam(id);
+      deleteTeam(team.id);
     }
-    setOpen(false);
-    setOpenSnack(true);
+
+    handleOpenSnack();
+
+    handleClose();
+    setTeamToDelete(lastTeam);
   };
+
   return (
     <>
       <Box>
@@ -60,11 +58,6 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
           </DialogActions>
         </Dialog>
       </Box>
-      <SnackbarComponent
-        open={openSnack}
-        setOpen={setOpenSnack}
-        typeOfAlert={"Delete"}
-      />
     </>
   );
 };

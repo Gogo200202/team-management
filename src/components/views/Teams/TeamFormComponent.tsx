@@ -16,11 +16,16 @@ import {
 } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { Form } from "react-router-dom";
-import { useCreateTeams, useUpdateTeam } from "../../../api/teamController";
+import {
+  teamKeys,
+  useCreateTeams,
+  useUpdateTeam,
+} from "../../../api/teamController";
 import type { TeamForm } from "../../../pages/TeamsPage";
 import type { User } from "../../../api/userTypes";
 import type { Team } from "../../../api/teamTypes";
 import { SnackbarComponent } from "../../common/SnackbarComponent";
+import { DevTool } from "@hookform/devtools";
 
 type TeamFormDialog = {
   allUsers: User[];
@@ -45,7 +50,9 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
   }
 
   const [openSnack, setOpenSnack] = useState<boolean>(false);
-  const { mutate: createTeam } = useCreateTeams();
+
+  const [newTeam, setNewTeam] = useState<Team>();
+  const { mutateAsync: createTeam } = useCreateTeams();
   const { mutate: updateTeam } = useUpdateTeam();
   const { handleSubmit, control, reset } = useForm<TeamForm>({
     defaultValues: { teamName: team?.name || "", users: selectedUsers || [] },
@@ -64,18 +71,19 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
     });
 
     if (team) {
+      setNewTeam(team);
       updateTeam({
         id: team.id,
         createdAt: team.createdAt,
         name: teamName,
         users: idsOfUser,
       });
-      
     } else {
-       createTeam({
+      const Newdata = await createTeam({
         name: teamName,
         users: idsOfUser,
       });
+      setNewTeam(Newdata);
     }
     setOpenSnack(true);
 
@@ -124,17 +132,19 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
               />
             </Stack>
           </DialogContent>
-
           <DialogActions>
             <Button onClick={handleClose}>Disagree</Button>
             <Button type="submit">Agree</Button>
           </DialogActions>
+          <DevTool control={control} /> {/* set up the dev tool */}
         </Form>
       </Dialog>
       <SnackbarComponent
         open={openSnack}
         setOpen={setOpenSnack}
         typeOfAlert={dialogText}
+        lastTeam={newTeam}
+        keysForQuery={teamKeys.allTeams}
       />
     </>
   );
