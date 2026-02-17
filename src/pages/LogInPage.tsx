@@ -1,7 +1,4 @@
-import { DevTool } from "@hookform/devtools";
-import { ErrorMessage } from "@hookform/error-message";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import { useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, useNavigate } from "react-router-dom";
 
@@ -115,7 +112,6 @@ export const LogInPage = () => {
             Log in
           </Button>
         </Stack>
-        <DevTool control={control} /> {/* set up the dev tool */}
       </Form>
     </Box>
   );

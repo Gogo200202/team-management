@@ -1,14 +1,14 @@
 import { Outlet, type RouteObject } from "react-router-dom";
 
-import ErrorPage from "./ErrorPage";
-import { RoadmapPage } from "./RoadmapPage";
-import { TeamsPage } from "./TeamsPage";
-import { LogInPage } from "./LogInPage";
-import { Register } from "./Register";
-import withAuth from "../middleware/withAuth";
 import Layout from "../components/layout/Layout";
 import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
+import withAuth from "../middleware/withAuth";
 import { EditUserPage } from "./EditUserPage";
+import ErrorPage from "./ErrorPage";
+import { LogInPage } from "./LogInPage";
+import { Register } from "./Register";
+import { RoadmapPage } from "./RoadmapPage";
+import { TeamsPage } from "./TeamsPage";
 
 const LayoutComponent = withAuth(Layout);
 const OutletLogInCheck = RedirectRegisterUsers(Outlet);

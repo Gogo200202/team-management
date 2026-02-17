@@ -1,7 +1,14 @@
-import { DevTool } from "@hookform/devtools";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Snackbar,
+  Stack,
+  TextField,
+  type SnackbarCloseReason,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Form, useNavigate } from "react-router-dom";
+import { Form } from "react-router-dom";
 
 import {
   useEditUser,
@@ -10,11 +17,11 @@ import {
 } from "../api/user.controller";
 import { useUserContext } from "../components/context/UserContext";
 import {
-  emailValidation,
   nameValidate,
   passwordValidation,
   validateEditEmail,
 } from "./validate/validateForms";
+import { SnackbarComponent } from "../components/common/SnackbarComponent";
 
 type EditForm = {
   firstName: string;
@@ -26,31 +33,46 @@ type EditForm = {
 
 export const EditUserPage = () => {
   const { currentUser, handleLogin } = useUserContext();
-  const navigate = useNavigate();
-  if (currentUser == undefined) {
-    navigate("/");
-    return;
-  }
   const { data: allUsers } = useGetAllUsers();
   const { mutate: editUser } = useEditUser();
-  const { data: userFromDB, refetch } = useGetUser(currentUser?.id);
-  refetch();
+  const { data: userFromDB, isLoading } = useGetUser(currentUser!.id!);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (reason?: SnackbarCloseReason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const {
     handleSubmit,
     control,
     getValues,
+    reset,
     formState: { errors },
   } = useForm<EditForm>({
     mode: "all",
-    defaultValues: {
-      email: userFromDB?.email,
-      firstName: userFromDB?.firstName,
-      lastName: userFromDB?.lastName,
-      password: userFromDB?.secretWord,
-      retypePassword: userFromDB?.secretWord,
-    },
   });
+
+  useEffect(() => {
+    if (!isLoading) {
+      reset({
+        email: userFromDB?.email,
+        firstName: userFromDB?.firstName,
+        lastName: userFromDB?.lastName,
+        password: userFromDB?.secretWord,
+        retypePassword: userFromDB?.secretWord,
+      });
+    }
+  }, [isLoading, reset]);
+
   const onSubmit: SubmitHandler<EditForm> = async ({
     firstName,
     lastName,
@@ -59,7 +81,6 @@ export const EditUserPage = () => {
     retypePassword,
   }) => {
     if (password != retypePassword) {
-      //setMessage("Not valid password or retypePassword");
       return;
     }
     const alreadyUsedEmail = allUsers!.find((x) => x.email == email);
@@ -68,28 +89,24 @@ export const EditUserPage = () => {
       alreadyUsedEmail != null &&
       userFromDB?.email != alreadyUsedEmail.email
     ) {
-      // setMessage("This email is already used");
       return;
     }
 
     editUser({
-      id: userFromDB?.id,
+      id: userFromDB!.id,
       firstName: firstName,
       lastName: lastName,
-      createdAt: userFromDB?.createdAt,
-      displayName: firstName + " " + lastName,
       email: email,
       secretWord: password,
     });
 
     handleLogin({
-      id: userFromDB?.id,
+      id: userFromDB!.id!,
       email: email,
       secretWord: password,
       userName: firstName + " " + lastName,
     });
-    refetch();
-    navigate("/");
+    handleClick();
   };
 
   return (
@@ -134,7 +151,11 @@ export const EditUserPage = () => {
             name="email"
             rules={{
               validate: (value: string) => {
-                return validateEditEmail(value, currentUser.email, allUsers);
+                return validateEditEmail(
+                  value,
+                  currentUser!.email,
+                  allUsers || [],
+                );
               },
             }}
             render={({ field: { onChange, value } }) => (
@@ -193,8 +214,16 @@ export const EditUserPage = () => {
             Edit
           </Button>
         </Stack>
-        <DevTool control={control} /> {/* set up the dev tool */}
       </Form>
+      <div>
+        <Button onClick={handleClick}>Open Snackbar</Button>
+        <Snackbar
+          open={open}
+          autoHideDuration={1500}
+          onClose={handleClose}
+          message="You edit it"
+        />
+      </div>
     </Box>
   );
 };

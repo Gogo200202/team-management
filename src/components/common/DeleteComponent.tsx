@@ -1,8 +1,8 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { type Dispatch, type FunctionComponent } from "react";
+
 import { useDeleteTeam } from "../../api/teamController";
 import type { Team } from "../../api/teamTypes";
-
 
 type DeleteProps = {
   team: Team;
@@ -26,7 +26,7 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
   const { mutate: deleteTeam } = useDeleteTeam();
 
   const handleDelete = async () => {
-    let lastTeam = team;
+    const lastTeam = team;
     if (typeOfToDelete == "Team") {
       deleteTeam(team.id);
     }
@@ -40,13 +40,8 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
   return (
     <>
       <Box>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>
             {"Do you want to delete this " + typeOfToDelete}
           </DialogTitle>
 

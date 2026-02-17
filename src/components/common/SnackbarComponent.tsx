@@ -1,14 +1,14 @@
+import CloseIcon from "@mui/icons-material/Close";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-import Snackbar, { type SnackbarCloseReason } from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import Snackbar, { type SnackbarCloseReason } from "@mui/material/Snackbar";
 import {
   type Dispatch,
   type FunctionComponent,
   type SetStateAction,
 } from "react";
-import React from "react";
+
 import {
   teamKeys,
   useCreateTeams,
@@ -17,8 +17,8 @@ import {
 } from "../../api/teamController";
 import type { Team } from "../../api/teamTypes";
 
-type AlertProps = {
-  typeOfAlert: string;
+export type AlertProps = {
+  typeOfAlert: "create" | "edit" | "delete";
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   lastTeam: Team;
@@ -39,12 +39,13 @@ export const SnackbarComponent: FunctionComponent<AlertProps> = ({
     if (reason === "clickaway") {
       return;
     }
+
     if (keysForQuery == teamKeys.allTeams) {
-      if (typeOfAlert == "Create") {
+      if (typeOfAlert == "create") {
         deleteTeam(lastTeam.id);
-      } else if (typeOfAlert == "Edit") {
+      } else if (typeOfAlert == "edit") {
         updateTeam(lastTeam);
-      } else if (typeOfAlert == "Delete") {
+      } else if (typeOfAlert == "delete") {
         createTeam(lastTeam);
       }
     }
@@ -60,19 +61,14 @@ export const SnackbarComponent: FunctionComponent<AlertProps> = ({
   };
 
   const action = (
-    <React.Fragment>
+    <>
       <Button color="secondary" size="small" onClick={handleUndo}>
         UNDO
       </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
+      <IconButton size="small" color="inherit" onClick={handleClose}>
         <CloseIcon fontSize="small" />
       </IconButton>
-    </React.Fragment>
+    </>
   );
 
   return (

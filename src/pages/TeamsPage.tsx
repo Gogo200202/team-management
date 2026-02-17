@@ -1,18 +1,19 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import type { User } from "../api/userTypes";
-import { useGetAllUsers } from "../api/user.controller";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { useState } from "react";
+
 import { teamKeys, useGetAllTeams } from "../api/teamController";
 import type { Team } from "../api/teamTypes";
-import TeamFormComponent from "../components/views/Teams/TeamFormComponent";
-import { useState } from "react";
+import { useGetAllUsers } from "../api/user.controller";
+import type { User } from "../api/userTypes";
+import DeleteComponent from "../components/common/DeleteComponent";
+import { SnackbarComponent } from "../components/common/SnackbarComponent";
 import TeamCard, {
   type TeamCardProps,
 } from "../components/views/Teams/TeamCard";
-import DeleteComponent from "../components/common/DeleteComponent";
-import { SnackbarComponent } from "../components/common/SnackbarComponent";
+import TeamFormComponent from "../components/views/Teams/TeamFormComponent";
 
 export type TeamForm = {
   teamName: string;
@@ -80,8 +81,7 @@ export const TeamsPage = () => {
 
         <TeamFormComponent
           allUsers={selectUsers}
-          selectedUsers={[]}
-          OpenDialog={open}
+          openDialog={open}
           setOpenDialog={setOpen}
         />
 
@@ -121,7 +121,7 @@ export const TeamsPage = () => {
           lastTeam={teamToDelete}
           open={openSnack}
           setOpen={setOpenSnack}
-          typeOfAlert={"Delete"}
+          typeOfAlert={"delete"}
         />
       )}
     </Box>

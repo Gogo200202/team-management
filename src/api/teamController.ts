@@ -1,8 +1,9 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
+
 import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Team } from "./teamTypes";
-import dayjs from "dayjs";
 
 export const teamKeys = {
   allTeams: ["allTeams"],
@@ -12,7 +13,7 @@ export const teamKeys = {
   ],
 };
 
-type createTeams = {
+type CreateTeams = {
   name: string;
   users: number[];
 };
@@ -30,7 +31,7 @@ export const useGetAllTeams = () => {
 
 export const useCreateTeams = () => {
   return useMutation({
-    mutationFn: async (createBody: createTeams) => {
+    mutationFn: async (createBody: CreateTeams) => {
       const { data } = await axiosClient.post("/teams", {
         ...createBody,
         createdAt: dayjs().toISOString(),
@@ -47,11 +48,16 @@ export const useCreateTeams = () => {
 
 export const useUpdateTeam = () => {
   return useMutation({
-    mutationFn: async (data: Partial<Team>) =>
-      await axiosClient.patch(`/teams/${data.id}`, {
-        ...data,
-        updatedAt: dayjs().toISOString(),
-      }),
+    mutationFn: async (data: Partial<Team>) => {
+      const { data: updatedTeam } = await axiosClient.patch(
+        `/teams/${data.id}`,
+        {
+          ...data,
+          updatedAt: dayjs().toISOString(),
+        },
+      );
+      return updatedTeam;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
     },

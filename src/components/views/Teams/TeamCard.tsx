@@ -1,7 +1,8 @@
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
-import { useState, type FunctionComponent } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { type FunctionComponent, useState } from "react";
+
 import type { Team } from "../../../api/teamTypes";
 import type { User } from "../../../api/userTypes";
 import TeamFormComponent from "./TeamFormComponent";
@@ -63,11 +64,10 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
           allUsers={allUsers}
           team={team}
           selectedUsers={teamUsers}
-          OpenDialog={open}
+          openDialog={open}
           setOpenDialog={setOpen}
         />
       </Card>
-  
     </Box>
   );
 };

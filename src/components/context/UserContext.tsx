@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
+  type ReactNode,
   useContext,
   useEffect,
   useState,
-  type ReactNode,
 } from "react";
 
-import { LOCAL_STORAGE_KEYS } from "../../config/localStorage.config";
 import { useGetAllUsers } from "../../api/user.controller";
 import type { User } from "../../api/userTypes";
+import { LOCAL_STORAGE_KEYS } from "../../config/localStorage.config";
 
 export type UserStored = {
   id: string;
@@ -39,7 +38,6 @@ export const UserContext = createContext<UserContextType>(initialValues);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const { data = [] } = useGetAllUsers();
-
   const [isCheckCompleted, setIsCheckCompleted] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserStored | null>(
     initialValues.currentUser,

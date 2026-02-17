@@ -9,28 +9,30 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  useState,
   type Dispatch,
   type FunctionComponent,
   type SetStateAction,
+  useState,
 } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
+
 import {
   teamKeys,
   useCreateTeams,
   useUpdateTeam,
 } from "../../../api/teamController";
-import type { TeamForm } from "../../../pages/TeamsPage";
-import type { User } from "../../../api/userTypes";
 import type { Team } from "../../../api/teamTypes";
+import type { User } from "../../../api/userTypes";
+import type { TeamForm } from "../../../pages/TeamsPage";
+import type { AlertProps } from "../../common/SnackbarComponent";
 import { SnackbarComponent } from "../../common/SnackbarComponent";
 
 type TeamFormDialog = {
   allUsers: User[];
   team?: Team;
   selectedUsers?: User[];
-  OpenDialog: boolean;
+  openDialog: boolean;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -38,14 +40,29 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
   allUsers,
   selectedUsers = [],
   team,
-  OpenDialog,
+  openDialog,
   setOpenDialog,
 }) => {
-  let dialogText: string;
+  const dialogText: AlertProps = {
+    typeOfAlert: "create",
+    open: false,
+    setOpen: function (value: SetStateAction<boolean>): void {
+      throw new Error("Function not implemented.");
+    },
+    lastTeam: {
+      id: 0,
+      name: "",
+      users: [],
+      createdAt: "",
+      updatedAt: "",
+    },
+    keysForQuery: [],
+  };
+
   if (!team) {
-    dialogText = "Create";
+    dialogText.typeOfAlert = "create";
   } else {
-    dialogText = "Edit";
+    dialogText.typeOfAlert = "edit";
   }
 
   const [openSnack, setOpenSnack] = useState<boolean>(false);
@@ -91,8 +108,8 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
 
   return (
     <>
-      <Dialog open={OpenDialog} keepMounted onClose={handleClose} maxWidth="xl">
-        <DialogTitle>{dialogText + " Team"}</DialogTitle>
+      <Dialog open={openDialog} keepMounted onClose={handleClose} maxWidth="xl">
+        <DialogTitle>{dialogText.typeOfAlert + " team"}</DialogTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Stack spacing={2} mt={2} width="100%">
@@ -140,7 +157,7 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
       <SnackbarComponent
         open={openSnack}
         setOpen={setOpenSnack}
-        typeOfAlert={dialogText}
+        typeOfAlert={dialogText.typeOfAlert}
         lastTeam={newTeam}
         keysForQuery={teamKeys.allTeams}
       />
