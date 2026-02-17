@@ -3,7 +3,10 @@
     {
       "id": "1",
       "name": "Team Marvin",
-      "users": ["1", "2"],
+      "users": [
+        "1",
+        "2"
+      ],
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
     },
@@ -125,6 +128,26 @@
       "createdAt": "2026-02-14T15:53:36.861Z",
       "secretWord": "123",
       "updatedAt": "2026-02-14T15:53:36.861Z"
+    },
+    {
+      "id": "19c8",
+      "displayName": "test gogo123",
+      "email": "435",
+      "firstName": "test",
+      "lastName": "gogo123",
+      "createdAt": "2026-02-16T15:49:58.872Z",
+      "secretWord": "123",
+      "updatedAt": "2026-02-16T15:51:06.672Z"
+    },
+    {
+      "id": "f11b",
+      "displayName": "Gogo 1234",
+      "email": "test21@as.com",
+      "firstName": "Gogo",
+      "lastName": "1234",
+      "createdAt": "2026-02-17T11:12:38.840Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-17T11:42:30.868Z"
     }
   ],
   "projects": [
@@ -133,8 +156,13 @@
       "name": "Project Atlas",
       "description": "Internal analytics platform",
       "status": "active",
-      "adminIds": ["1"],
-      "memberIds": ["2", "3"],
+      "adminIds": [
+        "1"
+      ],
+      "memberIds": [
+        "2",
+        "3"
+      ],
       "teamIds": [],
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
@@ -144,9 +172,16 @@
       "name": "Mobile Banking App",
       "description": "Banking app MVP",
       "status": "paused",
-      "adminIds": ["2"],
-      "memberIds": ["1", "3"],
-      "teamIds": ["1"],
+      "adminIds": [
+        "2"
+      ],
+      "memberIds": [
+        "1",
+        "3"
+      ],
+      "teamIds": [
+        "1"
+      ],
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
     },
@@ -155,7 +190,9 @@
       "name": "Web Banking App",
       "description": "Banking app MVP for WEB",
       "status": "completed",
-      "adminIds": ["2"],
+      "adminIds": [
+        "2"
+      ],
       "memberIds": [],
       "teamIds": [],
       "createdAt": "2025-01-10T10:00:00Z",
@@ -202,52 +239,52 @@
       "id": "1",
       "title": "Phase 1 — Authentication Simulation (Client-Only)",
       "description": "Create fake login page and validate credentials via JSON Server. Implement AuthContext and Protected Routes.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "1-1",
           "title": "Create login/register page using useState",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-2",
           "title": "Create AuthProvider to store logged user",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-3",
           "title": "Sync user with localStorage on load",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-4",
           "title": "Validate localStorage user against DB",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-5",
           "title": "Protect Home route (redirect to register if guest)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-6",
           "title": "Protect Login route (redirect to home if auth)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-7",
           "title": "Implement React Hook Form for auth pages",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-8",
           "title": "In the TopBar on right side add logged user name and menu with options: Profile page, Logout",
-          "completed": false
+          "completed": true
         },
         {
           "id": "1-9",
           "title": "Create User Profile page for editing data",
-          "completed": false
+          "completed": true
         }
       ]
     },
@@ -255,37 +292,37 @@
       "id": "2",
       "title": "Phase 2 — Team Management",
       "description": "Develop Team detail pages. Manage team members and assignments.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "2-1",
           "title": "Add Create Team button with Dialog, component for user selection MUI Autocomplete",
-          "completed": false
+          "completed": true
         },
         {
           "id": "2-2",
           "title": "Make Team Dialog reusable for Edit",
-          "completed": false
+          "completed": true
         },
         {
           "id": "2-3",
           "title": "Display Teams in Grid/Cards layout",
-          "completed": false
+          "completed": true
         },
         {
           "id": "2-4",
           "title": "Add Edit/Delete buttons to Team cards",
-          "completed": false
+          "completed": true
         },
         {
           "id": "2-5",
           "title": "Create reusable ConfirmationDialog",
-          "completed": false
+          "completed": true
         },
         {
           "id": "2-6",
           "title": "Create reusable Notification/Snackbar component (using MUI Snackbar)",
-          "completed": false
+          "completed": true
         }
       ]
     },

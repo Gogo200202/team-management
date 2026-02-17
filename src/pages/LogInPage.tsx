@@ -1,11 +1,14 @@
-import { Box, TextField, Stack, Button } from "@mui/material";
+import { DevTool } from "@hookform/devtools";
+import { ErrorMessage } from "@hookform/error-message";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, useNavigate } from "react-router-dom";
+
 import { useGetAllUsers } from "../api/user.controller";
 import type { User } from "../api/userTypes";
 import { useUserContext } from "../components/context/UserContext";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-
+import { emailValidation, passwordValidation } from "./validate/validateForms";
 type LogInForm = {
   email: string;
   password: string;
@@ -15,9 +18,13 @@ export const LogInPage = () => {
   const { data = [] } = useGetAllUsers();
   const { handleLogin } = useUserContext();
   const navigate = useNavigate();
-  const [message, setMessage] = useState(false);
 
-  const { handleSubmit, control } = useForm<LogInForm>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LogInForm>({
+    mode: "all",
     defaultValues: { email: "", password: "" },
   });
 
@@ -25,7 +32,6 @@ export const LogInPage = () => {
     const user = data.find((x: User) => x.email == email);
 
     if (typeof user === "undefined") {
-      setMessage(true);
       return;
     }
 
@@ -48,6 +54,9 @@ export const LogInPage = () => {
           spacing={2}
         >
           <Controller
+            rules={{
+              validate: emailValidation,
+            }}
             control={control}
             name="email"
             render={({ field: { onChange, value } }) => (
@@ -56,10 +65,16 @@ export const LogInPage = () => {
                 variant="outlined"
                 label="Email"
                 onChange={onChange}
+                error={!!errors["email"]}
+                helperText={errors["email"]?.message}
               />
             )}
           />
+
           <Controller
+            rules={{
+              validate: passwordValidation,
+            }}
             control={control}
             name="password"
             render={({ field: { onChange, value } }) => (
@@ -69,15 +84,38 @@ export const LogInPage = () => {
                 variant="outlined"
                 label="Password"
                 onChange={onChange}
+                error={!!errors["password"]}
+                helperText={errors["password"]?.message}
               />
             )}
           />
-          <Link to="/auth/register">Register</Link>
+          <Box
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                textDecoration: "none",
+                boxShadow: "none",
+                textAlign: "center",
+              }}
+              variant="h7"
+              noWrap
+              component={Link}
+              to="/auth/register"
+              color="textPrimary"
+              underline="none"
+            >
+              Register
+            </Typography>
+          </Box>
+
           <Button variant="contained" type="submit">
             Log in
           </Button>
-          {message ? <div>not valid email or password</div> : <div></div>}
         </Stack>
+        <DevTool control={control} /> {/* set up the dev tool */}
       </Form>
     </Box>
   );

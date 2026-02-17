@@ -21,7 +21,7 @@ export const useGetAllUsers = () => {
   });
 };
 
-export const useGetUser = (userId: number) => {
+export const useGetUser = (userId: string) => {
   return useQuery<User>({
     queryKey: userKeys.userDetails(userId.toString()),
     queryFn: async () => {

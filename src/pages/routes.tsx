@@ -27,11 +27,11 @@ export const routes: RouteObject[] = [
         path: "teams",
         element: <TeamsPage />,
       },
+      {
+        path: "/edit",
+        element: <EditUserPage />,
+      },
     ],
-  },
-  {
-    path: "/edit",
-    element: <EditUserPage />,
   },
 
   {

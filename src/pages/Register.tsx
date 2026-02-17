@@ -1,12 +1,15 @@
-import { Box, TextField, Stack, Button } from "@mui/material";
-import { useState } from "react";
+import { DevTool } from "@hookform/devtools";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, useNavigate } from "react-router-dom";
+
 import { useCreateUser, useGetAllUsers } from "../api/user.controller";
+import { useUserContext } from "../components/context/UserContext";
 import {
-  useUserContext,
-  type UserStored,
-} from "../components/context/UserContext";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+  nameValidate,
+  passwordValidation,
+  validateRegisterEmail,
+} from "./validate/validateForms";
 
 type RegisterForm = {
   firstName: string;
@@ -22,9 +25,13 @@ export const Register = () => {
   const { data = [] } = useGetAllUsers();
   const { mutateAsync } = useCreateUser();
 
-  const [message, setMessage] = useState<string>("");
-
-  const { handleSubmit, control } = useForm<RegisterForm>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    getValues,
+  } = useForm<RegisterForm>({
+    mode: "all",
     defaultValues: {
       email: "",
       firstName: "",
@@ -38,18 +45,7 @@ export const Register = () => {
     lastName,
     email,
     password,
-    retypePassword,
   }) => {
-    if (password != retypePassword) {
-      setMessage("Not valid password or retypePassword");
-      return;
-    }
-    const alreadyUsedEmail = data.find((x) => x.email == email);
-    if (alreadyUsedEmail != null) {
-      setMessage("This email is already used");
-      return;
-    }
-
     const { data: createdUser } = await mutateAsync({
       displayName: firstName + " " + lastName,
       email: email,
@@ -80,8 +76,13 @@ export const Register = () => {
           <Controller
             control={control}
             name="firstName"
+            rules={{
+              validate: nameValidate,
+            }}
             render={({ field: { onChange, value } }) => (
               <TextField
+                error={!!errors["firstName"]}
+                helperText={errors["firstName"]?.message}
                 value={value}
                 variant="outlined"
                 label="First name"
@@ -92,8 +93,13 @@ export const Register = () => {
           <Controller
             control={control}
             name="lastName"
+            rules={{
+              validate: nameValidate,
+            }}
             render={({ field: { onChange, value } }) => (
               <TextField
+                error={!!errors["lastName"]}
+                helperText={errors["lastName"]?.message}
                 value={value}
                 variant="outlined"
                 label="Last name"
@@ -104,8 +110,15 @@ export const Register = () => {
           <Controller
             control={control}
             name="email"
+            rules={{
+              validate: (value: string) => {
+                return validateRegisterEmail(value, data);
+              },
+            }}
             render={({ field: { onChange, value } }) => (
               <TextField
+                error={!!errors["email"]}
+                helperText={errors["email"]?.message}
                 value={value}
                 variant="outlined"
                 label="Email"
@@ -116,9 +129,13 @@ export const Register = () => {
           <Controller
             control={control}
             name="password"
+            rules={{ validate: passwordValidation }}
             render={({ field: { onChange, value } }) => (
               <TextField
+                error={!!errors["password"]}
+                helperText={errors["password"]?.message}
                 value={value}
+                type="password"
                 variant="outlined"
                 label="Password"
                 onChange={onChange}
@@ -128,8 +145,20 @@ export const Register = () => {
           <Controller
             control={control}
             name="retypePassword"
+            rules={{
+              validate: (value: string) => {
+                if (value != getValues().password) {
+                  return "Not valid second password";
+                } else {
+                  return true;
+                }
+              },
+            }}
             render={({ field: { onChange, value } }) => (
               <TextField
+                error={!!errors["retypePassword"]}
+                helperText={errors["retypePassword"]?.message}
+                type="password"
                 value={value}
                 variant="outlined"
                 label="Retype password"
@@ -138,12 +167,27 @@ export const Register = () => {
             )}
           />
 
-          <Link to="/auth/login">{"Log in"}</Link>
-          <div>{message}</div>
+          <Typography
+            sx={{
+              textDecoration: "none",
+              boxShadow: "none",
+              textAlign: "center",
+            }}
+            variant="h7"
+            noWrap
+            component={Link}
+            to="/auth/login"
+            color="textPrimary"
+            underline="none"
+          >
+            Log in
+          </Typography>
+
           <Button variant="contained" type="submit">
             Register
           </Button>
         </Stack>
+        <DevTool control={control} /> {/* set up the dev tool */}
       </Form>
     </Box>
   );

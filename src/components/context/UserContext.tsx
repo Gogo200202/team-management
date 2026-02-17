@@ -13,7 +13,7 @@ import { useGetAllUsers } from "../../api/user.controller";
 import type { User } from "../../api/userTypes";
 
 export type UserStored = {
-  id: number;
+  id: string;
   userName: string;
   email: string;
   secretWord: string;
