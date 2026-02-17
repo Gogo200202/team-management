@@ -2,9 +2,9 @@ import {
   Box,
   Button,
   Snackbar,
+  type SnackbarCloseReason,
   Stack,
   TextField,
-  type SnackbarCloseReason,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
@@ -21,7 +21,6 @@ import {
   passwordValidation,
   validateEditEmail,
 } from "./validate/validateForms";
-import { SnackbarComponent } from "../components/common/SnackbarComponent";
 
 type EditForm = {
   firstName: string;
@@ -37,18 +36,18 @@ export const EditUserPage = () => {
   const { mutate: editUser } = useEditUser();
   const { data: userFromDB, isLoading } = useGetUser(currentUser!.id!);
 
-  const [open, setOpen] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
-  const handleClick = () => {
-    setOpen(true);
+  const handleOpenSnackBar = () => {
+    setOpenSnackBar(true);
   };
 
-  const handleClose = (reason?: SnackbarCloseReason) => {
+  const handleCloseSnackBar = (reason?: SnackbarCloseReason) => {
     if (reason === "clickaway") {
       return;
     }
 
-    setOpen(false);
+    setOpenSnackBar(false);
   };
 
   const {
@@ -106,7 +105,7 @@ export const EditUserPage = () => {
       secretWord: password,
       userName: firstName + " " + lastName,
     });
-    handleClick();
+    handleOpenSnackBar();
   };
 
   return (
@@ -215,15 +214,15 @@ export const EditUserPage = () => {
           </Button>
         </Stack>
       </Form>
-      <div>
-        <Button onClick={handleClick}>Open Snackbar</Button>
+      <Box>
+        <Button onClick={handleOpenSnackBar}>Open Snackbar</Button>
         <Snackbar
-          open={open}
+          open={openSnackBar}
           autoHideDuration={1500}
-          onClose={handleClose}
+          onClose={handleCloseSnackBar}
           message="You edit it"
         />
-      </div>
+      </Box>
     </Box>
   );
 };
