@@ -1,5 +1,129 @@
-import { Box } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { useState } from "react";
+
+import { teamKeys, useGetAllTeams } from "../api/teamController";
+import type { Team } from "../api/teamTypes";
+import { useGetAllUsers } from "../api/user.controller";
+import type { User } from "../api/userTypes";
+import DeleteComponent from "../components/common/DeleteComponent";
+import { SnackbarComponent } from "../components/common/SnackbarComponent";
+import TeamCard, {
+  type TeamCardProps,
+} from "../components/views/Teams/TeamCard";
+import TeamFormComponent from "../components/views/Teams/TeamFormComponent";
+
+export type TeamForm = {
+  teamName: string;
+  users: User[];
+};
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const TeamsPage = () => {
-  return <Box>Teams Page</Box>;
+  const { data: selectUsers = [] } = useGetAllUsers();
+  const { data: allTeams = [] } = useGetAllTeams();
+  const [teamToDelete, setTeamToDelete] = useState<Team | undefined>();
+  const [open, setOpen] = useState<boolean>(false);
+  const [openSnack, setOpenSnack] = useState<boolean>(false);
+  const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
+
+  const teamsCard: TeamCardProps[] = [];
+
+  function getUserFromTeam(team: Team): User[] {
+    const idsOfUser = team.users;
+    const users: User[] = [];
+    for (let i = 0; i < idsOfUser.length; i++) {
+      const user = selectUsers.find((x) => x.id == idsOfUser[i]);
+      if (user != undefined) {
+        users.push(user);
+      }
+    }
+
+    return users;
+  }
+
+  function getTime(time: string): string {
+    const timestampCreatedAt = time;
+    const dayjsLocalCreatedAt = dayjs(timestampCreatedAt);
+    const dayjsIstCreatedAt = dayjsLocalCreatedAt.tz(
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+    );
+    return dayjsIstCreatedAt.format("YYYY-MM-DD HH:mm:ss");
+  }
+
+  for (let i = 0; i < allTeams.length; i++) {
+    const currentTeamProp = allTeams[i];
+    currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
+    currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
+
+    const currentTeam = {
+      team: currentTeamProp,
+      allUsers: selectUsers,
+      teamUsers: getUserFromTeam(allTeams[i]),
+    };
+
+    teamsCard.push(currentTeam);
+  }
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100vh",
+        }}
+      >
+        <Typography textAlign={"center"}>Teams Page</Typography>
+
+        <TeamFormComponent
+          allUsers={selectUsers}
+          openDialog={open}
+          setOpenDialog={setOpen}
+        />
+
+        <Button variant="outlined" onClick={() => setOpen(true)}>
+          Add new team
+        </Button>
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={25} columns={3}>
+          {teamsCard.map((team, index) => (
+            <TeamCard
+              handelOpenDeleteDialog={() => setDeleteDialog(true)}
+              key={index}
+              team={team.team}
+              allUsers={team.allUsers}
+              teamUsers={team.teamUsers}
+              handleDeleteClick={() => setTeamToDelete(team.team)}
+            />
+          ))}
+        </Grid>
+      </Box>
+
+      {teamToDelete && (
+        <DeleteComponent
+          open={deleteDialog}
+          handleClose={() => setDeleteDialog(false)}
+          setTeamToDelete={setTeamToDelete}
+          handleOpenSnack={() => setOpenSnack(true)}
+          typeOfToDelete={"Team"}
+          team={teamToDelete}
+        />
+      )}
+
+      {teamToDelete && (
+        <SnackbarComponent
+          keysForQuery={teamKeys.allTeams}
+          lastTeam={teamToDelete}
+          open={openSnack}
+          setOpen={setOpenSnack}
+          typeOfAlert={"delete"}
+        />
+      )}
+    </Box>
+  );
 };

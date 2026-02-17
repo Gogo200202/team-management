@@ -1,12 +1,14 @@
 import { Outlet, type RouteObject } from "react-router-dom";
-import { LandingPage } from "./LandingPage";
-import ErrorPage from "./ErrorPage";
-import { TeamsPage } from "./TeamsPage";
-import { LogInPage } from "./LogInPage";
-import { Register } from "./Register";
-import withAuth from "../middleware/withAuth";
+
 import Layout from "../components/layout/Layout";
 import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
+import withAuth from "../middleware/withAuth";
+import { EditUserPage } from "./EditUserPage";
+import ErrorPage from "./ErrorPage";
+import { LogInPage } from "./LogInPage";
+import { Register } from "./Register";
+import { RoadmapPage } from "./RoadmapPage";
+import { TeamsPage } from "./TeamsPage";
 
 const LayoutComponent = withAuth(Layout);
 const OutletLogInCheck = RedirectRegisterUsers(Outlet);
@@ -19,15 +21,20 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <LandingPage />,
+        element: <RoadmapPage />,
       },
       {
         path: "teams",
         element: <TeamsPage />,
       },
+      {
+        path: "/edit",
+        element: <EditUserPage />,
+      },
     ],
   },
- {
+
+  {
     path: "/auth",
     element: <OutletLogInCheck />,
     children: [

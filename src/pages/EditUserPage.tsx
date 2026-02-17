@@ -1,16 +1,28 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Snackbar,
+  type SnackbarCloseReason,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { Form } from "react-router-dom";
 
-import { useCreateUser, useGetAllUsers } from "../api/user.controller";
+import {
+  useEditUser,
+  useGetAllUsers,
+  useGetUser,
+} from "../api/user.controller";
 import { useUserContext } from "../components/context/UserContext";
 import {
   nameValidate,
   passwordValidation,
-  validateRegisterEmail,
+  validateEditEmail,
 } from "./validate/validateForms";
 
-type RegisterForm = {
+type EditForm = {
   firstName: string;
   lastName: string;
   email: string;
@@ -18,51 +30,82 @@ type RegisterForm = {
   retypePassword: string;
 };
 
-export const Register = () => {
-  const navigate = useNavigate();
-  const { handleLogin } = useUserContext();
-  const { data = [] } = useGetAllUsers();
-  const { mutateAsync } = useCreateUser();
+export const EditUserPage = () => {
+  const { currentUser, handleLogin } = useUserContext();
+  const { data: allUsers } = useGetAllUsers();
+  const { mutate: editUser } = useEditUser();
+  const { data: userFromDB, isLoading } = useGetUser(currentUser!.id!);
+
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+
+  const handleOpenSnackBar = () => {
+    setOpenSnackBar(true);
+  };
+
+  const handleCloseSnackBar = (reason?: SnackbarCloseReason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackBar(false);
+  };
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
     getValues,
-  } = useForm<RegisterForm>({
+    reset,
+    formState: { errors },
+  } = useForm<EditForm>({
     mode: "all",
-    defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      retypePassword: "",
-    },
   });
-  const onSubmit: SubmitHandler<RegisterForm> = async ({
+
+  useEffect(() => {
+    if (!isLoading) {
+      reset({
+        email: userFromDB?.email,
+        firstName: userFromDB?.firstName,
+        lastName: userFromDB?.lastName,
+        password: userFromDB?.secretWord,
+        retypePassword: userFromDB?.secretWord,
+      });
+    }
+  }, [isLoading, reset]);
+
+  const onSubmit: SubmitHandler<EditForm> = async ({
     firstName,
     lastName,
     email,
     password,
+    retypePassword,
   }) => {
-    const { data: createdUser } = await mutateAsync({
-      displayName: firstName + " " + lastName,
-      email: email,
+    if (password != retypePassword) {
+      return;
+    }
+    const alreadyUsedEmail = allUsers!.find((x) => x.email == email);
+
+    if (
+      alreadyUsedEmail != null &&
+      userFromDB?.email != alreadyUsedEmail.email
+    ) {
+      return;
+    }
+
+    editUser({
+      id: userFromDB!.id,
       firstName: firstName,
       lastName: lastName,
-      createdAt: new Date().toISOString(),
+      email: email,
       secretWord: password,
-      updatedAt: new Date().toISOString(),
     });
 
     handleLogin({
-      id: createdUser.id,
+      id: userFromDB!.id!,
       email: email,
       secretWord: password,
       userName: firstName + " " + lastName,
     });
-
-    navigate("/");
+    handleOpenSnackBar();
   };
 
   return (
@@ -75,34 +118,30 @@ export const Register = () => {
           <Controller
             control={control}
             name="firstName"
-            rules={{
-              validate: nameValidate,
-            }}
+            rules={{ validate: nameValidate }}
             render={({ field: { onChange, value } }) => (
               <TextField
-                error={!!errors["firstName"]}
-                helperText={errors["firstName"]?.message}
                 value={value}
                 variant="outlined"
                 label="First name"
                 onChange={onChange}
+                error={!!errors["firstName"]}
+                helperText={errors["firstName"]?.message}
               />
             )}
           />
           <Controller
             control={control}
+            rules={{ validate: nameValidate }}
             name="lastName"
-            rules={{
-              validate: nameValidate,
-            }}
             render={({ field: { onChange, value } }) => (
               <TextField
-                error={!!errors["lastName"]}
-                helperText={errors["lastName"]?.message}
                 value={value}
                 variant="outlined"
                 label="Last name"
                 onChange={onChange}
+                error={!!errors["lastName"]}
+                helperText={errors["lastName"]?.message}
               />
             )}
           />
@@ -111,17 +150,21 @@ export const Register = () => {
             name="email"
             rules={{
               validate: (value: string) => {
-                return validateRegisterEmail(value, data);
+                return validateEditEmail(
+                  value,
+                  currentUser!.email,
+                  allUsers || [],
+                );
               },
             }}
             render={({ field: { onChange, value } }) => (
               <TextField
-                error={!!errors["email"]}
-                helperText={errors["email"]?.message}
                 value={value}
                 variant="outlined"
                 label="Email"
                 onChange={onChange}
+                error={!!errors["email"]}
+                helperText={errors["email"]?.message}
               />
             )}
           />
@@ -131,13 +174,13 @@ export const Register = () => {
             rules={{ validate: passwordValidation }}
             render={({ field: { onChange, value } }) => (
               <TextField
-                error={!!errors["password"]}
-                helperText={errors["password"]?.message}
                 value={value}
                 type="password"
                 variant="outlined"
                 label="Password"
                 onChange={onChange}
+                error={!!errors["password"]}
+                helperText={errors["password"]?.message}
               />
             )}
           />
@@ -155,38 +198,31 @@ export const Register = () => {
             }}
             render={({ field: { onChange, value } }) => (
               <TextField
-                error={!!errors["retypePassword"]}
-                helperText={errors["retypePassword"]?.message}
-                type="password"
                 value={value}
+                type="password"
                 variant="outlined"
                 label="Retype password"
                 onChange={onChange}
+                error={!!errors["retypePassword"]}
+                helperText={errors["retypePassword"]?.message}
               />
             )}
           />
 
-          <Typography
-            sx={{
-              textDecoration: "none",
-              boxShadow: "none",
-              textAlign: "center",
-            }}
-            variant="h7"
-            noWrap
-            component={Link}
-            to="/auth/login"
-            color="textPrimary"
-            underline="none"
-          >
-            Log in
-          </Typography>
-
           <Button variant="contained" type="submit">
-            Register
+            Edit
           </Button>
         </Stack>
       </Form>
+      <Box>
+        <Button onClick={handleOpenSnackBar}>Open Snackbar</Button>
+        <Snackbar
+          open={openSnackBar}
+          autoHideDuration={1500}
+          onClose={handleCloseSnackBar}
+          message="You edit it"
+        />
+      </Box>
     </Box>
   );
 };
