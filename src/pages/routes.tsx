@@ -6,6 +6,7 @@ import withAuth from "../middleware/withAuth";
 import { EditUserPage } from "./EditUserPage";
 import ErrorPage from "./ErrorPage";
 import { LogInPage } from "./LogInPage";
+import ProjectPage from "./ProjectPage";
 import { Register } from "./Register";
 import { RoadmapPage } from "./RoadmapPage";
 import { TeamsPage } from "./TeamsPage";
@@ -28,8 +29,12 @@ export const routes: RouteObject[] = [
         element: <TeamsPage />,
       },
       {
-        path: "/edit",
+        path: "edit",
         element: <EditUserPage />,
+      },
+      {
+        path: "projects",
+        element: <ProjectPage />,
       },
     ],
   },
