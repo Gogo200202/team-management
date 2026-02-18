@@ -13,22 +13,26 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { type FunctionComponent } from "react";
+import { type FunctionComponent, useEffect } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
 
-import { useCreateProject } from "../../../api/projectController";
-import type { ProjectStatus } from "../../../api/projectTypes";
+import {
+  useCreateProject,
+  useUpdateProject,
+} from "../../../api/projectController";
+import type { Project, ProjectStatus } from "../../../api/projectTypes";
 import { useGetAllTeams } from "../../../api/teamController";
 import type { Team } from "../../../api/teamTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
 import type { User } from "../../../api/userTypes";
 
 type ProjectFormsProps = {
-  project: ProjectForm | null;
+  project?: Project;
   openFrom: boolean;
-  handleClose: () => void;
+  handleCloseForm: () => void;
   handleCloseAgreeButton: () => void;
+  resetProjectState: () => void;
 };
 
 type ProjectForm = {
@@ -39,31 +43,81 @@ type ProjectForm = {
   members: User[];
   teams: Team[];
 };
-
+const defaultValuesForm: ProjectForm = {
+  admins: [],
+  description: "",
+  members: [],
+  name: "",
+  status: "paused",
+  teams: [],
+};
 const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
   project,
   openFrom,
-  handleClose,
+  handleCloseForm,
   handleCloseAgreeButton,
 }) => {
-  const { control, handleSubmit, reset } = useForm<ProjectForm>({
-    defaultValues: {
-      name: project?.name,
-      description: project?.description,
-      status: project?.status,
-      admins: project?.admins,
-      members: project?.members,
-      teams: project?.teams,
-    },
-  });
+  const { control, handleSubmit, reset } = useForm<ProjectForm>();
 
-  function handleCloseForm() {
-    reset();
-    handleClose();
+  const { data: allUsers } = useGetAllUsers();
+  const { data: allTeams } = useGetAllTeams();
+  let dialogTitleText = "";
+  if (!project) {
+    dialogTitleText = "Create";
+  } else {
+    dialogTitleText = "Edit";
+  }
+
+  useEffect(() => {
+    if (project) {
+      const admins: User[] = [];
+      const members: User[] = [];
+      const teams: Team[] = [];
+      for (let i = 0; i < project.adminIds.length; i++) {
+        const finedAdmin = allUsers?.find(
+          (x) => x.id == project.adminIds[i].toString(),
+        );
+        if (finedAdmin != null) {
+          admins.push(finedAdmin);
+        }
+      }
+
+      for (let i = 0; i < project.memberIds.length; i++) {
+        const finedMember = allUsers?.find(
+          (x) => x.id == project.memberIds[i].toString(),
+        );
+        if (finedMember != null) {
+          members.push(finedMember);
+        }
+      }
+      for (let i = 0; i < project.teamIds.length; i++) {
+        const finedTeams = allTeams?.find((x) => x.id == project.teamIds[i]);
+        if (finedTeams != null) {
+          teams.push(finedTeams);
+        }
+      }
+
+      reset({
+        name: project?.name,
+        description: project?.description,
+        status: project?.status,
+        admins: admins,
+        members: members,
+        teams: teams,
+      });
+    } else {
+      reset(defaultValuesForm);
+    }
+  }, [project]);
+
+  function handleCloseFormInComponent() {
+    reset(defaultValuesForm);
+    handleCloseForm();
   }
   const { data: users } = useGetAllUsers();
   const { data: teams } = useGetAllTeams();
   const { mutate: createProject } = useCreateProject();
+  const { mutate: updateProject } = useUpdateProject();
 
   const onSubmit: SubmitHandler<ProjectForm> = (data) => {
     const idsOfAdmins: number[] = data.admins.map(function (v) {
@@ -76,23 +130,36 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
       return v.id;
     });
 
-    createProject({
-      adminIds: idsOfAdmins,
-      memberIds: idsOfMembers,
-      teamIds: idsOfTeams,
-      description: data.description,
-      name: data.name,
-      status: data.status,
-    });
-    console.log(data);
-    reset();
+    if (!project) {
+      createProject({
+        adminIds: idsOfAdmins,
+        memberIds: idsOfMembers,
+        teamIds: idsOfTeams,
+        description: data.description,
+        name: data.name,
+        status: data.status,
+      });
+    } else {
+      updateProject({
+        id: project.id,
+        name: data.name,
+        status: data.status,
+        adminIds: idsOfAdmins,
+        teamIds: idsOfTeams,
+        memberIds: idsOfMembers,
+        description: data.description,
+        createdAt: project.createdAt,
+      });
+    }
+
+    reset(defaultValuesForm);
   };
 
   return (
     <>
-      <Dialog open={openFrom} onClose={handleCloseForm}>
+      <Dialog open={openFrom} onClose={handleCloseFormInComponent}>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle>Create Project</DialogTitle>
+          <DialogTitle>{dialogTitleText} Project</DialogTitle>
           <DialogContent>
             <Stack spacing={4}>
               <Controller
@@ -115,13 +182,13 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                     onChange={(event, value) => {
                       onChange(value);
                     }}
+                    value={value}
                     options={users}
                     getOptionLabel={(option) =>
                       option.firstName + " " + option.lastName
                     }
                     renderInput={(params) => (
                       <TextField
-                        value={value}
                         {...params}
                         variant="standard"
                         label="Admins"
@@ -136,6 +203,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                 render={({ field: { onChange, value } }) => (
                   <Autocomplete
                     multiple
+                    value={value}
                     onChange={(event, value) => {
                       onChange(value);
                     }}
@@ -145,7 +213,6 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                     }
                     renderInput={(params) => (
                       <TextField
-                        value={value}
                         {...params}
                         variant="standard"
                         label="Members"
@@ -160,16 +227,12 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                 render={({ field: { onChange, value } }) => (
                   <Autocomplete
                     multiple
+                    value={value}
                     onChange={(event, value) => onChange(value)}
                     options={teams}
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => (
-                      <TextField
-                        value={value}
-                        {...params}
-                        variant="standard"
-                        label="Teams"
-                      />
+                      <TextField {...params} variant="standard" label="Teams" />
                     )}
                   />
                 )}
@@ -208,7 +271,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseForm}>Disagree</Button>
+            <Button onClick={handleCloseFormInComponent}>Disagree</Button>
             <Button type="submit" onClick={handleCloseAgreeButton} autoFocus>
               Agree
             </Button>

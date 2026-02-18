@@ -41,3 +41,19 @@ export const useCreateProject = () => {
     },
   });
 };
+type UpdateProject = Omit<Project, "updatedAt">;
+export const useUpdateProject = () => {
+  return useMutation({
+    mutationFn: async (project: UpdateProject) => {
+      const { data } = await axiosClient.patch(`/projects/${project.id}`, {
+        ...project,
+        updatedAt: dayjs().toISOString(),
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
+    },
+  });
+};

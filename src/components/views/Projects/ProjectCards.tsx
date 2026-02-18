@@ -1,4 +1,12 @@
-import { Box, Card, CardContent, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+} from "@mui/material";
+import type { Dispatch, FunctionComponent, SetStateAction } from "react";
 
 import type { Project } from "../../../api/projectTypes";
 import { useGetAllTeams } from "../../../api/teamController";
@@ -6,12 +14,27 @@ import type { Team } from "../../../api/teamTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
 import type { User } from "../../../api/userTypes";
 
-const ProjectCards = (project: Project) => {
+type ProjectCardsProps = {
+  project: Project;
+  setProjectToManipulate: Dispatch<SetStateAction<Project | undefined>>;
+  openEdit: () => void;
+};
+
+const ProjectCards: FunctionComponent<ProjectCardsProps> = ({
+  project,
+  setProjectToManipulate,
+  openEdit,
+}) => {
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
   const admins: User[] = [];
   const members: User[] = [];
   const teams: Team[] = [];
+
+  const handleEditButton = () => {
+    setProjectToManipulate(project);
+    openEdit();
+  };
 
   for (let i = 0; i < project.adminIds.length; i++) {
     const finedAdmin = allUsers?.find(
@@ -83,6 +106,10 @@ const ProjectCards = (project: Project) => {
             </Box>
           </Stack>
           <Typography variant="body2">{project.description}</Typography>
+          <Box sx={{ display: "flex" }}>
+            <Button>delete</Button>
+            <Button onClick={handleEditButton}>edit</Button>
+          </Box>
         </CardContent>
       </Card>
     </Box>
