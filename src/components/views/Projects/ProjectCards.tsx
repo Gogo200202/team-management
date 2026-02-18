@@ -1,5 +1,4 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
-import type { FunctionComponent } from "react";
+import { Box, Card, CardContent, Stack, Typography } from "@mui/material";
 
 import type { Project } from "../../../api/projectTypes";
 import { useGetAllTeams } from "../../../api/teamController";
@@ -13,6 +12,7 @@ const ProjectCards = (project: Project) => {
   const admins: User[] = [];
   const members: User[] = [];
   const teams: Team[] = [];
+
   for (let i = 0; i < project.adminIds.length; i++) {
     const finedAdmin = allUsers?.find(
       (x) => x.id == project.adminIds[i].toString(),
@@ -49,13 +49,39 @@ const ProjectCards = (project: Project) => {
           <Typography variant="h5" component="div">
             {project.name}
           </Typography>
-          <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-            <Box>
+          <Stack>
+            <Box
+              sx={{ display: "inline-flex", color: "text.secondary", mb: 1.5 }}
+            >
+              Admins:
               {admins.map((admin, index) => (
-                <Box key={index}>{admin.firstName}</Box>
+                <Box sx={{ marginLeft: 1 }} key={index}>
+                  {admin.firstName} {admin.lastName}
+                </Box>
               ))}
             </Box>
-          </Typography>
+            <Box
+              sx={{ display: "inline-flex", color: "text.secondary", mb: 1.5 }}
+            >
+              Members:
+              {members.map((member, index) => (
+                <Box sx={{ marginLeft: 1 }} key={index}>
+                  {member.firstName} {member.lastName}
+                </Box>
+              ))}
+            </Box>
+
+            <Box
+              sx={{ display: "inline-flex", color: "text.secondary", mb: 1.5 }}
+            >
+              Teams:
+              {teams.map((team, index) => (
+                <Box sx={{ marginLeft: 1 }} key={index}>
+                  {team.name}
+                </Box>
+              ))}
+            </Box>
+          </Stack>
           <Typography variant="body2">{project.description}</Typography>
         </CardContent>
       </Card>

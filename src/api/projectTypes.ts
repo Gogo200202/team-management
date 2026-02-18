@@ -2,7 +2,7 @@ export type Project = {
   id: string;
   name: string;
   description: string;
-  status: string;
+  status: "active" | "paused" | "completed" | (string & {});
   adminIds: number[];
   memberIds: number[];
   teamIds: number[];
