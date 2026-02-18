@@ -74,7 +74,7 @@ export const TeamsPage = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          width: "100vh",
+          width: "2/3",
         }}
       >
         <Typography textAlign={"center"}>Teams Page</Typography>
