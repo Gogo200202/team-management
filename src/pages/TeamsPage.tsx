@@ -4,10 +4,10 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useState } from "react";
 
-import { teamKeys, useGetAllTeams } from "../api/teamController";
-import type { Team } from "../api/teamTypes";
+import { teamKeys, useDeleteTeam, useGetAllTeams } from "../api/teamController";
+import type { Team } from "../api/types/teamTypes";
+import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
-import type { User } from "../api/userTypes";
 import DeleteComponent from "../components/common/DeleteComponent";
 import { SnackbarComponent } from "../components/common/SnackbarComponent";
 import TeamCard, {
@@ -24,12 +24,15 @@ dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
+  const { mutate: deleteTeam } = useDeleteTeam();
   const { data: allTeams = [] } = useGetAllTeams();
   const [teamToDelete, setTeamToDelete] = useState<Team | undefined>();
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
-
+  const setTeamToDeleteFunction = (team: Team | undefined) => {
+    setTeamToDelete(team);
+  };
   const teamsCard: TeamCardProps[] = [];
 
   function getUserFromTeam(team: Team): User[] {
@@ -105,13 +108,15 @@ export const TeamsPage = () => {
       </Box>
 
       {teamToDelete && (
-        <DeleteComponent
-          open={deleteDialog}
-          handleClose={() => setDeleteDialog(false)}
-          setTeamToDelete={setTeamToDelete}
+        <DeleteComponent<Team>
+          deleteItem={() => deleteTeam(teamToDelete.id)}
+          deleteItemFromSet={() => setTeamToDelete(undefined)}
+          setItemToUndoDelete={setTeamToDeleteFunction}
+          openDeleteDialog={deleteDialog}
+          handleCloseDelete={() => setDeleteDialog(false)}
           handleOpenSnack={() => setOpenSnack(true)}
-          typeOfToDelete={"Team"}
-          team={teamToDelete}
+          typeOfToDelete={teamKeys.allTeams}
+          item={teamToDelete}
         />
       )}
 

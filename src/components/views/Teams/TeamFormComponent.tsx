@@ -22,8 +22,8 @@ import {
   useCreateTeams,
   useUpdateTeam,
 } from "../../../api/teamController";
-import type { Team } from "../../../api/teamTypes";
-import type { User } from "../../../api/userTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import type { TeamForm } from "../../../pages/TeamsPage";
 import type { AlertProps } from "../../common/SnackbarComponent";
 import { SnackbarComponent } from "../../common/SnackbarComponent";
@@ -69,7 +69,7 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
 
   const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
     const idsOfUser: number[] = users.map(function (v) {
-      return v.id;
+      return parseInt(v.id);
     });
 
     if (team) {

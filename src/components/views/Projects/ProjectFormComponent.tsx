@@ -21,11 +21,11 @@ import {
   useCreateProject,
   useUpdateProject,
 } from "../../../api/projectController";
-import type { Project, ProjectStatus } from "../../../api/projectTypes";
 import { useGetAllTeams } from "../../../api/teamController";
-import type { Team } from "../../../api/teamTypes";
+import type { Project, ProjectStatus } from "../../../api/types/projectTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
-import type { User } from "../../../api/userTypes";
 
 type ProjectFormsProps = {
   project?: Project;
@@ -127,7 +127,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
       return parseInt(v.id);
     });
     const idsOfTeams: number[] = data.teams.map(function (v) {
-      return v.id;
+      return parseInt(v.id);
     });
 
     if (!project) {

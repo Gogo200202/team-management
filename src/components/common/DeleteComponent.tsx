@@ -1,52 +1,57 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { type Dispatch, type FunctionComponent } from "react";
 
-import { useDeleteTeam } from "../../api/teamController";
-import type { Team } from "../../api/teamTypes";
+import type { InterfaceItemDetail } from "../../api/interface/interfaceItemDetail";
+import { projectKeys } from "../../api/projectController";
+import { teamKeys } from "../../api/teamController";
 
-type DeleteProps = {
-  team: Team;
-
-  open: boolean;
-
-  handleClose: () => void;
+interface DeleteProps<T extends InterfaceItemDetail> {
+  item: T | undefined;
+  openDeleteDialog: boolean;
+  handleCloseDelete: () => void;
   handleOpenSnack: () => void;
-  typeOfToDelete: string;
-  setTeamToDelete: Dispatch<React.SetStateAction<Team | undefined>>;
-};
+  typeOfToDelete: string[];
+  setItemToUndoDelete: (item: T | undefined) => void;
+  deleteItemFromSet: () => void;
+  deleteItem: () => void;
+}
 
-const DeleteComponent: FunctionComponent<DeleteProps> = ({
-  open,
-  team,
+function DeleteComponent<T extends InterfaceItemDetail>({
+  openDeleteDialog,
+  item,
   typeOfToDelete,
   handleOpenSnack,
-  handleClose,
-  setTeamToDelete,
-}) => {
-  const { mutate: deleteTeam } = useDeleteTeam();
+  handleCloseDelete,
+  setItemToUndoDelete,
+  deleteItemFromSet,
+  deleteItem,
+}: DeleteProps<T>) {
+  let whatToDelete = "";
+  if (typeOfToDelete == teamKeys.allTeams) {
+    whatToDelete = "team";
+  } else if (typeOfToDelete == projectKeys.allProjects) {
+    whatToDelete = "project";
+  }
+  const handleDelete = () => {
+    const lastItem = item;
 
-  const handleDelete = async () => {
-    const lastTeam = team;
-    if (typeOfToDelete == "Team") {
-      deleteTeam(team.id);
-    }
+    deleteItemFromSet();
+    deleteItem();
 
     handleOpenSnack();
-
-    handleClose();
-    setTeamToDelete(lastTeam);
+    handleCloseDelete();
+    setItemToUndoDelete(lastItem);
   };
 
   return (
     <>
       <Box>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={openDeleteDialog} onClose={handleCloseDelete}>
           <DialogTitle>
-            {"Do you want to delete this " + typeOfToDelete}
+            {"Do you want to delete this " + whatToDelete}
           </DialogTitle>
 
           <DialogActions>
-            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleCloseDelete}>Disagree</Button>
             <Button onClick={handleDelete} autoFocus>
               Agree
             </Button>
@@ -55,6 +60,6 @@ const DeleteComponent: FunctionComponent<DeleteProps> = ({
       </Box>
     </>
   );
-};
+}
 
 export default DeleteComponent;

@@ -2,8 +2,8 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, useNavigate } from "react-router-dom";
 
+import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
-import type { User } from "../api/userTypes";
 import { useUserContext } from "../components/context/UserContext";
 import { emailValidation, passwordValidation } from "./validate/validateForms";
 type LogInForm = {

@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 
+import type { User } from "../../api/types/userTypes";
 import { useGetAllUsers } from "../../api/user.controller";
-import type { User } from "../../api/userTypes";
 import { LOCAL_STORAGE_KEYS } from "../../config/localStorage.config";
 
 export type UserStored = {

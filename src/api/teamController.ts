@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
-import type { Team } from "./teamTypes";
+import type { Team } from "./types/teamTypes";
 
 export const teamKeys = {
   allTeams: ["allTeams"],
@@ -66,7 +66,7 @@ export const useUpdateTeam = () => {
 
 export const useDeleteTeam = () => {
   return useMutation({
-    mutationFn: async (id: number) => await axiosClient.delete(`/teams/${id}`),
+    mutationFn: async (id: string) => await axiosClient.delete(`/teams/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
     },

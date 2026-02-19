@@ -1,7 +1,6 @@
-export type Team = {
-  id: number;
+export interface InterfaceItemDetail {
+  id: string;
   name: string;
-  users: number[];
   createdAt: string;
   updatedAt: string;
-};
+}

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
-import type { Project } from "./projectTypes";
+import type { Project } from "./types/projectTypes";
 
 export const projectKeys = {
   allProjects: ["allProject"],
@@ -50,6 +50,18 @@ export const useUpdateProject = () => {
         updatedAt: dayjs().toISOString(),
       });
 
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
+    },
+  });
+};
+
+export const useDeleteProject = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await axiosClient.delete(`/projects/${id}`);
       return data;
     },
     onSuccess: () => {

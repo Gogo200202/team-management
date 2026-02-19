@@ -6,30 +6,43 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import type { Dispatch, FunctionComponent, SetStateAction } from "react";
+import {
+  type Dispatch,
+  type FunctionComponent,
+  type SetStateAction,
+} from "react";
 
-import type { Project } from "../../../api/projectTypes";
 import { useGetAllTeams } from "../../../api/teamController";
-import type { Team } from "../../../api/teamTypes";
+import type { Project } from "../../../api/types/projectTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
-import type { User } from "../../../api/userTypes";
 
 type ProjectCardsProps = {
   project: Project;
   setProjectToManipulate: Dispatch<SetStateAction<Project | undefined>>;
   openEdit: () => void;
+  handelOpenDeleteDialog: () => void;
+  handleDeleteClick: () => void;
 };
 
 const ProjectCards: FunctionComponent<ProjectCardsProps> = ({
   project,
   setProjectToManipulate,
   openEdit,
+  handelOpenDeleteDialog,
+  handleDeleteClick,
 }) => {
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
   const admins: User[] = [];
   const members: User[] = [];
   const teams: Team[] = [];
+
+  function deleteButton() {
+    handelOpenDeleteDialog();
+    handleDeleteClick?.();
+  }
 
   const handleEditButton = () => {
     setProjectToManipulate(project);
@@ -60,7 +73,7 @@ const ProjectCards: FunctionComponent<ProjectCardsProps> = ({
     }
   }
   return (
-    <Box sx={{ minWidth: 275 }}>
+    <Box sx={{ maxWidth: 275 }}>
       <Card variant="outlined">
         <CardContent>
           <Typography
@@ -107,7 +120,7 @@ const ProjectCards: FunctionComponent<ProjectCardsProps> = ({
           </Stack>
           <Typography variant="body2">{project.description}</Typography>
           <Box sx={{ display: "flex" }}>
-            <Button>delete</Button>
+            <Button onClick={() => deleteButton()}>delete</Button>
             <Button onClick={handleEditButton}>edit</Button>
           </Box>
         </CardContent>
