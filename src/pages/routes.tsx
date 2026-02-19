@@ -7,6 +7,7 @@ import { EditUserPage } from "./EditUserPage";
 import ErrorPage from "./ErrorPage";
 import { LogInPage } from "./LogInPage";
 import ProjectPage from "./ProjectPage";
+import ProjectPageDetail from "./ProjectPageDetail";
 import { Register } from "./Register";
 import { RoadmapPage } from "./RoadmapPage";
 import { TeamsPage } from "./TeamsPage";
@@ -35,6 +36,10 @@ export const routes: RouteObject[] = [
       {
         path: "projects",
         element: <ProjectPage />,
+      },
+      {
+        path: "projects/details/:projectsId",
+        element: <ProjectPageDetail />,
       },
     ],
   },

@@ -1,21 +1,34 @@
 {
   "teams": [
     {
-      "id": "1",
-      "name": "Team Marvin",
+      "id": "aec6",
+      "name": "alfa asdasd",
       "users": [
         "1",
-        "2"
+        "2",
+        "3"
       ],
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "createdAt": "2026-02-19 17:20:29",
+      "updatedAt": "2026-02-19T15:46:33.560Z"
     },
     {
-      "id": "f471",
-      "name": "",
-      "users": [],
-      "createdAt": "2026-02-19T11:02:06.810Z",
-      "updatedAt": "2026-02-19T11:02:06.810Z"
+      "id": "b4e9",
+      "name": "neshto",
+      "users": [
+        2,
+        8816
+      ],
+      "createdAt": "2026-02-19T15:24:46.117Z",
+      "updatedAt": "2026-02-19T15:24:46.117Z"
+    },
+    {
+      "id": "a2c6",
+      "name": "test",
+      "users": [
+        null
+      ],
+      "createdAt": "2026-02-19T15:24:56.652Z",
+      "updatedAt": "2026-02-19T15:24:56.652Z"
     }
   ],
   "users": [
@@ -152,21 +165,24 @@
   ],
   "projects": [
     {
-      "id": "b9b5",
+      "id": "5ef7",
       "adminIds": [
-        2
+        "1",
+        "3"
       ],
       "memberIds": [
-        2
+        "1",
+        "3"
       ],
       "teamIds": [
-        "1"
+        "b4e9",
+        "aec6"
       ],
-      "description": "asd",
-      "name": "asd",
+      "description": "asdasd",
+      "name": "neshto",
       "status": "active",
-      "createdAt": "2026-02-19T10:55:34.570Z",
-      "updatedAt": "2026-02-19T10:55:34.570Z"
+      "createdAt": "2026-02-19T15:46:03.359Z",
+      "updatedAt": "2026-02-19T15:46:03.359Z"
     }
   ],
   "tasks": [

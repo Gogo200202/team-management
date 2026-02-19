@@ -69,7 +69,7 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
 
   const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
     const idsOfUser: number[] = users.map(function (v) {
-      return parseInt(v.id);
+      return v.id;
     });
 
     if (team) {

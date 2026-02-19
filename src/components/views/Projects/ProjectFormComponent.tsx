@@ -74,18 +74,14 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
       const members: User[] = [];
       const teams: Team[] = [];
       for (let i = 0; i < project.adminIds.length; i++) {
-        const finedAdmin = allUsers?.find(
-          (x) => x.id == project.adminIds[i].toString(),
-        );
+        const finedAdmin = allUsers?.find((x) => x.id == project.adminIds[i]);
         if (finedAdmin != null) {
           admins.push(finedAdmin);
         }
       }
 
       for (let i = 0; i < project.memberIds.length; i++) {
-        const finedMember = allUsers?.find(
-          (x) => x.id == project.memberIds[i].toString(),
-        );
+        const finedMember = allUsers?.find((x) => x.id == project.memberIds[i]);
         if (finedMember != null) {
           members.push(finedMember);
         }
@@ -121,14 +117,15 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
 
   const onSubmit: SubmitHandler<ProjectForm> = (data) => {
     const idsOfAdmins: number[] = data.admins.map(function (v) {
-      return parseInt(v.id);
+      return v.id;
     });
     const idsOfMembers: number[] = data.members.map(function (v) {
-      return parseInt(v.id);
+      return v.id;
     });
     const idsOfTeams: number[] = data.teams.map(function (v) {
-      return parseInt(v.id);
+      return v.id;
     });
+    console.log(idsOfTeams);
 
     if (!project) {
       createProject({

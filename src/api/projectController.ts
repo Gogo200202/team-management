@@ -24,6 +24,17 @@ export const useGetAllProjects = () => {
   });
 };
 
+export const useGetProject = (id: string) => {
+  return useQuery<Project>({
+    queryKey: projectKeys.projectDetails(id),
+    queryFn: async () => {
+      const { data } = await axiosClient.get(`/projects/${id}`);
+
+      return data;
+    },
+  });
+};
+
 type CreateProject = Omit<Project, "id" | "createdAt" | "updatedAt">;
 export const useCreateProject = () => {
   return useMutation({
@@ -52,7 +63,11 @@ export const useUpdateProject = () => {
 
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data: Project) => {
+      queryClient.invalidateQueries({
+        queryKey: projectKeys.projectDetails(data.id),
+      });
+
       queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
     },
   });
