@@ -30,9 +30,12 @@ export const TeamsPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
-  const setTeamToDeleteFunction = (team: Team | undefined) => {
-    setTeamToDelete(team);
+
+  const deleteTeamFunction = () => {
+    setTeamToDelete(teamToDelete);
+    deleteTeam(teamToDelete.id);
   };
+
   const teamsCard: TeamCardProps[] = [];
 
   function getUserFromTeam(team: Team): User[] {
@@ -108,15 +111,12 @@ export const TeamsPage = () => {
       </Box>
 
       {teamToDelete && (
-        <DeleteComponent<Team>
-          deleteItem={() => deleteTeam(teamToDelete.id)}
-          deleteItemFromSet={() => setTeamToDelete(undefined)}
-          setItemToUndoDelete={setTeamToDeleteFunction}
+        <DeleteComponent
+          deleteItem={() => deleteTeamFunction()}
           openDeleteDialog={deleteDialog}
           handleCloseDelete={() => setDeleteDialog(false)}
           handleOpenSnack={() => setOpenSnack(true)}
-          typeOfToDelete={teamKeys.allTeams}
-          item={teamToDelete}
+          whatToDelete="team"
         />
       )}
 

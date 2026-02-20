@@ -1,45 +1,25 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import type { FunctionComponent } from "react";
 
-import type { InterfaceItemDetail } from "../../api/interface/interfaceItemDetail";
-import { projectKeys } from "../../api/projectController";
-import { teamKeys } from "../../api/teamController";
-
-interface DeleteProps<T extends InterfaceItemDetail> {
-  item: T | undefined;
+type DeleteProps = {
   openDeleteDialog: boolean;
   handleCloseDelete: () => void;
   handleOpenSnack: () => void;
-  typeOfToDelete: string[];
-  setItemToUndoDelete: (item: T | undefined) => void;
-  deleteItemFromSet: () => void;
   deleteItem: () => void;
-}
+  whatToDelete: string;
+};
 
-function DeleteComponent<T extends InterfaceItemDetail>({
+const DeleteComponent: FunctionComponent<DeleteProps> = ({
   openDeleteDialog,
-  item,
-  typeOfToDelete,
   handleOpenSnack,
   handleCloseDelete,
-  setItemToUndoDelete,
-  deleteItemFromSet,
   deleteItem,
-}: DeleteProps<T>) {
-  let whatToDelete = "";
-  if (typeOfToDelete == teamKeys.allTeams) {
-    whatToDelete = "team";
-  } else if (typeOfToDelete == projectKeys.allProjects) {
-    whatToDelete = "project";
-  }
+  whatToDelete,
+}) => {
   const handleDelete = () => {
-    const lastItem = item;
-
-    deleteItemFromSet();
     deleteItem();
-
     handleOpenSnack();
     handleCloseDelete();
-    setItemToUndoDelete(lastItem);
   };
 
   return (
@@ -60,6 +40,6 @@ function DeleteComponent<T extends InterfaceItemDetail>({
       </Box>
     </>
   );
-}
+};
 
 export default DeleteComponent;

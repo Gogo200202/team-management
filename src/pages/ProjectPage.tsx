@@ -1,11 +1,7 @@
 import { Box, Button, Grid } from "@mui/material";
 import { useState } from "react";
 
-import {
-  projectKeys,
-  useDeleteProject,
-  useGetAllProjects,
-} from "../api/projectController";
+import { useDeleteProject, useGetAllProjects } from "../api/projectController";
 import type { Project } from "../api/types/projectTypes";
 import DeleteComponent from "../components/common/DeleteComponent";
 import ProjectCards from "../components/views/Projects/ProjectCards";
@@ -39,6 +35,12 @@ function ProjectPage() {
 
   const handleCloseAgreeButton = () => {
     setOpenFrom(false);
+  };
+
+  const deleteTeamFunction = () => {
+    setProjectToManipulateUndo(projectToManipulate);
+    deleteProject(projectToManipulate.id);
+    setProjectToManipulate(undefined);
   };
 
   return (
@@ -79,15 +81,12 @@ function ProjectPage() {
         handleCloseAgreeButton={handleCloseAgreeButton}
       />
       {projectToManipulate && (
-        <DeleteComponent<Project>
-          deleteItem={() => deleteProject(projectToManipulate.id)}
-          deleteItemFromSet={() => setProjectToManipulate(undefined)}
-          setItemToUndoDelete={setProjectToManipulateUndo}
+        <DeleteComponent
+          deleteItem={deleteTeamFunction}
           openDeleteDialog={deleteDialog}
           handleCloseDelete={() => setDeleteDialog(false)}
           handleOpenSnack={() => setOpenSnack(true)}
-          typeOfToDelete={projectKeys.allProjects}
-          item={projectToManipulate}
+          whatToDelete="project"
         />
       )}
     </>

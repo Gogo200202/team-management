@@ -61,12 +61,6 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
 
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
-  let dialogTitleText = "";
-  if (!project) {
-    dialogTitleText = "Create";
-  } else {
-    dialogTitleText = "Edit";
-  }
 
   useEffect(() => {
     if (project) {
@@ -125,7 +119,6 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
     const idsOfTeams: number[] = data.teams.map(function (v) {
       return v.id;
     });
-    console.log(idsOfTeams);
 
     if (!project) {
       createProject({
@@ -156,7 +149,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
     <>
       <Dialog open={openFrom} onClose={handleCloseFormInComponent}>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle>{dialogTitleText} Project</DialogTitle>
+          <DialogTitle>{!project ? "Create" : "Edit"} Project</DialogTitle>
           <DialogContent>
             <Stack spacing={4}>
               <Controller

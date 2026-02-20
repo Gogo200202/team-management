@@ -26,7 +26,7 @@ function ProjectPageDetail() {
   const [members, setMembers] = useState<User[]>([]);
 
   const [teams, setTeams] = useState<Team[]>([]);
-  const [usersFromTeams, SetUsersFromTeams] = useState<UserFromTeams[]>([]);
+  const [usersFromTeams, setUsersFromTeams] = useState<UserFromTeams[]>([]);
   useEffect(() => {
     if (isFetched && project != undefined) {
       const admins: User[] = project.adminIds.map((adminId) => {
@@ -54,7 +54,7 @@ function ProjectPageDetail() {
       });
 
       setTeams(teams);
-      // alice bob
+
       const userTeams: UserFromTeams[] = teams!.map((team) => {
         const userFromTeam = team.users.map((userId) => {
           const finedUser = allUsers?.find((x) => parseInt(x.id) == userId);
@@ -70,7 +70,7 @@ function ProjectPageDetail() {
         return result;
       });
 
-      SetUsersFromTeams(userTeams);
+      setUsersFromTeams(userTeams);
     }
   }, [allTeams, allUsers, isFetched, project]);
 
