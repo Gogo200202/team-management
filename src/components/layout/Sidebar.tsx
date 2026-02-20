@@ -22,7 +22,7 @@ const drawerWidth = 240;
 const navItems = [
   { label: "Roadmap", path: "/", icon: <EventNoteOutlinedIcon /> },
   { label: "Teams", path: "/teams", icon: <GroupsOutlinedIcon /> },
-  { label: "Projects", path: undefined, icon: <AccountTreeOutlinedIcon /> },
+  { label: "Projects", path: "/projects", icon: <AccountTreeOutlinedIcon /> },
   { label: "Activity log", path: undefined, icon: <QueryStatsIcon /> },
   { label: "Dashboard", path: undefined, icon: <SpaceDashboardOutlinedIcon /> },
 ];

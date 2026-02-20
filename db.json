@@ -1,23 +1,34 @@
 {
   "teams": [
     {
-      "id": "1",
-      "name": "Team Marvin",
+      "id": "aec6",
+      "name": "alfa asdasd",
       "users": [
         "1",
-        "2"
+        "2",
+        "3"
       ],
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "createdAt": "2026-02-19 17:20:29",
+      "updatedAt": "2026-02-19T15:46:33.560Z"
     },
     {
-      "id": "fd75",
+      "id": "b4e9",
+      "name": "neshto",
+      "users": [
+        2,
+        8816
+      ],
+      "createdAt": "2026-02-19T15:24:46.117Z",
+      "updatedAt": "2026-02-19T15:24:46.117Z"
+    },
+    {
+      "id": "a2c6",
       "name": "test",
       "users": [
-        "2"
+        null
       ],
-      "createdAt": "2026-02-17 15:22:30",
-      "updatedAt": "2026-02-17T13:22:43.169Z"
+      "createdAt": "2026-02-19T15:24:56.652Z",
+      "updatedAt": "2026-02-19T15:24:56.652Z"
     }
   ],
   "users": [
@@ -154,51 +165,24 @@
   ],
   "projects": [
     {
-      "id": "1",
-      "name": "Project Atlas",
-      "description": "Internal analytics platform",
-      "status": "active",
+      "id": "5ef7",
       "adminIds": [
-        "1"
-      ],
-      "memberIds": [
-        "2",
+        "1",
         "3"
-      ],
-      "teamIds": [],
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
-    },
-    {
-      "id": "2",
-      "name": "Mobile Banking App",
-      "description": "Banking app MVP",
-      "status": "paused",
-      "adminIds": [
-        "2"
       ],
       "memberIds": [
         "1",
         "3"
       ],
       "teamIds": [
-        "1"
+        "b4e9",
+        "aec6"
       ],
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
-    },
-    {
-      "id": "3",
-      "name": "Web Banking App",
-      "description": "Banking app MVP for WEB",
-      "status": "completed",
-      "adminIds": [
-        "2"
-      ],
-      "memberIds": [],
-      "teamIds": [],
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "description": "asdasd",
+      "name": "neshto",
+      "status": "active",
+      "createdAt": "2026-02-19T15:46:03.359Z",
+      "updatedAt": "2026-02-19T15:46:03.359Z"
     }
   ],
   "tasks": [
@@ -208,7 +192,7 @@
       "description": "Basic screens for dashboard",
       "status": "todo",
       "priority": "low",
-      "projectId": "1",
+      "projectId": null,
       "assignedUserId": "2",
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
@@ -219,7 +203,7 @@
       "description": "Basic email/password form",
       "status": "in-progress",
       "priority": "high",
-      "projectId": "1",
+      "projectId": null,
       "assignedUserId": "1",
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
@@ -230,7 +214,7 @@
       "description": "Connect axios to json-server",
       "status": "todo",
       "priority": "medium",
-      "projectId": "2",
+      "projectId": null,
       "assignedUserId": "3",
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z"
@@ -337,12 +321,12 @@
         {
           "id": "3-1",
           "title": "Implement Project Cards & Grid (like Teams)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-2",
           "title": "Create/Edit Project Dialog",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-3",

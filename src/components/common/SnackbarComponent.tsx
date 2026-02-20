@@ -15,7 +15,7 @@ import {
   useDeleteTeam,
   useUpdateTeam,
 } from "../../api/teamController";
-import type { Team } from "../../api/teamTypes";
+import type { Team } from "../../api/types/teamTypes";
 
 export type AlertProps = {
   typeOfAlert: "create" | "edit" | "delete";

@@ -1,52 +1,37 @@
 import { Box, Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { type Dispatch, type FunctionComponent } from "react";
-
-import { useDeleteTeam } from "../../api/teamController";
-import type { Team } from "../../api/teamTypes";
+import type { FunctionComponent } from "react";
 
 type DeleteProps = {
-  team: Team;
-
-  open: boolean;
-
-  handleClose: () => void;
+  openDeleteDialog: boolean;
+  handleCloseDelete: () => void;
   handleOpenSnack: () => void;
-  typeOfToDelete: string;
-  setTeamToDelete: Dispatch<React.SetStateAction<Team | undefined>>;
+  deleteItem: () => void;
+  whatToDelete: string;
 };
 
 const DeleteComponent: FunctionComponent<DeleteProps> = ({
-  open,
-  team,
-  typeOfToDelete,
+  openDeleteDialog,
   handleOpenSnack,
-  handleClose,
-  setTeamToDelete,
+  handleCloseDelete,
+  deleteItem,
+  whatToDelete,
 }) => {
-  const { mutate: deleteTeam } = useDeleteTeam();
-
-  const handleDelete = async () => {
-    const lastTeam = team;
-    if (typeOfToDelete == "Team") {
-      deleteTeam(team.id);
-    }
-
+  const handleDelete = () => {
+    deleteItem();
     handleOpenSnack();
-
-    handleClose();
-    setTeamToDelete(lastTeam);
+    handleCloseDelete();
   };
 
   return (
     <>
       <Box>
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={openDeleteDialog} onClose={handleCloseDelete}>
           <DialogTitle>
-            {"Do you want to delete this " + typeOfToDelete}
+            {"Do you want to delete this " + whatToDelete}
           </DialogTitle>
 
           <DialogActions>
-            <Button onClick={handleClose}>Disagree</Button>
+            <Button onClick={handleCloseDelete}>Disagree</Button>
             <Button onClick={handleDelete} autoFocus>
               Agree
             </Button>

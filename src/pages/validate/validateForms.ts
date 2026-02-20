@@ -1,4 +1,4 @@
-import type { User } from "../../api/userTypes";
+import type { User } from "../../api/types/userTypes";
 
 const defaultMessageEmail = "Not valid email";
 const defaultMessagePassword = "Not valid password at least 4 characters";

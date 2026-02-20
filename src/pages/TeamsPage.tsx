@@ -4,10 +4,10 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useState } from "react";
 
-import { teamKeys, useGetAllTeams } from "../api/teamController";
-import type { Team } from "../api/teamTypes";
+import { teamKeys, useDeleteTeam, useGetAllTeams } from "../api/teamController";
+import type { Team } from "../api/types/teamTypes";
+import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
-import type { User } from "../api/userTypes";
 import DeleteComponent from "../components/common/DeleteComponent";
 import { SnackbarComponent } from "../components/common/SnackbarComponent";
 import TeamCard, {
@@ -24,11 +24,17 @@ dayjs.extend(timezone);
 
 export const TeamsPage = () => {
   const { data: selectUsers = [] } = useGetAllUsers();
+  const { mutate: deleteTeam } = useDeleteTeam();
   const { data: allTeams = [] } = useGetAllTeams();
   const [teamToDelete, setTeamToDelete] = useState<Team | undefined>();
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
+
+  const deleteTeamFunction = () => {
+    setTeamToDelete(teamToDelete);
+    deleteTeam(teamToDelete.id);
+  };
 
   const teamsCard: TeamCardProps[] = [];
 
@@ -74,7 +80,7 @@ export const TeamsPage = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          width: "100vh",
+          width: "2/3",
         }}
       >
         <Typography textAlign={"center"}>Teams Page</Typography>
@@ -106,12 +112,11 @@ export const TeamsPage = () => {
 
       {teamToDelete && (
         <DeleteComponent
-          open={deleteDialog}
-          handleClose={() => setDeleteDialog(false)}
-          setTeamToDelete={setTeamToDelete}
+          deleteItem={() => deleteTeamFunction()}
+          openDeleteDialog={deleteDialog}
+          handleCloseDelete={() => setDeleteDialog(false)}
           handleOpenSnack={() => setOpenSnack(true)}
-          typeOfToDelete={"Team"}
-          team={teamToDelete}
+          whatToDelete="team"
         />
       )}
 

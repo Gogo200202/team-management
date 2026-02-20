@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { axiosClient } from "../config/axios.config";
 import { queryClient } from "../config/queryClient.config";
 import type { UserCreate } from "../utils/types/User";
-import type { User, UserModifyPayload } from "./userTypes";
+import type { User, UserModifyPayload } from "./types/userTypes";
 
 export const userKeys = {
   allUsers: ["allUsers"],

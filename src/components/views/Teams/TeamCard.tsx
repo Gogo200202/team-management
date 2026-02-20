@@ -3,8 +3,8 @@ import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { type FunctionComponent, useState } from "react";
 
-import type { Team } from "../../../api/teamTypes";
-import type { User } from "../../../api/userTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import TeamFormComponent from "./TeamFormComponent";
 
 export type TeamCardProps = {

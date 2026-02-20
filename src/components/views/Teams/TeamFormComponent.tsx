@@ -22,8 +22,8 @@ import {
   useCreateTeams,
   useUpdateTeam,
 } from "../../../api/teamController";
-import type { Team } from "../../../api/teamTypes";
-import type { User } from "../../../api/userTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import type { TeamForm } from "../../../pages/TeamsPage";
 import type { AlertProps } from "../../common/SnackbarComponent";
 import { SnackbarComponent } from "../../common/SnackbarComponent";
@@ -43,22 +43,8 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
   openDialog,
   setOpenDialog,
 }) => {
-  const dialogText: AlertProps = {
-    typeOfAlert: "create",
-    open: false,
-    setOpen: function (value: SetStateAction<boolean>): void {
-      throw new Error("Function not implemented.");
-    },
-    lastTeam: {
-      id: 0,
-      name: "",
-      users: [],
-      createdAt: "",
-      updatedAt: "",
-    },
-    keysForQuery: [],
-  };
-
+  type AlertTypeOfAlert = Pick<AlertProps, "typeOfAlert">;
+  const dialogText: AlertTypeOfAlert = { typeOfAlert: "create" };
   if (!team) {
     dialogText.typeOfAlert = "create";
   } else {
