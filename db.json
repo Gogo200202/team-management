@@ -3,23 +3,32 @@
     {
       "id": "aec6",
       "name": "alfa asdasd",
-      "users": ["1", "2", "3"],
+      "users": [
+        "1",
+        "2",
+        "3"
+      ],
       "createdAt": "2026-02-19 17:20:29",
       "updatedAt": "2026-02-19T15:46:33.560Z"
     },
     {
       "id": "b4e9",
       "name": "neshto",
-      "users": [2, 8816],
+      "users": [
+        2,
+        8816
+      ],
       "createdAt": "2026-02-19T15:24:46.117Z",
       "updatedAt": "2026-02-19T15:24:46.117Z"
     },
     {
       "id": "a2c6",
       "name": "test",
-      "users": [null],
-      "createdAt": "2026-02-19T15:24:56.652Z",
-      "updatedAt": "2026-02-19T15:24:56.652Z"
+      "users": [
+        "1"
+      ],
+      "createdAt": "2026-02-19 17:24:56",
+      "updatedAt": "2026-02-20T12:28:34.381Z"
     }
   ],
   "users": [
@@ -157,14 +166,37 @@
   "projects": [
     {
       "id": "5ef7",
-      "adminIds": ["1", "3"],
-      "memberIds": ["1", "3"],
-      "teamIds": ["b4e9", "aec6"],
+      "adminIds": [],
+      "memberIds": [
+        "1"
+      ],
+      "teamIds": [
+        "b4e9"
+      ],
       "description": "asdasd",
       "name": "neshto",
       "status": "active",
       "createdAt": "2026-02-19T15:46:03.359Z",
-      "updatedAt": "2026-02-19T15:46:03.359Z"
+      "updatedAt": "2026-02-20T12:57:20.471Z"
+    },
+    {
+      "id": "b47a",
+      "adminIds": [
+        "1",
+        "a277"
+      ],
+      "memberIds": [
+        "2",
+        "8816"
+      ],
+      "teamIds": [
+        "a2c6"
+      ],
+      "description": "testqwdasds",
+      "name": "test",
+      "status": "active",
+      "createdAt": "2026-02-20T12:27:15.734Z",
+      "updatedAt": "2026-02-20T12:27:36.103Z"
     }
   ],
   "tasks": [
@@ -177,7 +209,8 @@
       "projectId": "5ef7",
       "assignedUserId": "2",
       "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "updatedAt": "2025-01-10T10:00:00Z",
+      "finishUntil": "2025-01-10T10:00:00Z"
     },
     {
       "id": "2",
@@ -188,7 +221,8 @@
       "projectId": "5ef7",
       "assignedUserId": "1",
       "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "updatedAt": "2025-01-10T10:00:00Z",
+      "finishUntil": "2025-01-10T10:00:00Z"
     },
     {
       "id": "3",
@@ -199,7 +233,89 @@
       "projectId": "5ef7",
       "assignedUserId": "3",
       "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "updatedAt": "2025-01-10T10:00:00Z",
+      "finishUntil": "2025-01-10T10:00:00Z"
+    },
+    {
+      "id": "8721",
+      "title": "test",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "qwsda",
+      "priority": "high",
+      "projectId": "5ef7",
+      "createdAt": "2026-02-20T12:04:19.077Z",
+      "updatedAt": "2026-02-20T12:04:19.077Z"
+    },
+    {
+      "id": "74cb",
+      "title": "asd",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "asd",
+      "priority": "low",
+      "projectId": "5ef7",
+      "finishUntil": "asdasd",
+      "createdAt": "2026-02-20T12:06:05.031Z",
+      "updatedAt": "2026-02-20T12:06:05.031Z"
+    },
+    {
+      "id": "c206",
+      "title": "3qw",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "qwe",
+      "priority": "low",
+      "projectId": "5ef7",
+      "finishUntil": "qwedsa",
+      "createdAt": "2026-02-20T12:09:15.059Z",
+      "updatedAt": "2026-02-20T12:09:15.060Z"
+    },
+    {
+      "id": "9536",
+      "title": "qwe",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "eqw",
+      "priority": "low",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-23T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:23:42.335Z",
+      "updatedAt": "2026-02-20T12:23:42.335Z"
+    },
+    {
+      "id": "b61d",
+      "title": "test",
+      "assignedUserId": "a277",
+      "description": "123",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:25:50.958Z",
+      "updatedAt": "2026-02-20T12:25:50.958Z"
+    },
+    {
+      "id": "d99b",
+      "title": "Test",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "asd",
+      "priority": "medium",
+      "projectId": "b47a",
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:29:59.803Z",
+      "updatedAt": "2026-02-20T12:29:59.803Z"
+    },
+    {
+      "id": "fd8b",
+      "title": "asd",
+      "status": "todo",
+      "assignedUserId": "2",
+      "description": "asd",
+      "priority": "high",
+      "projectId": "b47a",
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:38:05.735Z",
+      "updatedAt": "2026-02-20T12:38:05.735Z"
     }
   ],
   "roadmap": [
@@ -298,7 +414,7 @@
       "id": "3",
       "title": "Phase 3 — Project Management",
       "description": "Develop Project detail pages. Assign admins and members. Add filtering and search capabilities.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "3-1",
@@ -313,17 +429,17 @@
         {
           "id": "3-3",
           "title": "Add 'Open Details' button to cards",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-4",
           "title": "Create Project Details View (Top 50% screen)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-5",
           "title": "Manage Project Admins & Members",
-          "completed": false
+          "completed": true
         }
       ]
     },

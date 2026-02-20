@@ -8,14 +8,15 @@ export type Task = {
   assignedUserId: string;
   createdAt: string;
   updatedAt: string;
+  finishUntil: string;
 };
 
-type StatusTask = {
+export type StatusTask = {
   todo: string;
   progress: string;
 };
 
-type PriorityTask = {
+export type PriorityTask = {
   low: string;
   high: string;
   medium: string;

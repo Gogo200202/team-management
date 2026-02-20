@@ -1,19 +1,32 @@
-import { Box, Button, Card, Grid, Stack, Typography } from "@mui/material";
+/* eslint-disable react-hooks/set-state-in-effect */
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { useGetProject } from "../api/projectController";
 import { useGetAllTask } from "../api/taskController";
 import { useGetAllTeams } from "../api/teamController";
-import type { Task } from "../api/types/taskType";
+import type { Project } from "../api/types/projectTypes";
+import type { PriorityTask, StatusTask, Task } from "../api/types/taskType";
 import type { Team } from "../api/types/teamTypes";
 import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
-import TaskCars from "../components/views/Tasks/TaskCars";
+import TaskDialog from "../components/views/Tasks/TaskDialog";
 
 type UserFromTeams = {
-  team: Team;
+  team: Team | undefined;
   userFromTeam: (User | undefined)[];
+};
+
+type TaskGrid = {
+  id: string;
+  title: string;
+  priority: keyof PriorityTask;
+  status: keyof StatusTask;
+  userName: string | undefined;
+  description: string;
+  finishUntil: string;
 };
 
 function ProjectPageDetail() {
@@ -23,18 +36,19 @@ function ProjectPageDetail() {
   const { projectsId } = useParams();
 
   const { data: project, isFetched } = useGetProject(projectsId!);
-
-  const [admins, setAdmins] = useState<User[]>([]);
-
-  const [members, setMembers] = useState<User[]>([]);
-
+  const [projectLoaded, setProjectLoaded] = useState<Project>();
+  const [admins, setAdmins] = useState<(User | undefined)[]>([]);
+  const [members, setMembers] = useState<(User | undefined)[]>([]);
   const [usersFromTeams, setUsersFromTeams] = useState<UserFromTeams[]>([]);
-
-  const [taskToProject, setTaskToProject] = useState<Task[]>([]);
-
+  const [taskToProject, setTaskToProject] = useState<Task[] | undefined>([]);
+  const [taskToProjectGrid, setTaskToProjectGrid] = useState<
+    TaskGrid[] | undefined
+  >([]);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   useEffect(() => {
     if (isFetched && project != undefined) {
-      const admins: User[] = project.adminIds.map((adminId) => {
+      setProjectLoaded(project);
+      const admins: (User | undefined)[] = project.adminIds.map((adminId) => {
         const finedAdmin = allUsers?.find((x) => x.id == adminId);
         if (finedAdmin != null) {
           return finedAdmin;
@@ -43,15 +57,19 @@ function ProjectPageDetail() {
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setAdmins(admins);
-      const members: User[] = project.memberIds.map((memberId) => {
-        const finedMember = allUsers?.find((x) => x.id == memberId);
-        if (finedMember != null) {
-          return finedMember;
-        }
-      });
+      const members: (User | undefined)[] = project.memberIds.map(
+        (memberId) => {
+          const finedMember = allUsers?.find(
+            (x) => x.id == memberId.toString(),
+          );
+          if (finedMember != null) {
+            return finedMember;
+          }
+        },
+      );
       setMembers(members);
-      const teams: Team[] = project!.teamIds.map((teamId) => {
-        const finedTeams = allTeams?.find((x) => x.id == teamId);
+      const teams: (Team | undefined)[] = project!.teamIds.map((teamId) => {
+        const finedTeams = allTeams?.find((x) => x.id == teamId.toString());
 
         if (finedTeams != undefined) {
           return finedTeams;
@@ -59,7 +77,7 @@ function ProjectPageDetail() {
       });
 
       const userTeams: UserFromTeams[] = teams!.map((team) => {
-        const userFromTeam = team.users.map((userId) => {
+        const userFromTeam = team!.users.map((userId) => {
           const finedUser = allUsers?.find((x) => parseInt(x.id) == userId);
           if (finedUser != null) {
             return finedUser;
@@ -74,15 +92,66 @@ function ProjectPageDetail() {
       });
 
       setUsersFromTeams(userTeams);
-      const taskToProjectFirst: Task[] = allTask?.map((task) => {
-        if (task.projectId == project.id) {
-          return task;
-        }
-      });
+      const taskToProjectFirst: Task[] | undefined = allTask?.filter(
+        (x) => x.projectId == project.id,
+      );
 
       setTaskToProject(taskToProjectFirst);
+
+      const taskToProjectGridFirst: TaskGrid[] | undefined =
+        taskToProjectFirst?.map((x) => {
+          const result: TaskGrid = {
+            description: x.description,
+            id: x.id,
+            priority: x.priority,
+            title: x.title,
+            status: x.status,
+            userName: allUsers?.find((u) => u.id == x.assignedUserId)
+              ?.firstName,
+            finishUntil: x.finishUntil,
+          };
+
+          return result;
+        });
+
+      setTaskToProjectGrid(taskToProjectGridFirst);
     }
   }, [allTask, allTeams, allUsers, isFetched, project]);
+
+  const columns: GridColDef<TaskGrid>[] = [
+    { field: "id", headerName: "ID of task", width: 90 },
+    {
+      field: "title",
+      headerName: "Title",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "priority",
+      headerName: "Priority",
+
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+    },
+    {
+      field: "userName",
+      headerName: "Assigned user",
+    },
+    {
+      field: "finishUntil",
+      headerName: "Finish until",
+    },
+  ];
 
   return (
     <Box>
@@ -101,7 +170,7 @@ function ProjectPageDetail() {
                 Admins:
                 {admins.map((admin, index) => (
                   <Box sx={{ marginLeft: 1 }} key={index}>
-                    {admin.firstName} {admin.lastName}
+                    {admin!.firstName} {admin!.lastName}
                   </Box>
                 ))}
               </Box>
@@ -115,7 +184,7 @@ function ProjectPageDetail() {
                 Members:
                 {members.map((member, index) => (
                   <Box sx={{ marginLeft: 1 }} key={index}>
-                    {member.firstName} {member.lastName}
+                    {member!.firstName} {member!.lastName}
                   </Box>
                 ))}
               </Box>
@@ -130,7 +199,7 @@ function ProjectPageDetail() {
                 Teams:
                 {usersFromTeams.map((x, index) => (
                   <Box sx={{ marginLeft: 1 }} key={index}>
-                    {x.team.name}
+                    {x.team!.name}
                     <Stack>
                       {x.userFromTeam.map((user) => (
                         <Box>{user?.firstName}</Box>
@@ -146,14 +215,30 @@ function ProjectPageDetail() {
           </Box>
         </Card>
         <Box height={"0"}>
-          <Button> Create task</Button>
+          <Button onClick={() => setDialogOpen(true)}> Create task</Button>
         </Box>
       </Box>
-      <Grid container spacing={40} columns={3}>
-        {taskToProject.map((task) => (
-          <TaskCars task={task} />
-        ))}
-      </Grid>
+
+      <Box sx={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={taskToProjectGrid}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
+          disableRowSelectionOnClick
+        />
+      </Box>
+      <TaskDialog
+        project={projectLoaded}
+        openDialog={dialogOpen}
+        closeDialog={() => setDialogOpen(false)}
+      />
     </Box>
   );
 }
