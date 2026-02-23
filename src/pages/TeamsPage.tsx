@@ -33,7 +33,7 @@ export const TeamsPage = () => {
 
   const deleteTeamFunction = () => {
     setTeamToDelete(teamToDelete);
-    deleteTeam(teamToDelete.id);
+    deleteTeam(teamToDelete!.id);
   };
 
   const teamsCard: TeamCardProps[] = [];
@@ -42,7 +42,7 @@ export const TeamsPage = () => {
     const idsOfUser = team.users;
     const users: User[] = [];
     for (let i = 0; i < idsOfUser.length; i++) {
-      const user = selectUsers.find((x) => x.id == idsOfUser[i]);
+      const user = selectUsers.find((x) => x.id == idsOfUser[i].toString());
       if (user != undefined) {
         users.push(user);
       }
@@ -65,7 +65,7 @@ export const TeamsPage = () => {
     currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
     currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
 
-    const currentTeam = {
+    const currentTeam: TeamCardProps = {
       team: currentTeamProp,
       allUsers: selectUsers,
       teamUsers: getUserFromTeam(allTeams[i]),

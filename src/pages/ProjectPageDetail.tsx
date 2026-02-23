@@ -1,17 +1,22 @@
 /* eslint-disable react-hooks/set-state-in-effect */
-import { Box, Button, Card, Stack, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Box, Button, Card, Chip, Stack, Typography } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { useGetProject } from "../api/projectController";
-import { useGetAllTask } from "../api/taskController";
+import { useDeleteTask, useGetAllTask } from "../api/taskController";
 import { useGetAllTeams } from "../api/teamController";
 import type { Project } from "../api/types/projectTypes";
 import type { PriorityTask, StatusTask, Task } from "../api/types/taskType";
 import type { Team } from "../api/types/teamTypes";
 import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
+import DeleteComponent from "../components/common/DeleteComponent";
+import { SnackbarComponent } from "../components/common/SnackbarComponent";
 import TaskDialog from "../components/views/Tasks/TaskDialog";
 
 type UserFromTeams = {
@@ -45,6 +50,17 @@ function ProjectPageDetail() {
     TaskGrid[] | undefined
   >([]);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { mutate: deleteTask } = useDeleteTask();
+  const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
+  const [snackDialog, setSnackDialog] = useState<boolean>(false);
+  const [taskToManipulate, setTaskToManipulate] = useState<Task | undefined>(
+    undefined,
+  );
+  const closeDialog = () => {
+    setTaskToManipulate(undefined);
+
+    setDialogOpen(false);
+  };
   useEffect(() => {
     if (isFetched && project != undefined) {
       setProjectLoaded(project);
@@ -119,25 +135,27 @@ function ProjectPageDetail() {
   }, [allTask, allTeams, allUsers, isFetched, project]);
 
   const columns: GridColDef<TaskGrid>[] = [
-    { field: "id", headerName: "ID of task", width: 90 },
+    { field: "id", headerName: "ID of task" },
     {
       field: "title",
       headerName: "Title",
-      width: 150,
-      editable: true,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
-      editable: true,
     },
     {
       field: "priority",
       headerName: "Priority",
-
-      width: 110,
-      editable: true,
+      renderCell: (params) => {
+        if (params.value == "low") {
+          return <Chip label={params.value} color="primary" />;
+        } else if (params.value == "medium") {
+          return <Chip label={params.value} color="warning" />;
+        } else if (params.value == "high") {
+          return <Chip label={params.value} color="error" />;
+        }
+      },
     },
     {
       field: "description",
@@ -145,11 +163,45 @@ function ProjectPageDetail() {
     },
     {
       field: "userName",
-      headerName: "Assigned user",
+      headerName: "Assigned",
     },
     {
       field: "finishUntil",
       headerName: "Finish until",
+      renderCell: (params) => {
+        return <>{dayjs(params.value).format("d/MM/YYYY")}</>;
+      },
+    },
+    {
+      field: "action",
+      headerName: "Actions",
+      width: 150,
+      sortable: false,
+      renderCell: (params) => {
+        const onClickDelete = () => {
+          const currentTask = allTask?.find((x) => x.id == params.id);
+          setTaskToManipulate(currentTask);
+          setDeleteDialog(true);
+        };
+
+        const onClickEdit = () => {
+          const currentTask = allTask?.find((x) => x.id == params.id);
+          setTaskToManipulate(currentTask);
+          setDialogOpen(true);
+        };
+
+        return (
+          <Box>
+            <Button onClick={onClickDelete}>
+              <DeleteIcon />
+            </Button>
+
+            <Button onClick={onClickEdit}>
+              <EditIcon />
+            </Button>
+          </Box>
+        );
+      },
     },
   ];
 
@@ -222,23 +274,26 @@ function ProjectPageDetail() {
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={taskToProjectGrid}
+          autosizeOnMount
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
-              },
-            },
-          }}
           pageSizeOptions={[5]}
           disableRowSelectionOnClick
         />
       </Box>
+      <DeleteComponent
+        deleteItem={() => deleteTask(taskToManipulate?.id as string)}
+        whatToDelete="task"
+        openDeleteDialog={deleteDialog}
+        handleCloseDelete={() => setDeleteDialog(false)}
+        handleOpenSnack={() => setSnackDialog(true)}
+      />
       <TaskDialog
+        task={taskToManipulate}
         project={projectLoaded}
         openDialog={dialogOpen}
-        closeDialog={() => setDialogOpen(false)}
+        closeDialog={closeDialog}
       />
+      <SnackbarComponent />
     </Box>
   );
 }

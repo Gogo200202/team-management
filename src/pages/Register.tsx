@@ -45,7 +45,7 @@ export const Register = () => {
     email,
     password,
   }) => {
-    const { data: createdUser } = await mutateAsync({
+    const createdUser = await mutateAsync({
       displayName: firstName + " " + lastName,
       email: email,
       firstName: firstName,
@@ -54,6 +54,7 @@ export const Register = () => {
       secretWord: password,
       updatedAt: new Date().toISOString(),
     });
+   
 
     handleLogin({
       id: createdUser.id,
@@ -172,12 +173,10 @@ export const Register = () => {
               boxShadow: "none",
               textAlign: "center",
             }}
-            variant="h7"
             noWrap
             component={Link}
             to="/auth/login"
             color="textPrimary"
-            underline="none"
           >
             Log in
           </Typography>

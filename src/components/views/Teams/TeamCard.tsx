@@ -12,8 +12,8 @@ export type TeamCardProps = {
   teamUsers: User[];
   allUsers: User[];
 
-  handleDeleteClick: () => void;
-  handelOpenDeleteDialog: () => void;
+  handleDeleteClick?: () => void;
+  handelOpenDeleteDialog?: () => void;
 };
 
 export const TeamCard: FunctionComponent<TeamCardProps> = ({
@@ -25,7 +25,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   function deleteButton() {
-    handelOpenDeleteDialog();
+    handelOpenDeleteDialog!();
     handleDeleteClick?.();
   }
   return (

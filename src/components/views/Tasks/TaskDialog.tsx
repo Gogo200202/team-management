@@ -1,3 +1,4 @@
+import { DevTool } from "@hookform/devtools";
 import {
   Autocomplete,
   Box,
@@ -18,66 +19,110 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
-import type { FunctionComponent } from "react";
+import { type FunctionComponent, useEffect } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
 
-import { useCreateTask } from "../../../api/taskController";
+import { useCreateTask, useUpdateTask } from "../../../api/taskController";
 import type { Project } from "../../../api/types/projectTypes";
-import type { PriorityTask, StatusTask } from "../../../api/types/taskType";
+import type {
+  PriorityTask,
+  StatusTask,
+  Task,
+} from "../../../api/types/taskType";
 import type { User } from "../../../api/types/userTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
 type TaskForm = {
   title: string;
-  user: User | undefined;
+  user: User | null;
   description: string;
-  status: keyof StatusTask | undefined;
-  priority: keyof PriorityTask | undefined;
+  status: keyof StatusTask | (string & "");
+  priority: keyof PriorityTask | (string & "");
   finishUntil: string;
-};
-const defaultValueForm: TaskForm = {
-  title: "",
-  user: undefined,
-  description: "",
-  status: undefined,
-  priority: undefined,
-  finishUntil: "",
 };
 
 type TaskDialogProp = {
   project: Project | undefined;
   openDialog: boolean;
   closeDialog: () => void;
+  task: Task | undefined;
 };
 const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   project,
   closeDialog,
   openDialog,
+  task,
 }) => {
   const { data: allUsers } = useGetAllUsers();
   const { mutate: createTask } = useCreateTask();
+  const { mutate: updateTask } = useUpdateTask();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  const defaultValueForm: TaskForm = {
+    title: "",
+    user: null,
+    description: "",
+    priority: "",
+    status: "",
+    finishUntil: "",
+  };
+
   const { handleSubmit, control, reset } = useForm<TaskForm>({
     defaultValues: defaultValueForm,
   });
+  useEffect(() => {
+    if (task) {
+      const taskUser = allUsers?.find((x) => x.id == task.assignedUserId);
+      console.log(taskUser);
+      reset({
+        user: taskUser,
+        description: task.description,
+        title: task.title,
+        finishUntil: task.finishUntil,
+        status: task.status,
+        priority: task.priority,
+      });
+    }
+  }, [allUsers, reset, task]);
 
   const onSubmit: SubmitHandler<TaskForm> = async (data) => {
-    createTask({
-      title: data.title,
-      assignedUserId: data.user!.id,
-      description: data.description,
-      status: data.status!,
-      priority: data.priority!,
-      projectId: project!.id,
-      finishUntil: data.finishUntil,
-    });
+    if (!task) {
+      createTask({
+        title: data.title,
+        assignedUserId: data.user!.id,
+        description: data.description,
+        status: data.status! as keyof StatusTask,
+        priority: data.priority! as keyof PriorityTask,
+        projectId: project!.id,
+        finishUntil: data.finishUntil,
+      });
+    } else {
+      updateTask({
+        title: data.title,
+        assignedUserId: data.user!.id,
+        description: data.description,
+        status: data.status! as keyof StatusTask,
+        priority: data.priority! as keyof PriorityTask,
+        projectId: project!.id,
+        finishUntil: data.finishUntil,
+        createdAt: task.createdAt,
+        id: task.id,
+      });
+    }
+
+    closeDialog();
+    reset(defaultValueForm);
+  };
+  const closeReset = () => {
     closeDialog();
     reset(defaultValueForm);
   };
 
   return (
     <Box>
-      <Dialog open={openDialog} keepMounted onClose={closeDialog} maxWidth="xl">
-        <DialogTitle>Create task</DialogTitle>
+      <Dialog open={openDialog} keepMounted onClose={closeReset} maxWidth="xl">
+        <DialogTitle>{task ? "Edit" : "Create"} task</DialogTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
             <Stack spacing={2} mt={2} width="100%">
@@ -93,12 +138,13 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                   />
                 )}
               />
+
               <Controller
                 control={control}
                 name="user"
                 render={({ field: { onChange, value } }) => (
                   <Autocomplete
-                    options={allUsers}
+                    options={allUsers as readonly User[]}
                     getOptionLabel={(option) => option.firstName}
                     filterSelectedOptions
                     onChange={(_event, value) => onChange(value)}
@@ -183,9 +229,10 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeDialog}>Disagree</Button>
+            <Button onClick={closeReset}>Disagree</Button>
             <Button type="submit">Agree</Button>
           </DialogActions>
+          <DevTool control={control} /> {/* set up the dev tool */}
         </Form>
       </Dialog>
     </Box>

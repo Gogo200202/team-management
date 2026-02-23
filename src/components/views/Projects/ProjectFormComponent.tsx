@@ -68,20 +68,26 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
       const members: User[] = [];
       const teams: Team[] = [];
       for (let i = 0; i < project.adminIds.length; i++) {
-        const finedAdmin = allUsers?.find((x) => x.id == project.adminIds[i]);
+        const finedAdmin = allUsers?.find(
+          (x) => x.id == project.adminIds[i].toString(),
+        );
         if (finedAdmin != null) {
           admins.push(finedAdmin);
         }
       }
 
       for (let i = 0; i < project.memberIds.length; i++) {
-        const finedMember = allUsers?.find((x) => x.id == project.memberIds[i]);
+        const finedMember = allUsers?.find(
+          (x) => x.id == project.memberIds[i].toString(),
+        );
         if (finedMember != null) {
           members.push(finedMember);
         }
       }
       for (let i = 0; i < project.teamIds.length; i++) {
-        const finedTeams = allTeams?.find((x) => x.id == project.teamIds[i]);
+        const finedTeams = allTeams?.find(
+          (x) => x.id == project.teamIds[i].toString(),
+        );
         if (finedTeams != null) {
           teams.push(finedTeams);
         }
@@ -110,13 +116,13 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
   const { mutate: updateProject } = useUpdateProject();
 
   const onSubmit: SubmitHandler<ProjectForm> = (data) => {
-    const idsOfAdmins: number[] = data.admins.map(function (v) {
+    const idsOfAdmins: string[] = data.admins.map(function (v) {
       return v.id;
     });
-    const idsOfMembers: number[] = data.members.map(function (v) {
+    const idsOfMembers: string[] = data.members.map(function (v) {
       return v.id;
     });
-    const idsOfTeams: number[] = data.teams.map(function (v) {
+    const idsOfTeams: string[] = data.teams.map(function (v) {
       return v.id;
     });
 
@@ -173,7 +179,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                       onChange(value);
                     }}
                     value={value}
-                    options={users}
+                    options={users as readonly User[]}
                     getOptionLabel={(option) =>
                       option.firstName + " " + option.lastName
                     }
@@ -197,7 +203,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                     onChange={(event, value) => {
                       onChange(value);
                     }}
-                    options={users}
+                    options={users as readonly User[]}
                     getOptionLabel={(option) =>
                       option.firstName + " " + option.lastName
                     }
@@ -219,7 +225,7 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
                     multiple
                     value={value}
                     onChange={(event, value) => onChange(value)}
-                    options={teams}
+                    options={teams as readonly Team[]}
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => (
                       <TextField {...params} variant="standard" label="Teams" />

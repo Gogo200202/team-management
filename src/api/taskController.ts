@@ -37,3 +37,32 @@ export const useCreateTask = () => {
     },
   });
 };
+
+export const useDeleteTask = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { data } = await axiosClient.delete(`/tasks/${id}`);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: taskKeys.allTasks });
+    },
+  });
+};
+
+type UpdateTask = Omit<Task, "updatedAt">;
+export const useUpdateTask = () => {
+  return useMutation({
+    mutationFn: async (updateBody: UpdateTask) => {
+      const { data } = await axiosClient.patch(`/tasks/${updateBody.id}`, {
+        ...updateBody,
+        updatedAt: dayjs().toISOString(),
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: taskKeys.allTasks });
+    },
+  });
+};
