@@ -35,6 +35,7 @@ import type {
 } from "../../../api/types/taskType";
 import type { User } from "../../../api/types/userTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
+import { useUserContext } from "../../context/UserContext";
 type TaskForm = {
   title: string;
   user: User | null;
@@ -59,6 +60,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   task,
 }) => {
   const { data: allUsers } = useGetAllUsers();
+  const { currentUser } = useUserContext();
   const { mutate: createTask } = useCreateTask();
   const { mutate: updateTask } = useUpdateTask();
 
@@ -96,6 +98,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   const onSubmit: SubmitHandler<TaskForm> = async (data) => {
     if (!task) {
       createTask({
+        reporterId: currentUser!.id,
         title: data.title,
         assignedUserId: data.user!.id,
         description: data.description,
@@ -107,6 +110,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
       openAndAddSnack("create");
     } else {
       updateTask({
+        reporterId: task.reporterId!,
         title: data.title,
         assignedUserId: data.user!.id,
         description: data.description,
@@ -162,7 +166,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                     renderInput={(params) => (
                       <TextField
                         {...(params || null)}
-                        label="Select users"
+                        label="Select user"
                         placeholder="Favorites"
                       />
                     )}

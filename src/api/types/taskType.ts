@@ -6,6 +6,7 @@ export type Task = {
   priority: keyof PriorityTask;
   projectId: string;
   assignedUserId: string;
+  reporterId: string;
   createdAt: string;
   updatedAt: string;
   finishUntil: string;

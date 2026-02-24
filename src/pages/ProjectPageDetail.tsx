@@ -21,6 +21,7 @@ import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
 import DeleteComponent from "../components/common/DeleteComponent";
 import { SnackbarComponent } from "../components/common/SnackbarComponent";
+import { useUserContext } from "../components/context/UserContext";
 import TaskDialog from "../components/views/Tasks/TaskDialog";
 
 type UserFromTeams = {
@@ -30,6 +31,8 @@ type UserFromTeams = {
 
 type TaskGrid = {
   id: string;
+  reporter: User | undefined;
+  reporterName: string | undefined;
   title: string;
   priority: keyof PriorityTask;
   status: keyof StatusTask;
@@ -42,6 +45,7 @@ function ProjectPageDetail() {
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
   const { data: allTask } = useGetAllTask();
+  const { currentUser } = useUserContext();
   const { projectsId } = useParams();
   const { data: project, isFetched } = useGetProject(projectsId!);
 
@@ -49,7 +53,7 @@ function ProjectPageDetail() {
   const [admins, setAdmins] = useState<(User | undefined)[]>([]);
   const [members, setMembers] = useState<(User | undefined)[]>([]);
   const [usersFromTeams, setUsersFromTeams] = useState<UserFromTeams[]>([]);
-  const [taskToProject, setTaskToProject] = useState<Task[] | undefined>([]);
+
   const [taskToProjectGrid, setTaskToProjectGrid] = useState<
     TaskGrid[] | undefined
   >([]);
@@ -136,11 +140,12 @@ function ProjectPageDetail() {
         (x) => x.projectId == project.id,
       );
 
-      setTaskToProject(taskToProjectFirst);
-
       const taskToProjectGridFirst: TaskGrid[] | undefined =
         taskToProjectFirst?.map((x) => {
           const result: TaskGrid = {
+            reporter: allUsers?.find((u) => u.id == x.reporterId),
+            reporterName: allUsers?.find((u) => u.id == x.reporterId)
+              ?.firstName,
             description: x.description,
             id: x.id,
             priority: x.priority,
@@ -162,6 +167,20 @@ function ProjectPageDetail() {
     {
       field: "id",
       headerName: "Id of task",
+      flex: 0.4,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "reporterName",
+      headerName: "Reporter",
+      flex: 0.4,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: "userName",
+      headerName: "Assigned",
       flex: 0.4,
       sortable: false,
       filterable: false,
@@ -225,13 +244,6 @@ function ProjectPageDetail() {
       filterable: false,
     },
     {
-      field: "userName",
-      headerName: "Assigned",
-      flex: 1,
-      sortable: false,
-      filterable: false,
-    },
-    {
       field: "finishUntil",
       headerName: "Finish until",
 
@@ -240,20 +252,14 @@ function ProjectPageDetail() {
         return <>{dayjs(params.value).format("MM/DD/YYYY")}</>;
       },
 
-      filterOperators: getGridDateOperators()
-        .filter(
-          (operator) =>
-            operator.value !== "isEmpty" && operator.value !== "isNotEmpty",
-        )
-        .map((operator) => {
-          return {
-            ...operator,
-
-            InputComponentProps: {
-              type: "date",
-            },
-          };
-        }),
+      filterOperators: getGridDateOperators().map((operator) => {
+        return {
+          ...operator,
+          InputComponentProps: {
+            type: "date",
+          },
+        };
+      }),
     },
     {
       field: "action",
@@ -261,12 +267,13 @@ function ProjectPageDetail() {
       width: 150,
       sortable: false,
       renderCell: (params) => {
-        let displayDelete = "none";
-        if (params.row.status == "complete") {
-          displayDelete = "";
-        }
-        if (new Date(params.row.finishUntil) < new Date()) {
-          displayDelete = "";
+        let displayDelete: boolean = false;
+
+        if (
+          params.row.status == "complete" &&
+          params.row.reporter?.id != currentUser?.id
+        ) {
+          displayDelete = true;
         }
 
         const onClickDelete = () => {
@@ -286,7 +293,7 @@ function ProjectPageDetail() {
 
         return (
           <Box>
-            <Button sx={{ display: displayDelete }} onClick={onClickDelete}>
+            <Button disabled={displayDelete} onClick={onClickDelete}>
               <DeleteIcon />
             </Button>
 
@@ -369,13 +376,6 @@ function ProjectPageDetail() {
       <Box>
         <DataGrid
           showToolbar
-          initialState={{
-            filter: {
-              filterModel: {
-                items: [{ field: "Id of task", operator: "=", value: "1" }],
-              },
-            },
-          }}
           rows={taskToProjectGrid}
           columns={columns}
           pageSizeOptions={[100]}
