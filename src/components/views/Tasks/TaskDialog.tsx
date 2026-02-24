@@ -49,10 +49,12 @@ type TaskDialogProp = {
   openDialog: boolean;
   closeDialog: () => void;
   task: Task | undefined;
+  openAndAddSnack: (setSnackAlert: string) => void;
 };
 const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   project,
   closeDialog,
+  openAndAddSnack,
   openDialog,
   task,
 }) => {
@@ -68,12 +70,13 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
     description: "",
     priority: "",
     status: "",
-    finishUntil: "",
+    finishUntil: dayjs().toString(),
   };
 
   const { handleSubmit, control, reset } = useForm<TaskForm>({
     defaultValues: defaultValueForm,
   });
+
   useEffect(() => {
     if (task) {
       const taskUser = allUsers?.find((x) => x.id == task.assignedUserId);
@@ -101,6 +104,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
         projectId: project!.id,
         finishUntil: data.finishUntil,
       });
+      openAndAddSnack("create");
     } else {
       updateTask({
         title: data.title,
@@ -113,9 +117,11 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
         createdAt: task.createdAt,
         id: task.id,
       });
+      openAndAddSnack("edit");
     }
 
     closeDialog();
+
     reset(defaultValueForm);
   };
   const closeReset = () => {
@@ -188,8 +194,9 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                         onChange(event.target.value as string);
                       }}
                     >
-                      <MenuItem value={"todo"}>Todo</MenuItem>
-                      <MenuItem value={"inprogress"}>In-progress</MenuItem>
+                      <MenuItem value="todo">Todo</MenuItem>
+                      <MenuItem value="inprogress">In-progress</MenuItem>
+                      <MenuItem value="complete">Complete</MenuItem>
                     </Select>
                   </FormControl>
                 )}
@@ -222,15 +229,17 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
               <Controller
                 control={control}
                 name="finishUntil"
+                rules={{
+                  required: false,
+                }}
                 render={({ field: { onChange, value } }) => (
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={["DatePicker"]}>
-                      <DatePicker
-                        label="Finish until"
-                        value={dayjs(value)}
-                        onChange={(newValue) => onChange(newValue)}
-                      />
-                    </DemoContainer>
+                    <DatePicker
+                      label="Finish until"
+                      value={dayjs(value)}
+                      onChange={(newValue) => onChange(newValue)}
+                      disablePast
+                    />
                   </LocalizationProvider>
                 )}
               />

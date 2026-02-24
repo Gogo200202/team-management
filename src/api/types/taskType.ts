@@ -14,6 +14,7 @@ export type Task = {
 export type StatusTask = {
   todo: string;
   progress: string;
+  complete: string;
 };
 
 export type PriorityTask = {

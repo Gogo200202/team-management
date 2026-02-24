@@ -2,7 +2,11 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, Button, Card, Chip, Stack, Typography } from "@mui/material";
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  getGridDateOperators,
+  type GridColDef,
+} from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -62,9 +66,17 @@ function ProjectPageDetail() {
   const [taskToManipulate, setTaskToManipulate] = useState<Task | undefined>(
     undefined,
   );
+  const snackManipulation = (typeToManipulate: string) => {
+    setSnackTaskToManipulate(taskToManipulate);
+    setTypeOfSnackAlert(
+      typeToManipulate as "create" | "edit" | "delete" | (string & ""),
+    );
+    setSnackDialog(true);
+  };
+
   const closeDialog = () => {
     setSnackTaskToManipulate(taskToManipulate);
-    setSnackDialog(true);
+
     setTaskToManipulate(undefined);
     setDialogOpen(false);
   };
@@ -106,7 +118,7 @@ function ProjectPageDetail() {
 
       const userTeams: UserFromTeams[] = teams!.map((team) => {
         const userFromTeam = team!.users.map((userId) => {
-          const finedUser = allUsers?.find((x) => parseInt(x.id) == userId);
+          const finedUser = allUsers?.find((x) => x.id == userId);
           if (finedUser != null) {
             return finedUser;
           }
@@ -147,25 +159,38 @@ function ProjectPageDetail() {
   }, [allTask, allTeams, allUsers, isFetched, project]);
 
   const columns: GridColDef<TaskGrid>[] = [
-    { field: "id", headerName: "ID of task" },
+    {
+      field: "id",
+      headerName: "Id of task",
+      flex: 0.4,
+      sortable: false,
+      filterable: false,
+    },
     {
       field: "title",
       headerName: "Title",
+      flex: 1,
+      sortable: false,
+      filterable: false,
     },
     {
       field: "status",
       headerName: "Status",
+      flex: 0.5,
       renderCell: (params) => {
         if (params.value == "todo") {
           return <Chip label={params.value} color="primary" />;
         } else if (params.value == "inprogress") {
           return <Chip label={params.value} color="error" />;
+        } else if (params.value == "complete") {
+          return <Chip label={params.value} color="success" />;
         }
       },
     },
     {
       field: "priority",
       headerName: "Priority",
+      flex: 0.5,
       renderCell: (params) => {
         if (params.value == "low") {
           return <Chip label={params.value} color="primary" />;
@@ -175,21 +200,60 @@ function ProjectPageDetail() {
           return <Chip label={params.value} color="error" />;
         }
       },
+      sortComparator: (v1, v2) => {
+        if (v1 == "low" && v2 == "medium") {
+          return 1;
+        } else if (v1 == "low" && v2 == "high") {
+          return 1;
+        } else if (v1 == "medium" && v2 == "high") {
+          return 1;
+        } else if (v1 == "high" && v2 == "medium") {
+          return -1;
+        } else if (v1 == "high" && v2 == "low") {
+          return -1;
+        } else if (v1 == "medium" && v2 == "low") {
+          return -1;
+        }
+        return 0;
+      },
     },
     {
       field: "description",
       headerName: "Description",
+      flex: 1,
+      sortable: false,
+      filterable: false,
     },
     {
       field: "userName",
       headerName: "Assigned",
+      flex: 1,
+      sortable: false,
+      filterable: false,
     },
     {
       field: "finishUntil",
       headerName: "Finish until",
+
+      flex: 0.5,
       renderCell: (params) => {
-        return <>{dayjs(params.value).format("d/MM/YYYY")}</>;
+        return <>{dayjs(params.value).format("MM/DD/YYYY")}</>;
       },
+
+      filterOperators: getGridDateOperators()
+        .filter(
+          (operator) =>
+            operator.value !== "isEmpty" && operator.value !== "isNotEmpty",
+        )
+        .map((operator) => {
+          return {
+            ...operator,
+
+            InputComponentProps: {
+              type: "date",
+            },
+          };
+        }),
     },
     {
       field: "action",
@@ -197,6 +261,14 @@ function ProjectPageDetail() {
       width: 150,
       sortable: false,
       renderCell: (params) => {
+        let displayDelete = "none";
+        if (params.row.status == "complete") {
+          displayDelete = "";
+        }
+        if (new Date(params.row.finishUntil) < new Date()) {
+          displayDelete = "";
+        }
+
         const onClickDelete = () => {
           const currentTask = allTask?.find((x) => x.id == params.id);
           setTaskToManipulate(currentTask);
@@ -214,7 +286,7 @@ function ProjectPageDetail() {
 
         return (
           <Box>
-            <Button onClick={onClickDelete}>
+            <Button sx={{ display: displayDelete }} onClick={onClickDelete}>
               <DeleteIcon />
             </Button>
 
@@ -224,11 +296,12 @@ function ProjectPageDetail() {
           </Box>
         );
       },
+      flex: 0.5,
     },
   ];
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Card variant="outlined">
           <Box sx={{ fontSize: "50px" }}>Page Detail for {project?.name}</Box>
@@ -293,10 +366,17 @@ function ProjectPageDetail() {
         </Box>
       </Box>
 
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box>
         <DataGrid
+          showToolbar
+          initialState={{
+            filter: {
+              filterModel: {
+                items: [{ field: "Id of task", operator: "=", value: "1" }],
+              },
+            },
+          }}
           rows={taskToProjectGrid}
-          autosizeOnMount
           columns={columns}
           pageSizeOptions={[100]}
           disableRowSelectionOnClick
@@ -310,6 +390,7 @@ function ProjectPageDetail() {
         handleOpenSnack={() => setSnackDialog(true)}
       />
       <TaskDialog
+        openAndAddSnack={snackManipulation}
         task={taskToManipulate}
         project={projectLoaded}
         openDialog={dialogOpen}
