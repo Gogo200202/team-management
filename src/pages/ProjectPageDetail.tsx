@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { useGetProject } from "../api/projectController";
-import { useDeleteTask, useGetAllTask } from "../api/taskController";
+import { taskKeys, useDeleteTask, useGetAllTask } from "../api/taskController";
 import { useGetAllTeams } from "../api/teamController";
 import type { Project } from "../api/types/projectTypes";
 import type { PriorityTask, StatusTask, Task } from "../api/types/taskType";
@@ -39,8 +39,8 @@ function ProjectPageDetail() {
   const { data: allTeams } = useGetAllTeams();
   const { data: allTask } = useGetAllTask();
   const { projectsId } = useParams();
-
   const { data: project, isFetched } = useGetProject(projectsId!);
+
   const [projectLoaded, setProjectLoaded] = useState<Project>();
   const [admins, setAdmins] = useState<(User | undefined)[]>([]);
   const [members, setMembers] = useState<(User | undefined)[]>([]);
@@ -52,14 +52,26 @@ function ProjectPageDetail() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { mutate: deleteTask } = useDeleteTask();
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
+
   const [snackDialog, setSnackDialog] = useState<boolean>(false);
+  const [snackTaskToManipulate, setSnackTaskToManipulate] = useState<Task>();
+  const [typeOfSnackAlert, setTypeOfSnackAlert] = useState<
+    "create" | "edit" | "delete" | (string & "")
+  >("");
+
   const [taskToManipulate, setTaskToManipulate] = useState<Task | undefined>(
     undefined,
   );
   const closeDialog = () => {
+    setSnackTaskToManipulate(taskToManipulate);
+    setSnackDialog(true);
     setTaskToManipulate(undefined);
-
     setDialogOpen(false);
+  };
+  const deleteDialogHandel = () => {
+    setSnackTaskToManipulate(taskToManipulate);
+    deleteTask(taskToManipulate!.id);
+    setTaskToManipulate(undefined);
   };
   useEffect(() => {
     if (isFetched && project != undefined) {
@@ -143,6 +155,13 @@ function ProjectPageDetail() {
     {
       field: "status",
       headerName: "Status",
+      renderCell: (params) => {
+        if (params.value == "todo") {
+          return <Chip label={params.value} color="primary" />;
+        } else if (params.value == "inprogress") {
+          return <Chip label={params.value} color="error" />;
+        }
+      },
     },
     {
       field: "priority",
@@ -181,12 +200,15 @@ function ProjectPageDetail() {
         const onClickDelete = () => {
           const currentTask = allTask?.find((x) => x.id == params.id);
           setTaskToManipulate(currentTask);
+          setTypeOfSnackAlert("delete");
           setDeleteDialog(true);
         };
 
         const onClickEdit = () => {
           const currentTask = allTask?.find((x) => x.id == params.id);
           setTaskToManipulate(currentTask);
+          setTypeOfSnackAlert("edit");
+
           setDialogOpen(true);
         };
 
@@ -276,12 +298,12 @@ function ProjectPageDetail() {
           rows={taskToProjectGrid}
           autosizeOnMount
           columns={columns}
-          pageSizeOptions={[5]}
+          pageSizeOptions={[100]}
           disableRowSelectionOnClick
         />
       </Box>
       <DeleteComponent
-        deleteItem={() => deleteTask(taskToManipulate?.id as string)}
+        deleteItem={deleteDialogHandel}
         whatToDelete="task"
         openDeleteDialog={deleteDialog}
         handleCloseDelete={() => setDeleteDialog(false)}
@@ -293,7 +315,13 @@ function ProjectPageDetail() {
         openDialog={dialogOpen}
         closeDialog={closeDialog}
       />
-      <SnackbarComponent />
+      <SnackbarComponent
+        open={snackDialog}
+        handelClose={() => setSnackDialog(false)}
+        keysForQuery={taskKeys.allTasks}
+        lastItem={snackTaskToManipulate}
+        typeOfAlert={typeOfSnackAlert}
+      />
     </Box>
   );
 }

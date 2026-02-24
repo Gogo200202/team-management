@@ -68,7 +68,7 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
   };
 
   const onSubmit: SubmitHandler<TeamForm> = async ({ teamName, users }) => {
-    const idsOfUser: number[] = users.map(function (v) {
+    const idsOfUser: string[] = users.map(function (v) {
       return v.id;
     });
 
@@ -141,10 +141,10 @@ export const TeamFormComponent: FunctionComponent<TeamFormDialog> = ({
         </Form>
       </Dialog>
       <SnackbarComponent
+        handelClose={() => setOpenSnack(false)}
         open={openSnack}
-        setOpen={setOpenSnack}
         typeOfAlert={dialogText.typeOfAlert}
-        lastTeam={newTeam}
+        lastItem={newTeam}
         keysForQuery={teamKeys.allTeams}
       />
     </>

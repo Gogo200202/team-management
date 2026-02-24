@@ -40,6 +40,10 @@ export const TeamsPage = () => {
 
   function getUserFromTeam(team: Team): User[] {
     const idsOfUser = team.users;
+    if (!idsOfUser) {
+      return [];
+    }
+
     const users: User[] = [];
     for (let i = 0; i < idsOfUser.length; i++) {
       const user = selectUsers.find((x) => x.id == idsOfUser[i].toString());
@@ -122,10 +126,10 @@ export const TeamsPage = () => {
 
       {teamToDelete && (
         <SnackbarComponent
+          handelClose={() => setOpenSnack(false)}
           keysForQuery={teamKeys.allTeams}
-          lastTeam={teamToDelete}
+          lastItem={teamToDelete}
           open={openSnack}
-          setOpen={setOpenSnack}
           typeOfAlert={"delete"}
         />
       )}

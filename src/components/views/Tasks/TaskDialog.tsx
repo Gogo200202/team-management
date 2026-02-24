@@ -8,8 +8,11 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   TextField,
@@ -74,7 +77,6 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   useEffect(() => {
     if (task) {
       const taskUser = allUsers?.find((x) => x.id == task.assignedUserId);
-      console.log(taskUser);
       reset({
         user: taskUser,
         description: task.description,
@@ -83,8 +85,10 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
         status: task.status,
         priority: task.priority,
       });
+    } else {
+      reset(defaultValueForm);
     }
-  }, [allUsers, reset, task]);
+  }, [task]);
 
   const onSubmit: SubmitHandler<TaskForm> = async (data) => {
     if (!task) {
@@ -190,24 +194,28 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                   </FormControl>
                 )}
               />
+
               <Controller
                 control={control}
                 name="priority"
                 render={({ field: { onChange, value } }) => (
-                  <FormControl>
-                    <InputLabel>Priority</InputLabel>
-                    <Select
-                      value={value}
-                      label="Priority"
-                      onChange={(event) => {
-                        onChange(event.target.value as string);
-                      }}
-                    >
-                      <MenuItem value={"low"}>Low</MenuItem>
-                      <MenuItem value={"medium"}>Medium</MenuItem>
-                      <MenuItem value={"high"}>High</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <RadioGroup onChange={onChange} value={value} row>
+                    <FormControlLabel
+                      value="low"
+                      control={<Radio />}
+                      label="Low"
+                    />
+                    <FormControlLabel
+                      value="medium"
+                      control={<Radio />}
+                      label="Medium"
+                    />
+                    <FormControlLabel
+                      value="high"
+                      control={<Radio />}
+                      label="High"
+                    />
+                  </RadioGroup>
                 )}
               />
 
