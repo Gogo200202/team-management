@@ -1,4 +1,55 @@
 {
+  "activity_log": [
+    {
+      "id": "21eb",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"d680\",\"name\":\"weqwewer\",\"users\":[\"1\"],\"createdAt\":\"2026-02-25 15:29:17\",\"updatedAt\":\"2026-02-25T13:34:18.111Z\"}",
+      "createdAt": "2026-02-25T13:34:18.301Z"
+    },
+    {
+      "id": "b274",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"615c\",\"name\":\"qwsa\",\"users\":[\"2\",\"2\"],\"createdAt\":\"2026-02-25 14:19:21\",\"updatedAt\":\"2026-02-25T13:36:56.204Z\"}",
+      "createdAt": "2026-02-25T13:36:56.367Z"
+    },
+    {
+      "id": "13e9",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"c047\",\"name\":\"asd\",\"users\":[\"1\",\"1\"],\"createdAt\":\"2026-02-25 15:36:42\",\"updatedAt\":\"2026-02-25T13:37:33.591Z\"}",
+      "createdAt": "2026-02-25T13:37:33.681Z"
+    },
+    {
+      "id": "7613",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"c047\",\"name\":\"asd\",\"users\":[\"1\",\"1\"],\"createdAt\":\"2026-02-25 15:36:42\",\"updatedAt\":\"2026-02-25T13:37:33.591Z\"}",
+      "createdAt": "2026-02-25T13:39:03.605Z"
+    },
+    {
+      "id": "bc8f",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"a833\",\"name\":\"asd\",\"users\":[\"1\"],\"createdAt\":\"2026-02-25T13:36:41.240Z\",\"updatedAt\":\"2026-02-25T13:36:41.241Z\"}",
+      "createdAt": "2026-02-25T14:02:11.119Z"
+    },
+    {
+      "id": "bba7",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"615c\",\"name\":\"qwsaqweqwe\",\"users\":[\"2\",\"2\"],\"createdAt\":\"2026-02-25 14:19:21\",\"updatedAt\":\"2026-02-25T14:11:39.331Z\"}",
+      "createdAt": "2026-02-25T14:11:39.372Z"
+    },
+    {
+      "id": "32db",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"615c\",\"name\":\"qwsaqweqwe\",\"users\":[\"2\",\"2\",\"3\",\"1\"],\"createdAt\":\"2026-02-25 14:19:21\",\"updatedAt\":\"2026-02-25T15:44:01.049Z\"}",
+      "createdAt": "2026-02-25T15:44:01.187Z"
+    }
+  ],
   "teams": [
     {
       "id": "aec6",
@@ -12,23 +63,16 @@
       "updatedAt": "2026-02-19T15:46:33.560Z"
     },
     {
-      "id": "b4e9",
-      "name": "neshto",
+      "id": "615c",
+      "name": "qwsaqweqwe",
       "users": [
-        2,
-        8816
-      ],
-      "createdAt": "2026-02-19T15:24:46.117Z",
-      "updatedAt": "2026-02-19T15:24:46.117Z"
-    },
-    {
-      "id": "a2c6",
-      "name": "test",
-      "users": [
+        "2",
+        "2",
+        "3",
         "1"
       ],
-      "createdAt": "2026-02-19 17:24:56",
-      "updatedAt": "2026-02-20T12:28:34.381Z"
+      "createdAt": "2026-02-25 14:19:21",
+      "updatedAt": "2026-02-25T15:44:01.049Z"
     }
   ],
   "users": [
@@ -245,19 +289,22 @@
   ],
   "projects": [
     {
-      "id": "5ef7",
-      "adminIds": [],
+      "id": "bad3",
+      "adminIds": [
+        "1"
+      ],
       "memberIds": [
         "1"
       ],
       "teamIds": [
-        "b4e9"
+        "aec6",
+        "615c"
       ],
-      "description": "asdasd",
-      "name": "neshto",
+      "description": "asd",
+      "name": "asd",
       "status": "active",
-      "createdAt": "2026-02-19T15:46:03.359Z",
-      "updatedAt": "2026-02-20T12:57:20.471Z"
+      "createdAt": "2026-02-25T12:19:42.558Z",
+      "updatedAt": "2026-02-25T12:19:46.890Z"
     }
   ],
   "tasks": [
@@ -267,7 +314,7 @@
       "description": "Basic screens for dashboard",
       "status": "todo",
       "priority": "low",
-      "projectId": "5ef7",
+      "projectId": null,
       "assignedUserId": "2",
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z",
@@ -316,7 +363,7 @@
       "description": "test",
       "status": "complete",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-26T22:00:00.000Z",
       "createdAt": "2026-02-23T11:05:22.381Z",
       "updatedAt": "2026-02-24T12:07:55.761Z"
@@ -328,7 +375,7 @@
       "description": "1",
       "status": "todo",
       "priority": "medium",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-26T22:00:00.000Z",
       "createdAt": "2026-02-24T07:46:24.383Z",
       "updatedAt": "2026-02-24T08:55:32.741Z"
@@ -340,7 +387,7 @@
       "description": "asd",
       "status": "inprogress",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-27T22:00:00.000Z",
       "createdAt": "2026-02-24T08:58:32.891Z",
       "updatedAt": "2026-02-24T09:03:54.255Z"
@@ -352,7 +399,7 @@
       "description": "asd",
       "status": "inprogress",
       "priority": "low",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-01-31T22:00:00.000Z",
       "createdAt": "2026-02-24T09:05:22.014Z",
       "updatedAt": "2026-02-24T09:05:22.014Z"
@@ -364,7 +411,7 @@
       "description": "wer",
       "status": "todo",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-28T11:55:25.000Z",
       "createdAt": "2026-02-24T11:55:37.774Z",
       "updatedAt": "2026-02-24T11:55:37.774Z"
@@ -376,7 +423,7 @@
       "description": "we",
       "status": "inprogress",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-23T22:00:00.000Z",
       "createdAt": "2026-02-24T11:56:10.694Z",
       "updatedAt": "2026-02-24T12:07:18.526Z"
@@ -511,7 +558,7 @@
       "id": "4",
       "title": "Phase 4 — Tasks Module",
       "description": "Full CRUD task management with status, priority, and assignment. Implement task list filtering and sorting.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "4-1",
@@ -536,7 +583,7 @@
         {
           "id": "4-5",
           "title": "Implement Task Filtering & Sorting",
-          "completed": false
+          "completed": true
         }
       ]
     },

@@ -43,6 +43,10 @@ export const useCreateTeams = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
     },
+    meta: {
+      type: "Create",
+      dataOf: "Team",
+    },
   });
 };
 
@@ -58,17 +62,29 @@ export const useUpdateTeam = () => {
       );
       return updatedTeam;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
+    },
+    meta: {
+      type: "Edit",
+      dataOf: "Team",
     },
   });
 };
 
 export const useDeleteTeam = () => {
   return useMutation({
-    mutationFn: async (id: string) => await axiosClient.delete(`/teams/${id}`),
+    mutationFn: async (id: string) => {
+      const { data } = await axiosClient.delete(`/teams/${id}`);
+      return data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.allTeams });
+    },
+    meta: {
+      type: "Delete",
+      dataOf: "Team",
     },
   });
 };
