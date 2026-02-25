@@ -3,9 +3,9 @@ export type Project = {
   name: string;
   description: string;
   status: keyof ProjectStatus;
-  adminIds: number[];
-  memberIds: number[];
-  teamIds: number[];
+  adminIds: string[];
+  memberIds: string[];
+  teamIds: string[];
   createdAt: string;
   updatedAt: string;
 };

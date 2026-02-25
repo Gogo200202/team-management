@@ -9,11 +9,11 @@ import TeamFormComponent from "./TeamFormComponent";
 
 export type TeamCardProps = {
   team: Team;
-  teamUsers: User[];
+  teamUsers: (User | undefined)[];
   allUsers: User[];
 
-  handleDeleteClick: () => void;
-  handelOpenDeleteDialog: () => void;
+  handleDeleteClick?: () => void;
+  handelOpenDeleteDialog?: () => void;
 };
 
 export const TeamCard: FunctionComponent<TeamCardProps> = ({
@@ -25,7 +25,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   function deleteButton() {
-    handelOpenDeleteDialog();
+    handelOpenDeleteDialog!();
     handleDeleteClick?.();
   }
   return (
@@ -37,7 +37,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
           </Typography>
           <Box textAlign={"center"} sx={{ color: "text.secondary" }}>
             {teamUsers.map((user, index) => (
-              <Box key={index}>{user.firstName}</Box>
+              <Box key={index}>{user!.firstName}</Box>
             ))}
             <Box>
               Created at: {dayjs(team.createdAt).format("DD, MMMM YYYY")}

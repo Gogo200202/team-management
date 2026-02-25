@@ -39,7 +39,7 @@ function ProjectPage() {
 
   const deleteTeamFunction = () => {
     setProjectToManipulateUndo(projectToManipulate);
-    deleteProject(projectToManipulate.id);
+    deleteProject(projectToManipulate!.id);
     setProjectToManipulate(undefined);
   };
 

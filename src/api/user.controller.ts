@@ -34,7 +34,7 @@ export const useGetUser = (userId: string) => {
 
 export const useCreateUser = () => {
   return useMutation({
-    mutationFn: async (data: UserCreate) => {
+    mutationFn: async (data: UserCreate): Promise<User> => {
       const { data: createdUser } = await axiosClient.post("/users", data);
       return createdUser;
     },

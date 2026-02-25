@@ -33,20 +33,23 @@ export const TeamsPage = () => {
 
   const deleteTeamFunction = () => {
     setTeamToDelete(teamToDelete);
-    deleteTeam(teamToDelete.id);
+    deleteTeam(teamToDelete!.id);
   };
 
   const teamsCard: TeamCardProps[] = [];
 
-  function getUserFromTeam(team: Team): User[] {
-    const idsOfUser = team.users;
-    const users: User[] = [];
-    for (let i = 0; i < idsOfUser.length; i++) {
-      const user = selectUsers.find((x) => x.id == idsOfUser[i]);
-      if (user != undefined) {
-        users.push(user);
-      }
+  function getUserFromTeam(team: Team): (User | undefined)[] {
+    const idsOfUsers = team.users;
+    if (!idsOfUsers) {
+      return [];
     }
+
+    const users: (User | undefined)[] = idsOfUsers.map((idsOfUser) => {
+      const user = selectUsers.find((x) => x.id == idsOfUser);
+      if (user != undefined) {
+        return user;
+      }
+    });
 
     return users;
   }
@@ -62,10 +65,12 @@ export const TeamsPage = () => {
 
   for (let i = 0; i < allTeams.length; i++) {
     const currentTeamProp = allTeams[i];
+    // eslint-disable-next-line react-hooks/immutability
     currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
+    // eslint-disable-next-line react-hooks/immutability
     currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
 
-    const currentTeam = {
+    const currentTeam: TeamCardProps = {
       team: currentTeamProp,
       allUsers: selectUsers,
       teamUsers: getUserFromTeam(allTeams[i]),
@@ -122,10 +127,10 @@ export const TeamsPage = () => {
 
       {teamToDelete && (
         <SnackbarComponent
+          handelClose={() => setOpenSnack(false)}
           keysForQuery={teamKeys.allTeams}
-          lastTeam={teamToDelete}
+          lastItem={teamToDelete}
           open={openSnack}
-          setOpen={setOpenSnack}
           typeOfAlert={"delete"}
         />
       )}

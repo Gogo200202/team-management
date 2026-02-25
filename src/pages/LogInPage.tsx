@@ -97,12 +97,10 @@ export const LogInPage = () => {
                 boxShadow: "none",
                 textAlign: "center",
               }}
-              variant="h7"
               noWrap
               component={Link}
               to="/auth/register"
               color="textPrimary"
-              underline="none"
             >
               Register
             </Typography>

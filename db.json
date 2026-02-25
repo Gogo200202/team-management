@@ -25,10 +25,10 @@
       "id": "a2c6",
       "name": "test",
       "users": [
-        null
+        "1"
       ],
-      "createdAt": "2026-02-19T15:24:56.652Z",
-      "updatedAt": "2026-02-19T15:24:56.652Z"
+      "createdAt": "2026-02-19 17:24:56",
+      "updatedAt": "2026-02-20T12:28:34.381Z"
     }
   ],
   "users": [
@@ -161,28 +161,103 @@
       "createdAt": "2026-02-17T11:12:38.840Z",
       "secretWord": "1234",
       "updatedAt": "2026-02-17T14:47:23.985Z"
+    },
+    {
+      "id": "0abe",
+      "displayName": "Gogo test",
+      "email": "123@asd.test",
+      "firstName": "Gogo",
+      "lastName": "test",
+      "createdAt": "2026-02-23T07:49:23.884Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T07:49:23.884Z"
+    },
+    {
+      "id": "0056",
+      "displayName": "asdasd aszxasd",
+      "email": "121233@asd.test",
+      "firstName": "asdasd",
+      "lastName": "aszxasd",
+      "createdAt": "2026-02-23T07:50:23.213Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T07:50:23.213Z"
+    },
+    {
+      "id": "311a",
+      "displayName": "asdasd aszxasd",
+      "email": "121233@asdqwe.test",
+      "firstName": "asdasd",
+      "lastName": "aszxasd",
+      "createdAt": "2026-02-23T07:51:45.524Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T07:51:45.524Z"
+    },
+    {
+      "id": "d540",
+      "displayName": "asd123 12ewq",
+      "email": "121233@asd.testasd",
+      "firstName": "asd123",
+      "lastName": "12ewq",
+      "createdAt": "2026-02-23T07:52:40.857Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T07:52:40.857Z"
+    },
+    {
+      "id": "0929",
+      "displayName": "1234 1234",
+      "email": "121233@asd.test123",
+      "firstName": "1234",
+      "lastName": "1234",
+      "createdAt": "2026-02-23T07:54:39.630Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T07:54:39.630Z"
+    },
+    {
+      "id": "875f",
+      "displayName": "1234 1234",
+      "email": "121asd233@asd.testa",
+      "firstName": "1234",
+      "lastName": "1234",
+      "createdAt": "2026-02-23T08:00:21.831Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T08:00:21.831Z"
+    },
+    {
+      "id": "b651",
+      "displayName": "1234 1234",
+      "email": "121231233@asd.test",
+      "firstName": "1234",
+      "lastName": "1234",
+      "createdAt": "2026-02-23T08:02:26.268Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T08:02:26.268Z"
+    },
+    {
+      "id": "3d00",
+      "displayName": "gogo 1234",
+      "email": "121212333@asd.test",
+      "firstName": "gogo",
+      "lastName": "1234",
+      "createdAt": "2026-02-23T08:02:56.623Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-23T08:02:56.623Z"
     }
   ],
   "projects": [
     {
       "id": "5ef7",
-      "adminIds": [
-        "1",
-        "3"
-      ],
+      "adminIds": [],
       "memberIds": [
-        "1",
-        "3"
+        "1"
       ],
       "teamIds": [
-        "b4e9",
-        "aec6"
+        "b4e9"
       ],
       "description": "asdasd",
       "name": "neshto",
       "status": "active",
       "createdAt": "2026-02-19T15:46:03.359Z",
-      "updatedAt": "2026-02-19T15:46:03.359Z"
+      "updatedAt": "2026-02-20T12:57:20.471Z"
     }
   ],
   "tasks": [
@@ -192,32 +267,119 @@
       "description": "Basic screens for dashboard",
       "status": "todo",
       "priority": "low",
-      "projectId": null,
+      "projectId": "5ef7",
       "assignedUserId": "2",
       "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "updatedAt": "2025-01-10T10:00:00Z",
+      "finishUntil": "2025-01-10T10:00:00Z"
     },
     {
-      "id": "2",
-      "title": "Implement login page",
-      "description": "Basic email/password form",
-      "status": "in-progress",
+      "id": "d99b",
+      "title": "Test",
+      "status": "todo",
+      "assignedUserId": "1",
+      "description": "asd",
+      "priority": "medium",
+      "projectId": null,
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:29:59.803Z",
+      "updatedAt": "2026-02-20T12:29:59.803Z"
+    },
+    {
+      "id": "fd8b",
+      "title": "asd",
+      "status": "todo",
+      "assignedUserId": "2",
+      "description": "asd",
       "priority": "high",
       "projectId": null,
-      "assignedUserId": "1",
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-20T12:38:05.735Z",
+      "updatedAt": "2026-02-20T12:38:05.735Z"
     },
     {
-      "id": "3",
-      "title": "API Integration",
-      "description": "Connect axios to json-server",
+      "id": "19de",
+      "title": "asd",
+      "assignedUserId": "3",
+      "description": "qwdas",
       "status": "todo",
       "priority": "medium",
       "projectId": null,
+      "finishUntil": "2026-02-26T22:00:00.000Z",
+      "createdAt": "2026-02-23T07:42:54.458Z",
+      "updatedAt": "2026-02-23T07:42:54.458Z"
+    },
+    {
+      "id": "4c2e",
+      "title": "wed",
+      "assignedUserId": "2",
+      "description": "test",
+      "status": "complete",
+      "priority": "high",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-26T22:00:00.000Z",
+      "createdAt": "2026-02-23T11:05:22.381Z",
+      "updatedAt": "2026-02-24T12:07:55.761Z"
+    },
+    {
+      "id": "7c49",
+      "title": "e2d",
       "assignedUserId": "3",
-      "createdAt": "2025-01-10T10:00:00Z",
-      "updatedAt": "2025-01-10T10:00:00Z"
+      "description": "1",
+      "status": "todo",
+      "priority": "medium",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-26T22:00:00.000Z",
+      "createdAt": "2026-02-24T07:46:24.383Z",
+      "updatedAt": "2026-02-24T08:55:32.741Z"
+    },
+    {
+      "id": "9ce8",
+      "title": "test radio",
+      "assignedUserId": "1",
+      "description": "asd",
+      "status": "inprogress",
+      "priority": "high",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-27T22:00:00.000Z",
+      "createdAt": "2026-02-24T08:58:32.891Z",
+      "updatedAt": "2026-02-24T09:03:54.255Z"
+    },
+    {
+      "id": "a2d6",
+      "title": "test",
+      "assignedUserId": "1090",
+      "description": "asd",
+      "status": "inprogress",
+      "priority": "low",
+      "projectId": "5ef7",
+      "finishUntil": "2026-01-31T22:00:00.000Z",
+      "createdAt": "2026-02-24T09:05:22.014Z",
+      "updatedAt": "2026-02-24T09:05:22.014Z"
+    },
+    {
+      "id": "15d3",
+      "title": "wefwe",
+      "assignedUserId": "3",
+      "description": "wer",
+      "status": "todo",
+      "priority": "high",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-28T11:55:25.000Z",
+      "createdAt": "2026-02-24T11:55:37.774Z",
+      "updatedAt": "2026-02-24T11:55:37.774Z"
+    },
+    {
+      "id": "0852",
+      "title": "wer",
+      "assignedUserId": "8816",
+      "description": "we",
+      "status": "inprogress",
+      "priority": "high",
+      "projectId": "5ef7",
+      "finishUntil": "2026-02-23T22:00:00.000Z",
+      "createdAt": "2026-02-24T11:56:10.694Z",
+      "updatedAt": "2026-02-24T12:07:18.526Z"
     }
   ],
   "roadmap": [
@@ -316,7 +478,7 @@
       "id": "3",
       "title": "Phase 3 — Project Management",
       "description": "Develop Project detail pages. Assign admins and members. Add filtering and search capabilities.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "3-1",
@@ -331,17 +493,17 @@
         {
           "id": "3-3",
           "title": "Add 'Open Details' button to cards",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-4",
           "title": "Create Project Details View (Top 50% screen)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "3-5",
           "title": "Manage Project Admins & Members",
-          "completed": false
+          "completed": true
         }
       ]
     },
@@ -354,22 +516,22 @@
         {
           "id": "4-1",
           "title": "Add 'Create Task' button in Project Details",
-          "completed": false
+          "completed": true
         },
         {
           "id": "4-2",
           "title": "Display Tasks in MUI DataGrid (Bottom 50% screen)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "4-3",
           "title": "Add Edit/Delete actions to Task DataGrid",
-          "completed": false
+          "completed": true
         },
         {
           "id": "4-4",
           "title": "Create Task Form (Title, Desc, Status, Priority, Due date) - Due date using MUI Datepicker, Status using MUI Select, Priority using MUI Radio Group",
-          "completed": false
+          "completed": true
         },
         {
           "id": "4-5",

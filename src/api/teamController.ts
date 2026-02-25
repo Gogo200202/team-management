@@ -15,7 +15,7 @@ export const teamKeys = {
 
 type CreateTeams = {
   name: string;
-  users: number[];
+  users: string[];
 };
 
 export const useGetAllTeams = () => {
