@@ -25,18 +25,18 @@ import { useUserContext } from "../components/context/UserContext";
 import TaskDialog from "../components/views/Tasks/TaskDialog";
 
 type UserFromTeams = {
-  team: Team | undefined;
+  team?: Team;
   userFromTeam: (User | undefined)[];
 };
 
 type TaskGrid = {
   id: string;
-  reporter: User | undefined;
-  reporterName: string | undefined;
+  reporter?: User;
+  reporterName?: string;
   title: string;
   priority: keyof typeof PriorityTask;
   status: keyof typeof StatusTask;
-  userName: string | undefined;
+  userName?: string;
   description: string;
   finishUntil: string;
 };
@@ -195,7 +195,7 @@ function ProjectPageDetail() {
       renderCell: (params) => {
         if (params.value == "todo") {
           return <Chip label={params.value} color="primary" />;
-        } else if (params.value == "inprogress") {
+        } else if (params.value == "progress") {
           return <Chip label={params.value} color="error" />;
         } else if (params.value == "complete") {
           return <Chip label={params.value} color="success" />;

@@ -20,6 +20,6 @@ export const StatusTask = {
 
 export const PriorityTask = {
   low: "",
-  high: "",
   medium: "",
+  high: "",
 };

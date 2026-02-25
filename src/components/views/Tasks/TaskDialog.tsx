@@ -46,10 +46,10 @@ type TaskForm = {
 };
 
 type TaskDialogProp = {
-  project: Project | undefined;
+  project?: Project;
   openDialog: boolean;
   closeDialog: () => void;
-  task?: Task | undefined;
+  task?: Task;
   openAndAddSnack: (setSnackAlert: string) => void;
 };
 
@@ -136,6 +136,7 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
 
   const status = Object.keys(StatusTask);
   const priorities = Object.keys(PriorityTask);
+
   return (
     <Box>
       <Dialog open={openDialog} keepMounted onClose={closeReset} maxWidth="xl">

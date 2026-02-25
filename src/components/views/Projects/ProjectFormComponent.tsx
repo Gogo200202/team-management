@@ -64,19 +64,21 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
 
   useEffect(() => {
     if (project) {
-      const admins: User[] = project.adminIds.map((adminId) => {
+      const admins: (User | undefined)[] = project.adminIds.map((adminId) => {
         const finedAdmin = allUsers?.find((x) => x.id == adminId);
         if (finedAdmin != null) {
           return finedAdmin;
         }
       });
-      const members: User[] = project.memberIds.map((memberId) => {
-        const finedMember = allUsers?.find((x) => x.id == memberId);
-        if (finedMember != null) {
-          return finedMember;
-        }
-      });
-      const teams: Team[] = project.teamIds.map((teamId) => {
+      const members: (User | undefined)[] = project.memberIds.map(
+        (memberId) => {
+          const finedMember = allUsers?.find((x) => x.id == memberId);
+          if (finedMember != null) {
+            return finedMember;
+          }
+        },
+      );
+      const teams: (Team | undefined)[] = project.teamIds.map((teamId) => {
         const finedTeams = allTeams?.find((x) => x.id == teamId);
         if (finedTeams != null) {
           return finedTeams;
