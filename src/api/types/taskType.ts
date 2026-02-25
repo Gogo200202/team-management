@@ -2,8 +2,8 @@ export type Task = {
   id: string;
   title: string;
   description: string;
-  status: keyof StatusTask;
-  priority: keyof PriorityTask;
+  status: keyof typeof StatusTask;
+  priority: keyof typeof PriorityTask;
   projectId: string;
   assignedUserId: string;
   reporterId: string;
@@ -12,14 +12,14 @@ export type Task = {
   finishUntil: string;
 };
 
-export type StatusTask = {
-  todo: string;
-  progress: string;
-  complete: string;
+export const StatusTask = {
+  todo: "",
+  progress: "",
+  complete: "",
 };
 
-export type PriorityTask = {
-  low: string;
-  high: string;
-  medium: string;
+export const PriorityTask = {
+  low: "",
+  high: "",
+  medium: "",
 };

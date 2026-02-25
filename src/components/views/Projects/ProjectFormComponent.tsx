@@ -64,34 +64,24 @@ const ProjectFormComponent: FunctionComponent<ProjectFormsProps> = ({
 
   useEffect(() => {
     if (project) {
-      const admins: User[] = [];
-      const members: User[] = [];
-      const teams: Team[] = [];
-      for (let i = 0; i < project.adminIds.length; i++) {
-        const finedAdmin = allUsers?.find(
-          (x) => x.id == project.adminIds[i].toString(),
-        );
+      const admins: User[] = project.adminIds.map((adminId) => {
+        const finedAdmin = allUsers?.find((x) => x.id == adminId);
         if (finedAdmin != null) {
-          admins.push(finedAdmin);
+          return finedAdmin;
         }
-      }
-
-      for (let i = 0; i < project.memberIds.length; i++) {
-        const finedMember = allUsers?.find(
-          (x) => x.id == project.memberIds[i].toString(),
-        );
+      });
+      const members: User[] = project.memberIds.map((memberId) => {
+        const finedMember = allUsers?.find((x) => x.id == memberId);
         if (finedMember != null) {
-          members.push(finedMember);
+          return finedMember;
         }
-      }
-      for (let i = 0; i < project.teamIds.length; i++) {
-        const finedTeams = allTeams?.find(
-          (x) => x.id == project.teamIds[i].toString(),
-        );
+      });
+      const teams: Team[] = project.teamIds.map((teamId) => {
+        const finedTeams = allTeams?.find((x) => x.id == teamId);
         if (finedTeams != null) {
-          teams.push(finedTeams);
+          return finedTeams;
         }
-      }
+      });
 
       reset({
         name: project?.name,

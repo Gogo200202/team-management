@@ -1,4 +1,5 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, useNavigate } from "react-router-dom";
 
@@ -22,7 +23,7 @@ export const Register = () => {
   const navigate = useNavigate();
   const { handleLogin } = useUserContext();
   const { data = [] } = useGetAllUsers();
-  const { mutateAsync } = useCreateUser();
+  const { mutate, isSuccess, data: createdUser } = useCreateUser();
 
   const {
     handleSubmit,
@@ -45,7 +46,7 @@ export const Register = () => {
     email,
     password,
   }) => {
-    const createdUser = await mutateAsync({
+    mutate({
       displayName: firstName + " " + lastName,
       email: email,
       firstName: firstName,
@@ -54,17 +55,19 @@ export const Register = () => {
       secretWord: password,
       updatedAt: new Date().toISOString(),
     });
-   
-
-    handleLogin({
-      id: createdUser.id,
-      email: email,
-      secretWord: password,
-      userName: firstName + " " + lastName,
-    });
-
-    navigate("/");
   };
+  useEffect(() => {
+    if (isSuccess) {
+      handleLogin({
+        id: createdUser.id,
+        email: createdUser.email,
+        secretWord: createdUser.secretWord,
+        userName: createdUser.firstName + " " + createdUser.lastName,
+      });
+
+      navigate("/");
+    }
+  }, [isSuccess, createdUser, handleLogin, navigate]);
 
   return (
     <Box>

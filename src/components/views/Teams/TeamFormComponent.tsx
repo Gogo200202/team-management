@@ -31,7 +31,7 @@ import { SnackbarComponent } from "../../common/SnackbarComponent";
 type TeamFormDialog = {
   allUsers: User[];
   team?: Team;
-  selectedUsers?: User[];
+  selectedUsers?: (User | undefined)[];
   openDialog: boolean;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
 };

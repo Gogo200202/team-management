@@ -38,19 +38,18 @@ export const TeamsPage = () => {
 
   const teamsCard: TeamCardProps[] = [];
 
-  function getUserFromTeam(team: Team): User[] {
-    const idsOfUser = team.users;
-    if (!idsOfUser) {
+  function getUserFromTeam(team: Team): (User | undefined)[] {
+    const idsOfUsers = team.users;
+    if (!idsOfUsers) {
       return [];
     }
 
-    const users: User[] = [];
-    for (let i = 0; i < idsOfUser.length; i++) {
-      const user = selectUsers.find((x) => x.id == idsOfUser[i].toString());
+    const users: (User | undefined)[] = idsOfUsers.map((idsOfUser) => {
+      const user = selectUsers.find((x) => x.id == idsOfUser);
       if (user != undefined) {
-        users.push(user);
+        return user;
       }
-    }
+    });
 
     return users;
   }
@@ -66,7 +65,9 @@ export const TeamsPage = () => {
 
   for (let i = 0; i < allTeams.length; i++) {
     const currentTeamProp = allTeams[i];
+    // eslint-disable-next-line react-hooks/immutability
     currentTeamProp.createdAt = getTime(allTeams[i].createdAt);
+    // eslint-disable-next-line react-hooks/immutability
     currentTeamProp.updatedAt = getTime(allTeams[i].updatedAt);
 
     const currentTeam: TeamCardProps = {

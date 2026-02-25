@@ -34,8 +34,8 @@ type TaskGrid = {
   reporter: User | undefined;
   reporterName: string | undefined;
   title: string;
-  priority: keyof PriorityTask;
-  status: keyof StatusTask;
+  priority: keyof typeof PriorityTask;
+  status: keyof typeof StatusTask;
   userName: string | undefined;
   description: string;
   finishUntil: string;
@@ -63,18 +63,14 @@ function ProjectPageDetail() {
 
   const [snackDialog, setSnackDialog] = useState<boolean>(false);
   const [snackTaskToManipulate, setSnackTaskToManipulate] = useState<Task>();
-  const [typeOfSnackAlert, setTypeOfSnackAlert] = useState<
-    "create" | "edit" | "delete" | (string & "")
-  >("");
+  const [typeOfSnackAlert, setTypeOfSnackAlert] = useState<string>("");
 
   const [taskToManipulate, setTaskToManipulate] = useState<Task | undefined>(
     undefined,
   );
   const snackManipulation = (typeToManipulate: string) => {
     setSnackTaskToManipulate(taskToManipulate);
-    setTypeOfSnackAlert(
-      typeToManipulate as "create" | "edit" | "delete" | (string & ""),
-    );
+    setTypeOfSnackAlert(typeToManipulate);
     setSnackDialog(true);
   };
 

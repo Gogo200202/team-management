@@ -18,7 +18,7 @@ import {
 } from "../../api/teamController";
 
 export type AlertProps = {
-  typeOfAlert: "create" | "edit" | "delete" | (string & "");
+  typeOfAlert: string;
   open: boolean;
   handelClose: () => void;
   lastItem: any;

@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import { type FunctionComponent, useEffect } from "react";
@@ -28,20 +27,21 @@ import { Form } from "react-router-dom";
 
 import { useCreateTask, useUpdateTask } from "../../../api/taskController";
 import type { Project } from "../../../api/types/projectTypes";
-import type {
+import {
   PriorityTask,
   StatusTask,
-  Task,
+  type Task,
 } from "../../../api/types/taskType";
 import type { User } from "../../../api/types/userTypes";
 import { useGetAllUsers } from "../../../api/user.controller";
 import { useUserContext } from "../../context/UserContext";
+
 type TaskForm = {
   title: string;
   user: User | null;
   description: string;
-  status: keyof StatusTask | (string & "");
-  priority: keyof PriorityTask | (string & "");
+  status: keyof typeof StatusTask | (string & "");
+  priority: keyof typeof PriorityTask | (string & "");
   finishUntil: string;
 };
 
@@ -49,9 +49,10 @@ type TaskDialogProp = {
   project: Project | undefined;
   openDialog: boolean;
   closeDialog: () => void;
-  task: Task | undefined;
+  task?: Task | undefined;
   openAndAddSnack: (setSnackAlert: string) => void;
 };
+
 const TaskDialog: FunctionComponent<TaskDialogProp> = ({
   project,
   closeDialog,
@@ -102,8 +103,8 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
         title: data.title,
         assignedUserId: data.user!.id,
         description: data.description,
-        status: data.status! as keyof StatusTask,
-        priority: data.priority! as keyof PriorityTask,
+        status: data.status! as keyof typeof StatusTask,
+        priority: data.priority! as keyof typeof PriorityTask,
         projectId: project!.id,
         finishUntil: data.finishUntil,
       });
@@ -114,8 +115,8 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
         title: data.title,
         assignedUserId: data.user!.id,
         description: data.description,
-        status: data.status! as keyof StatusTask,
-        priority: data.priority! as keyof PriorityTask,
+        status: data.status! as keyof typeof StatusTask,
+        priority: data.priority! as keyof typeof PriorityTask,
         projectId: project!.id,
         finishUntil: data.finishUntil,
         createdAt: task.createdAt,
@@ -133,6 +134,8 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
     reset(defaultValueForm);
   };
 
+  const status = Object.keys(StatusTask);
+  const priorities = Object.keys(PriorityTask);
   return (
     <Box>
       <Dialog open={openDialog} keepMounted onClose={closeReset} maxWidth="xl">
@@ -198,9 +201,11 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                         onChange(event.target.value as string);
                       }}
                     >
-                      <MenuItem value="todo">Todo</MenuItem>
-                      <MenuItem value="inprogress">In-progress</MenuItem>
-                      <MenuItem value="complete">Complete</MenuItem>
+                      {status.map((stat) => (
+                        <MenuItem value={stat}>
+                          {stat.charAt(0).toUpperCase() + stat.slice(1)}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 )}
@@ -211,21 +216,15 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                 name="priority"
                 render={({ field: { onChange, value } }) => (
                   <RadioGroup onChange={onChange} value={value} row>
-                    <FormControlLabel
-                      value="low"
-                      control={<Radio />}
-                      label="Low"
-                    />
-                    <FormControlLabel
-                      value="medium"
-                      control={<Radio />}
-                      label="Medium"
-                    />
-                    <FormControlLabel
-                      value="high"
-                      control={<Radio />}
-                      label="High"
-                    />
+                    {priorities.map((priority) => (
+                      <FormControlLabel
+                        value={priority}
+                        control={<Radio />}
+                        label={
+                          priority.charAt(0).toUpperCase() + priority.slice(1)
+                        }
+                      />
+                    ))}
                   </RadioGroup>
                 )}
               />
@@ -242,7 +241,6 @@ const TaskDialog: FunctionComponent<TaskDialogProp> = ({
                       label="Finish until"
                       value={dayjs(value)}
                       onChange={(newValue) => onChange(newValue)}
-                      disablePast
                     />
                   </LocalizationProvider>
                 )}

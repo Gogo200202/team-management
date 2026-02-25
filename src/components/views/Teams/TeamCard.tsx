@@ -9,7 +9,7 @@ import TeamFormComponent from "./TeamFormComponent";
 
 export type TeamCardProps = {
   team: Team;
-  teamUsers: User[];
+  teamUsers: (User | undefined)[];
   allUsers: User[];
 
   handleDeleteClick?: () => void;
@@ -37,7 +37,7 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
           </Typography>
           <Box textAlign={"center"} sx={{ color: "text.secondary" }}>
             {teamUsers.map((user, index) => (
-              <Box key={index}>{user.firstName}</Box>
+              <Box key={index}>{user!.firstName}</Box>
             ))}
             <Box>
               Created at: {dayjs(team.createdAt).format("DD, MMMM YYYY")}
