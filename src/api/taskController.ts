@@ -35,6 +35,10 @@ export const useCreateTask = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.allTasks });
     },
+    meta: {
+      type: "Create",
+      dataOf: "Task",
+    },
   });
 };
 
@@ -46,6 +50,10 @@ export const useDeleteTask = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.allTasks });
+    },
+    meta: {
+      type: "Delete",
+      dataOf: "Task",
     },
   });
 };
@@ -63,6 +71,10 @@ export const useUpdateTask = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: taskKeys.allTasks });
+    },
+    meta: {
+      type: "Edit",
+      dataOf: "Task",
     },
   });
 };

@@ -41,6 +41,10 @@ export const useCreateUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.allUsers });
     },
+    meta: {
+      type: "Create",
+      dataOf: "User",
+    },
   });
 };
 
@@ -57,8 +61,14 @@ export const useEditUser = () => {
       );
       return updatedUser;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: userKeys.allUsers });
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: userKeys.userDetails(data.id),
+      });
+    },
+    meta: {
+      type: "Edit",
+      dataOf: "User",
     },
   });
 };
@@ -71,6 +81,10 @@ export const useDeleteUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userKeys.allUsers });
+    },
+    meta: {
+      type: "Delete",
+      dataOf: "User",
     },
   });
 };

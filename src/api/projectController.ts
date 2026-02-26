@@ -50,6 +50,10 @@ export const useCreateProject = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
     },
+    meta: {
+      type: "Create",
+      dataOf: "Project",
+    },
   });
 };
 type UpdateProject = Omit<Project, "updatedAt">;
@@ -70,6 +74,10 @@ export const useUpdateProject = () => {
 
       queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
     },
+    meta: {
+      type: "Edit",
+      dataOf: "Project",
+    },
   });
 };
 
@@ -81,6 +89,10 @@ export const useDeleteProject = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: projectKeys.allProjects });
+    },
+    meta: {
+      type: "Delete",
+      dataOf: "Project",
     },
   });
 };

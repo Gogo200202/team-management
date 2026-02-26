@@ -1,99 +1,163 @@
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Stack,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useGetAllActivityLog } from "../api/activityController";
-import type { ActivityLog } from "../api/types/activityLog";
-import type { Team } from "../api/types/teamTypes";
-import type { User } from "../api/types/userTypes";
+import { useGetAllTeams } from "../api/teamController";
 import { useGetAllUsers } from "../api/user.controller";
-
-type TeamWithUsers = Omit<Team, "users"> & {
-  users: User[];
-};
-
-type TeamTypeOfLog = Omit<ActivityLog, "loggedInData"> & {
-  team: Team;
-};
-type TeamActivityLog = Omit<ActivityLog, "loggedInData"> & {
-  loggedInData: TeamWithUsers;
-};
+import {
+  createProjectActivityLog,
+  type ProjectActivityWithAllData,
+} from "../utils/helpers/createProjectActivityLog";
+import {
+  createTeamsActivityLogs,
+  type TeamActivityLog,
+} from "../utils/helpers/createTeamActivityLog";
 
 function ActivityLogPage() {
-  const { data: allActivityLog = [], isSuccess } = useGetAllActivityLog();
-  const { data: allUsers } = useGetAllUsers();
+  const { data: allActivityLog, isSuccess } = useGetAllActivityLog();
+  const { data: allUsers = [] } = useGetAllUsers();
+  const { data: allTeams = [] } = useGetAllTeams();
+  const navigate = useNavigate();
   const [teamsActivity, setTeamsActivity] = useState<TeamActivityLog[]>();
+  const [projectActivity, setProjectActivity] =
+    useState<ProjectActivityWithAllData[]>();
+
   useEffect(() => {
     if (isSuccess) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      const teams: TeamActivityLog[] = allActivityLog
-        .filter((x) => x.typeOfData == "Team")
-        .map((x) => {
-          return {
-            createdAt: x.createdAt,
-            id: x.id,
-            typeOfData: x.typeOfData,
-            typeOfLogin: x.typeOfLogin,
-            team: JSON.parse(x.loggedInData) as Team,
-          } as TeamTypeOfLog;
-        })
-        .map((i) => {
-          const users: User[] = i.team.users.map((userId) => {
-            const resultUser = allUsers?.find((g) => g.id == userId);
-            if (resultUser != undefined) {
-              return resultUser;
-            }
-          });
-          const team: TeamWithUsers = {
-            users: users,
-            createdAt: i.team.createdAt,
-            id: i.team.id,
-            name: i.team.name,
-            updatedAt: i.team.updatedAt,
-          };
-          return {
-            id: i.id,
-            loggedInData: team,
-            createdAt: i.createdAt,
-            typeOfData: i.typeOfData,
-            typeOfLogin: i.typeOfLogin,
-          };
-        });
+      const teams = createTeamsActivityLogs(allActivityLog, allUsers);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const projects = createProjectActivityLog(
+        allActivityLog,
+        allTeams,
+        allUsers,
+      );
+      console.log(projects);
       setTeamsActivity(teams.reverse());
+      setProjectActivity(projects.reverse());
     }
-  }, [allActivityLog, allUsers, isSuccess]);
+  }, [isSuccess]);
 
   return (
     <Box sx={{ width: "100%" }}>
-      Activity Log Page
-      <Box>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography component="span">Teams</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {teamsActivity?.map((team) => (
+      <Typography variant="h2" sx={{ textAlign: "center" }}>
+        Activity Log Page
+      </Typography>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>Teams</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {teamsActivity?.map((activity, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 5,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <Stack>
-                <Box>Type of log: {team.typeOfLogin}</Box>
-                <Box>Team:Name: {team.loggedInData.name}</Box>
                 <Box>
-                  Users is team:{" "}
-                  {team.loggedInData.users.map((user) => (
-                    <>{user.firstName} </>
-                  ))}
+                  {/* <Box>TeamId: {activity.loggedInData.id}</Box> */}
+                  <Typography sx={{ fontSize: 20 }}>
+                    Action: {activity.typeOfLogin}
+                  </Typography>
+                  <Typography sx={{ fontSize: 20 }}>
+                    Team name: {activity.loggedInData.name}
+                  </Typography>
+                  <Typography sx={{ fontSize: 20 }}>
+                    Users:{" "}
+                    {activity.loggedInData.users.map((user, index) => (
+                      <Fragment key={index}>{user.firstName} </Fragment>
+                    ))}
+                  </Typography>
                 </Box>
               </Stack>
-            ))}
-          </AccordionDetails>
-        </Accordion>
-      </Box>
+
+              <Button
+                endIcon={<ExitToAppIcon />}
+                onClick={() =>
+                  navigate(`/activity/details/Team/${activity.loggedInData.id}`)
+                }
+              >
+                details
+              </Button>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>Projects</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {projectActivity?.map((pa, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 5,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Stack>
+                <Box>
+                  {/* <Box>TeamId: {activity.loggedInData.id}</Box> */}
+                  <Typography sx={{ fontSize: 20 }}>
+                    Action: {pa.typeOfLogin}
+                  </Typography>
+                  <Typography sx={{ fontSize: 20 }}>
+                    Team name: {pa.loggedInData.name}
+                  </Typography>
+                  <Stack>
+                    <Box>
+                      Admins:
+                      {pa.loggedInData.admins.map((user, index) => (
+                        <Fragment key={index}>{user.firstName} </Fragment>
+                      ))}
+                    </Box>
+                    <Box>
+                      Members:
+                      {pa.loggedInData.members.map((user, index) => (
+                        <Fragment key={index}>{user.firstName} </Fragment>
+                      ))}
+                    </Box>
+                    <Box>
+                      Teams:
+                      {pa.loggedInData.teams.map((team, index) => (
+                        <Fragment key={index}>{team.name} </Fragment>
+                      ))}
+                    </Box>
+                  </Stack>
+                </Box>
+              </Stack>
+
+              <Button
+                endIcon={<ExitToAppIcon />}
+                onClick={() =>
+                  navigate(`/activity/details/Project/${pa.loggedInData.id}`)
+                }
+              >
+                details
+              </Button>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 }
