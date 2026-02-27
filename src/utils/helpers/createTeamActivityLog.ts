@@ -42,6 +42,7 @@ export function createTeamsActivityLogs(
         name: i.team.name,
         updatedAt: i.team.updatedAt,
       };
+
       return {
         id: i.id,
         loggedInData: team,

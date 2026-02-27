@@ -58,3 +58,53 @@ export function createProjectActivityLog(
 
   return project;
 }
+
+export function createProjectActivityLogWithId(
+  allActivityLog: ActivityLog[],
+  allTeams: Team[],
+  allUsers: User[],
+  id: string,
+) {
+  const project = allActivityLog
+    .filter((x) => x.typeOfData == "Project")
+    .map((x) => {
+      return {
+        ...x,
+        loggedInData: JSON.parse(x.loggedInData),
+      } as ProjectActivity;
+    })
+    .filter((x) => x.loggedInData.id == id)
+    .map((x) => {
+      const admins = x.loggedInData.adminIds.map((a) => {
+        return allUsers.find((au) => au.id == a);
+      });
+
+      const members = x.loggedInData.memberIds.map((m) => {
+        return allUsers.find((au) => au.id == m);
+      });
+
+      const teamsProject = x.loggedInData.teamIds.map((t) => {
+        const team = allTeams.find((au) => au.id == t);
+
+        if (team != null) {
+          return team;
+        }
+
+        return;
+      });
+
+      const allDataMappedProject: ProjectWithData = {
+        ...x.loggedInData,
+        admins: admins,
+        members: members,
+        teams: teamsProject,
+      };
+
+      return {
+        ...x,
+        loggedInData: allDataMappedProject,
+      } as ProjectActivityWithAllData;
+    });
+
+  return project;
+}
