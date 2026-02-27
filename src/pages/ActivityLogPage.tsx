@@ -6,21 +6,29 @@ import {
   AccordionSummary,
   Box,
   Button,
-  createTheme,
+  Chip,
   Stack,
-  ThemeProvider,
   Typography,
 } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetAllActivityLog } from "../api/activityController";
+import { useGetAllProjects } from "../api/projectController";
 import { useGetAllTeams } from "../api/teamController";
+import type { ActivityLog } from "../api/types/activityLog";
+import type { Project } from "../api/types/projectTypes";
+import type { Task } from "../api/types/taskType";
+import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
 import {
   createProjectActivityLog,
   type ProjectActivityWithAllData,
 } from "../utils/helpers/createProjectActivityLog";
+import {
+  createTaskActivityLog,
+  type ActivityWithTaskWithData,
+} from "../utils/helpers/createTaskActivityLog";
 import {
   createTeamsActivityLogs,
   type TeamActivityLog,
@@ -31,11 +39,15 @@ function ActivityLogPage() {
 
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
+  const { data: allProjects } = useGetAllProjects();
   const navigate = useNavigate();
-  const [teamsActivity, setTeamsActivity] = useState<TeamActivityLog[]>();
+  const [teamsActivity, setTeamsActivity] = useState<TeamActivityLog[]>([]);
   const [projectActivity, setProjectActivity] = useState<
     ProjectActivityWithAllData[]
   >([]);
+  const [taskActivity, setTaskActivity] = useState<ActivityWithTaskWithData[]>(
+    [],
+  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -48,12 +60,22 @@ function ActivityLogPage() {
         allUsers,
       );
 
+      const tasks = createTaskActivityLog(
+        allActivityLog,
+        allUsers,
+        allProjects,
+      );
+
+      setTaskActivity(tasks.reverse());
       setTeamsActivity(teams.reverse());
       setProjectActivity(projects.reverse());
     }
   }, [allActivityLog, isSuccess]);
 
-  const theme = createTheme({ cssVariables: true });
+  const statusColors = new Map<string, any>();
+  statusColors.set("Delete", <Chip label="Delete" color="error" />);
+  statusColors.set("Edit", <Chip label="Edit" color="info" />);
+  statusColors.set("Create", <Chip label="Create" color="success" />);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -65,51 +87,65 @@ function ActivityLogPage() {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography sx={{ fontSize: 50 }}>Teams</Typography>
         </AccordionSummary>
-        <ThemeProvider theme={theme}>
-          <AccordionDetails>
-            {teamsActivity?.map((activity, index) => (
-              <Box
-                key={index}
-                sx={{
-                  mb: 5,
-                  display: "flex",
-                  justifyContent: "space-between",
-                  backgroundColor: `#${activity.loggedInData.id}`,
-                  borderRadius: 1,
-                }}
-              >
-                <Stack>
-                  <Box>
-                    <Typography sx={{ fontSize: 20 }}>
-                      Action: {activity.typeOfLogin}
-                    </Typography>
-                    <Typography sx={{ fontSize: 20 }}>
-                      Team name: {activity.loggedInData.name}
-                    </Typography>
-                    <Typography sx={{ fontSize: 20 }}>
-                      Users:{" "}
-                      {activity.loggedInData.users.map((user, index) => (
-                        <Fragment key={index}>{user.firstName} </Fragment>
-                      ))}
-                    </Typography>
-                  </Box>
-                </Stack>
 
-                <Button
-                  sx={{ color: "white", backgroundColor: "transparent" }}
-                  endIcon={<ExitToAppIcon />}
-                  onClick={() =>
-                    navigate(
-                      `/activity/details/Team/${activity.loggedInData.id}`,
-                    )
-                  }
-                >
-                  details
-                </Button>
-              </Box>
-            ))}
-          </AccordionDetails>
-        </ThemeProvider>
+        <AccordionDetails>
+          {teamsActivity?.map((activity, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 5,
+                display: "flex",
+                justifyContent: "space-between",
+
+                borderRadius: 1,
+              }}
+            >
+              <Stack>
+                <Box>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                    }}
+                  >
+                    Action: {statusColors.get(activity.typeOfLogin)}
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      fontSize: 20,
+                    }}
+                  >
+                    Team name:
+                    <Box
+                      sx={{
+                        backgroundColor: `#${activity.loggedInData.id}`,
+                        borderRadius: 2,
+                      }}
+                    >
+                      {activity.loggedInData.name}
+                    </Box>
+                  </Box>
+                  <Typography sx={{ fontSize: 20 }}>
+                    Users:{" "}
+                    {activity.loggedInData.users.map((user, index) => (
+                      <Fragment key={index}>{user.firstName} </Fragment>
+                    ))}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Button
+                sx={{ color: "white", backgroundColor: "transparent" }}
+                endIcon={<ExitToAppIcon />}
+                onClick={() =>
+                  navigate(`/activity/details/Team/${activity.loggedInData.id}`)
+                }
+              >
+                details
+              </Button>
+            </Box>
+          ))}
+        </AccordionDetails>
       </Accordion>
 
       <Accordion>
@@ -124,18 +160,35 @@ function ActivityLogPage() {
                 mb: 5,
                 display: "flex",
                 justifyContent: "space-between",
-                backgroundColor: `#${pa.loggedInData.id}`,
+
                 borderRadius: 1,
               }}
             >
               <Stack>
                 <Box>
-                  <Typography sx={{ fontSize: 20 }}>
-                    Action: {pa.typeOfLogin}
-                  </Typography>
-                  <Typography sx={{ fontSize: 20 }}>
-                    Project name: {pa.loggedInData.name}
-                  </Typography>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                    }}
+                  >
+                    Action: {statusColors.get(pa.typeOfLogin)}
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      fontSize: 20,
+                    }}
+                  >
+                    <Box>Project name:</Box>{" "}
+                    <Box
+                      sx={{
+                        borderRadius: 2,
+                        backgroundColor: `#${pa.loggedInData.id}`,
+                      }}
+                    >
+                      {pa.loggedInData.name}
+                    </Box>
+                  </Box>
                   <Stack>
                     <Box>
                       Admins:{" "}
@@ -151,9 +204,13 @@ function ActivityLogPage() {
                     </Box>
                     <Box>
                       Teams:{" "}
-                      {pa.loggedInData.teams.map((t, index) => (
-                        <Fragment key={index}>{t.name} </Fragment>
-                      ))}
+                      {pa.loggedInData.teams.map((t, index) =>
+                        t ? (
+                          <Fragment key={index}>{t.name} </Fragment>
+                        ) : (
+                          <Box>error</Box>
+                        ),
+                      )}
                     </Box>
                   </Stack>
                 </Box>
@@ -164,6 +221,78 @@ function ActivityLogPage() {
                 endIcon={<ExitToAppIcon />}
                 onClick={() =>
                   navigate(`/activity/details/Project/${pa.loggedInData.id}`)
+                }
+              >
+                details
+              </Button>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>Task</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {taskActivity?.map((ta, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 5,
+                display: "flex",
+                justifyContent: "space-between",
+
+                borderRadius: 1,
+              }}
+            >
+              <Stack>
+                <Box>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                    }}
+                  >
+                    Action: {statusColors.get(ta.typeOfLogin)}
+                  </Box>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                      display: "flex",
+                    }}
+                  >
+                    <Box>Task title</Box>:
+                    <Box
+                      sx={{
+                        borderRadius: 2,
+                        backgroundColor: `#${ta.loggedInData.id}`,
+                      }}
+                    >
+                      {ta.loggedInData.title}
+                    </Box>
+                  </Box>
+                  <Stack>
+                    <Box>
+                      Assigned User: {ta.loggedInData.assignedUser.firstName}
+                    </Box>
+                    <Box>Reporter: {ta.loggedInData.reporter.firstName}</Box>
+                    <Box>
+                      Project:
+                      {ta.loggedInData.project ? (
+                        <>{ta.loggedInData.project.name}</>
+                      ) : (
+                        <>error</>
+                      )}
+                    </Box>
+                  </Stack>
+                </Box>
+              </Stack>
+
+              <Button
+                sx={{ color: "white", backgroundColor: "transparent" }}
+                endIcon={<ExitToAppIcon />}
+                onClick={() =>
+                  navigate(`/activity/details/Task/${ta.loggedInData.id}`)
                 }
               >
                 details

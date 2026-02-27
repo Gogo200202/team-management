@@ -1,7 +1,20 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Collapse,
+  IconButton,
+  type IconButtonProps,
+  styled,
+  Typography,
+} from "@mui/material";
 import dayjs from "dayjs";
 import { type FunctionComponent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import type { Team } from "../../../api/types/teamTypes";
 import type { User } from "../../../api/types/userTypes";
@@ -28,6 +41,12 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
     handelOpenDeleteDialog!();
     handleDeleteClick?.();
   }
+  const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   return (
     <Box>
       <Card sx={{ maxWidth: 345 }}>
@@ -58,6 +77,13 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
               </Button>
             </Box>
           </Box>
+          <CardActions disableSpacing>
+            <Button
+              onClick={() => navigate(`/activity/details/Team/${team.id}`)}
+            >
+              history
+            </Button>
+          </CardActions>
         </CardContent>
 
         <TeamFormComponent

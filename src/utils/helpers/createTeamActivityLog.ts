@@ -1,6 +1,7 @@
 import type { ActivityLog } from "../../api/types/activityLog";
 import type { Team } from "../../api/types/teamTypes";
 import type { User } from "../../api/types/userTypes";
+import { editLogBetweenUser } from "./editLogBetweenUser";
 
 export type TeamWithUsers = Omit<Team, "users"> & {
   users: User[];
@@ -12,6 +13,10 @@ export type TeamTypeOfLog = Omit<ActivityLog, "loggedInData"> & {
 export type TeamActivityLog = Omit<ActivityLog, "loggedInData"> & {
   loggedInData: TeamWithUsers;
 };
+
+export interface TeamActivityLogWithUpdates extends TeamActivityLog {
+  updates: string;
+}
 
 export function createTeamsActivityLogs(
   allActivityLog: ActivityLog[],
@@ -95,7 +100,35 @@ export function createTeamActivityLogWithId(
       };
     });
 
-  return teams;
+  const updates: string[] = [""];
+  if (teams.length > 1) {
+    for (let i = 0; i < teams.length; i++) {
+      if (teams[i + 1] == undefined) {
+        if (teams[i].typeOfLogin == "Delete") {
+          updates[i] = "";
+        }
+        break;
+      }
+      if (teams[i].typeOfLogin == "Delete") {
+        break;
+      }
+      let update = editLogBetweenUser(
+        teams[i].loggedInData.users,
+        teams[i + 1].loggedInData.users,
+      );
+
+      if (teams[i].loggedInData.name != teams[i + 1].loggedInData.name) {
+        update += `Team name changed to ${teams[i + 1].loggedInData.name} from ${teams[i].loggedInData.name}`;
+      }
+
+      updates.push(update);
+    }
+  }
+  const teamUpdates: TeamActivityLogWithUpdates = teams.map((x, index) => {
+    return { ...x, updates: updates[index] };
+  });
+
+  return teamUpdates;
 }
 
 export function createTeamActivityLog(

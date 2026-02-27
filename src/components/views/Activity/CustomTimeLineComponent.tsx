@@ -12,8 +12,9 @@ import { Typography } from "@mui/material";
 import dayjs from "dayjs";
 import type { FunctionComponent } from "react";
 
-import type { ProjectActivityWithAllData } from "../../../utils/helpers/createProjectActivityLog";
-import type { TeamActivityLog } from "../../../utils/helpers/createTeamActivityLog";
+import type { ProjectActivityWithAllDataWithUpdate } from "../../../utils/helpers/createProjectActivityLog";
+import type { TeamActivityLogWithUpdates } from "../../../utils/helpers/createTeamActivityLog";
+import type { ActivityWithTaskWithData } from "../../../utils/helpers/createTaskActivityLog";
 
 interface ActionIcons {
   action: string;
@@ -44,7 +45,8 @@ export const CustomTimeLineComponent: FunctionComponent<{
   itemLog;
 }> = ({ type, itemLog }) => {
   if (type == "Team") {
-    const itemLogTeam = itemLog as TeamActivityLog[];
+    const itemLogTeam = itemLog as TeamActivityLogWithUpdates[];
+
     return (
       <Timeline position="alternate">
         {itemLogTeam?.map((activity, index) => (
@@ -74,12 +76,17 @@ export const CustomTimeLineComponent: FunctionComponent<{
                 ))}
               </Typography>
               <Typography sx={{ fontSize: 20 }}>
-                created at:{" "}
+                Created at:{" "}
                 {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
               </Typography>
               <Typography sx={{ fontSize: 20 }}>
-                updated at:{" "}
+                Updated at:{" "}
                 {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
+              </Typography>
+              <Typography sx={{ fontSize: 20, color: "blue" }}>
+                {activity.updates.length != 0
+                  ? "Update log: " + activity.updates
+                  : ""}
               </Typography>
             </TimelineContent>
           </TimelineItem>
@@ -87,7 +94,7 @@ export const CustomTimeLineComponent: FunctionComponent<{
       </Timeline>
     );
   } else if (type == "Project") {
-    const itemLogProject = itemLog as ProjectActivityWithAllData[];
+    const itemLogProject = itemLog as ProjectActivityWithAllDataWithUpdate[];
     return (
       <Timeline position="alternate">
         {itemLogProject?.map((activity, index) => (
@@ -129,6 +136,55 @@ export const CustomTimeLineComponent: FunctionComponent<{
                 {activity.loggedInData.teams.map((team) => (
                   <>{team.name}</>
                 ))}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                created at:{" "}
+                {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                updated at:{" "}
+                {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                Updated log: {activity.update}
+              </Typography>
+            </TimelineContent>
+          </TimelineItem>
+        ))}
+      </Timeline>
+    );
+  } else if ((type = "Task")) {
+    const itemLogTask = itemLog as ActivityWithTaskWithData[];
+    return (
+      <Timeline position="alternate">
+        {itemLogTask?.map((activity, index) => (
+          <TimelineItem key={index}>
+            <TimelineOppositeContent
+              sx={{ m: "auto 0", fontSize: 20 }}
+              variant="body2"
+              color="text.secondary"
+            >
+              {dayjs(activity.createdAt).format("MM/DD/YYYY")}
+            </TimelineOppositeContent>
+            <TimelineSeparator>
+              <TimelineConnector />
+              <IconIfAction action={activity.typeOfLogin} />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent sx={{ py: "12px", px: 2 }}>
+              <Typography sx={{ fontSize: 40 }}>
+                Task {activity.loggedInData.title}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                Assigned User:{activity.loggedInData.assignedUser.firstName}{" "}
+                {activity.loggedInData.assignedUser.lastName}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                Reporter {activity.loggedInData.reporter.firstName}{" "}
+                {activity.loggedInData.reporter.lastName}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                Project: {activity.loggedInData.project.name}
               </Typography>
               <Typography sx={{ fontSize: 20 }}>
                 created at:{" "}
