@@ -16,10 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { useGetAllActivityLog } from "../api/activityController";
 import { useGetAllProjects } from "../api/projectController";
 import { useGetAllTeams } from "../api/teamController";
-import type { ActivityLog } from "../api/types/activityLog";
-import type { Project } from "../api/types/projectTypes";
-import type { Task } from "../api/types/taskType";
-import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
 import {
   createProjectActivityLog,

@@ -16,6 +16,10 @@ export type ActivityWithTaskWithData = Omit<ActivityLog, "loggedInData"> & {
   loggedInData: TaskWithData;
 };
 
+export interface ActivityWithTaskWithDataAndUpdate extends ActivityWithTaskWithData {
+  update: string;
+};
+
 type ActivityWithTask = Omit<ActivityLog, "loggedInData"> & {
   loggedInData: Task;
 };
@@ -24,7 +28,7 @@ export function createTaskActivityLog(
   allActivityLog: ActivityLog[],
   allUsers: User[],
   allProjects: Project[],
-) {
+): ActivityWithTaskWithData[] {
   const task = allActivityLog
     .filter((x) => x.typeOfData == "Task")
     .map((x) => {
@@ -79,7 +83,7 @@ export function createTaskActivityLogWithId(
   allUsers: User[],
   allProjects: Project[],
   idOfTask: string,
-) {
+):ActivityWithTaskWithDataAndUpdate[] {
   const task = allActivityLog
     .filter((x) => x.typeOfData == "Task")
     .map((x) => {
@@ -127,5 +131,59 @@ export function createTaskActivityLogWithId(
       } as ActivityWithTaskWithData;
     });
 
-  return task;
+    const updates: string[] = [""];
+      for (let i = 0; i <= task.length; i++) {
+        let update: string = "";
+        if (task[i + 1] == undefined) {
+          if (task[i].typeOfLogin == "Delete") {
+            updates[i] = "";
+          }
+          break;
+        }
+        if (task[i].typeOfLogin == "Delete") {
+          break;
+        }
+    
+        const task1 = task[i].loggedInData;
+        const task2 = task[i + 1].loggedInData;
+      if (task1.title !== task2.title) {
+        update += `Title changed from ${task1.title} to ${task2.title}`;
+      }
+      if (task1.description !== task2.description) {
+        update += ` Description changed from ${task1.description} to ${task2.description}`;
+      }
+      if (task1.status !== task2.status) {
+        update += ` Status changed from ${task1.status} to ${task2.status}`;
+      }
+      if (task1.priority !== task2.priority) {
+        update += ` Priority changed from ${task1.priority} to ${task2.priority}`;
+      }
+      if (task1.finishUntil !== task2.finishUntil) {
+        update += ` Finish until changed from ${task1.finishUntil} to ${task2.finishUntil}`;
+      }
+
+      if (task1.assignedUser !== task2.assignedUser) {
+        update += ` Assigned user changed from ${task1.assignedUser.firstName}  to ${task2.assignedUser.firstName}`;
+      }
+
+      if (task1.reporter !== task2.reporter) {
+        update += ` Reporter changed from ${task1.reporter.firstName}  to ${task2.reporter.firstName} `;
+      }
+
+
+        updates.push(update);
+      }
+
+      const taskWithUpdate: ActivityWithTaskWithDataAndUpdate[] = task.map((t, index) => {
+        return {
+          id: t.id,
+          createdAt: t.createdAt,
+          typeOfData: t.typeOfData,
+          typeOfLogin: t.typeOfLogin,
+          loggedInData: t.loggedInData,
+          update: updates[index],
+        } as ActivityWithTaskWithDataAndUpdate;
+      });
+
+  return taskWithUpdate;
 }

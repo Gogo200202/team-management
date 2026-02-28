@@ -141,6 +141,7 @@ export function createProjectActivityLogWithId(
 
     let addedTeam = "";
     let removedTeam = "";
+
     if (project[i].loggedInData.teams != project[i + 1].loggedInData.teams) {
       project[i + 1].loggedInData.teams
         .filter((e) => !project[i].loggedInData.teams.includes(e))

@@ -14,7 +14,7 @@ import type { FunctionComponent } from "react";
 
 import type { ProjectActivityWithAllDataWithUpdate } from "../../../utils/helpers/createProjectActivityLog";
 import type { TeamActivityLogWithUpdates } from "../../../utils/helpers/createTeamActivityLog";
-import type { ActivityWithTaskWithData } from "../../../utils/helpers/createTaskActivityLog";
+import type { ActivityWithTaskWithDataAndUpdate } from "../../../utils/helpers/createTaskActivityLog";
 
 interface ActionIcons {
   action: string;
@@ -154,7 +154,7 @@ export const CustomTimeLineComponent: FunctionComponent<{
       </Timeline>
     );
   } else if ((type = "Task")) {
-    const itemLogTask = itemLog as ActivityWithTaskWithData[];
+    const itemLogTask = itemLog as ActivityWithTaskWithDataAndUpdate[];
     return (
       <Timeline position="alternate">
         {itemLogTask?.map((activity, index) => (
@@ -193,6 +193,9 @@ export const CustomTimeLineComponent: FunctionComponent<{
               <Typography sx={{ fontSize: 20 }}>
                 updated at:{" "}
                 {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
+              </Typography>
+              <Typography sx={{ fontSize: 20 }}>
+                Updated log: {activity.update.length != 0 ? activity.update : ""}
               </Typography>
             </TimelineContent>
           </TimelineItem>
