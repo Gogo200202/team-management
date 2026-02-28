@@ -1,4 +1,4 @@
-import type { User } from "../../api/types/userTypes";
+import type { User } from "../../../api/types/userTypes";
 
 export function editLogBetweenUser(users1: User[], users2: User[]): string {
   let update = "";

@@ -20,15 +20,17 @@ import { useGetAllUsers } from "../api/user.controller";
 import {
   createProjectActivityLog,
   type ProjectActivityWithAllData,
-} from "../utils/helpers/createProjectActivityLog";
+} from "../utils/helpers/Activity/createProjectActivityLog";
 import {
   createTaskActivityLog,
   type ActivityWithTaskWithData,
-} from "../utils/helpers/createTaskActivityLog";
+} from "../utils/helpers/Activity/createTaskActivityLog";
 import {
   createTeamsActivityLogs,
   type TeamActivityLog,
-} from "../utils/helpers/createTeamActivityLog";
+} from "../utils/helpers/Activity/createTeamActivityLog";
+import { createUserActivityLog, type ActivityLogUser } from "../utils/helpers/Activity/createUserActivityLog";
+
 
 function ActivityLogPage() {
   const { data: allActivityLog, isSuccess } = useGetAllActivityLog();
@@ -44,6 +46,7 @@ function ActivityLogPage() {
   const [taskActivity, setTaskActivity] = useState<ActivityWithTaskWithData[]>(
     [],
   );
+  const [users, setUsers] = useState<ActivityLogUser[]>();
 
   useEffect(() => {
     if (isSuccess) {
@@ -62,6 +65,8 @@ function ActivityLogPage() {
         allProjects,
       );
 
+      const users = createUserActivityLog(allActivityLog);
+      setUsers(users.reverse());
       setTaskActivity(tasks.reverse());
       setTeamsActivity(teams.reverse());
       setProjectActivity(projects.reverse());
@@ -289,6 +294,65 @@ function ActivityLogPage() {
                 endIcon={<ExitToAppIcon />}
                 onClick={() =>
                   navigate(`/activity/details/Task/${ta.loggedInData.id}`)
+                }
+              >
+                details
+              </Button>
+            </Box>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>User</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {users?.map((user, index) => (
+            <Box
+              key={index}
+              sx={{
+                mb: 5,
+                display: "flex",
+                justifyContent: "space-between",
+
+                borderRadius: 1,
+              }}
+            >
+              <Stack>
+                <Box>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                    }}
+                  >
+                    Action: {statusColors.get(user.typeOfLogin)}
+                  </Box>
+                  <Box
+                    sx={{
+                      fontSize: 20,
+                      display: "flex",
+                    }}
+                  >
+                    <Box>User name</Box>:
+                    <Box
+                      sx={{
+                        borderRadius: 2,
+                        backgroundColor: `#${user.loggedInData.id}`,
+                      }}
+                    >
+                      {user.loggedInData.firstName} 
+                    </Box>
+                  </Box>
+                
+                </Box>
+              </Stack>
+
+              <Button
+                sx={{ color: "white", backgroundColor: "transparent" }}
+                endIcon={<ExitToAppIcon />}
+                onClick={() =>
+                  navigate(`/activity/details/User/${user.loggedInData.id}`)
                 }
               >
                 details

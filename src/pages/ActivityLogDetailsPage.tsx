@@ -7,9 +7,10 @@ import { useGetAllProjects } from "../api/projectController";
 import { useGetAllTeams } from "../api/teamController";
 import { useGetAllUsers } from "../api/user.controller";
 import { CustomTimeLineComponent } from "../components/views/Activity/CustomTimeLineComponent";
-import { createProjectActivityLogWithId } from "../utils/helpers/createProjectActivityLog";
-import { createTaskActivityLogWithId } from "../utils/helpers/createTaskActivityLog";
-import { createTeamActivityLogWithId } from "../utils/helpers/createTeamActivityLog";
+import { createProjectActivityLogWithId } from "../utils/helpers/Activity/createProjectActivityLog";
+import { createTaskActivityLogWithId } from "../utils/helpers/Activity/createTaskActivityLog";
+import { createTeamActivityLogWithId } from "../utils/helpers/Activity/createTeamActivityLog";
+import { createUserActivityLogWhitId } from "../utils/helpers/Activity/createUserActivityLog";
 
 export const ActivityLogDetailsPage = () => {
   const { itemId, type } = useParams();
@@ -33,19 +34,25 @@ export const ActivityLogDetailsPage = () => {
       } else if (type == "Project") {
         const projectResult = createProjectActivityLogWithId(
           allActivityLog,
-          allTeams,
-          allUsers,
-          itemId,
+          allTeams!,
+          allUsers!,
+          itemId!,
         );
         setItemLog(projectResult.reverse());
       } else if (type == "Task") {
         const task = createTaskActivityLogWithId(
           allActivityLog,
-          allUsers,
-          allProjects,
-          itemId,
+          allUsers!,
+          allProjects!,
+          itemId!,
         );
         setItemLog(task.reverse());
+      }else if (type == "User") {
+        const user = createUserActivityLogWhitId(
+          allActivityLog,
+          itemId!,
+        );
+        setItemLog(user.reverse());
       }
     }
   }, [allActivityLog, isSuccess]);

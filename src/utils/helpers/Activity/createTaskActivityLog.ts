@@ -1,7 +1,7 @@
-import type { ActivityLog } from "../../api/types/activityLog";
-import type { Project } from "../../api/types/projectTypes";
-import type { Task } from "../../api/types/taskType";
-import type { User } from "../../api/types/userTypes";
+import type { ActivityLog } from "../../../api/types/activityLog";
+import type { Project } from "../../../api/types/projectTypes";
+import type { Task } from "../../../api/types/taskType";
+import type { User } from "../../../api/types/userTypes";
 
 type TaskWithData = Omit<
   Task,

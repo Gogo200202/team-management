@@ -1,7 +1,7 @@
-import type { ActivityLog } from "../../api/types/activityLog";
-import type { Project } from "../../api/types/projectTypes";
-import type { Team } from "../../api/types/teamTypes";
-import type { User } from "../../api/types/userTypes";
+import type { ActivityLog } from "../../../api/types/activityLog";
+import type { Project } from "../../../api/types/projectTypes";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import { editLogBetweenUser } from "./editLogBetweenUser";
 
 type ProjectActivity = Omit<ActivityLog, "loggedInData"> & {

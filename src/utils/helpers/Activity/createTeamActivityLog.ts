@@ -1,6 +1,6 @@
-import type { ActivityLog } from "../../api/types/activityLog";
-import type { Team } from "../../api/types/teamTypes";
-import type { User } from "../../api/types/userTypes";
+import type { ActivityLog } from "../../../api/types/activityLog";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
 import { editLogBetweenUser } from "./editLogBetweenUser";
 
 export type TeamWithUsers = Omit<Team, "users"> & {

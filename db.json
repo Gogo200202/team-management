@@ -489,6 +489,27 @@
       "typeOfData": "Task",
       "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-02-27T14:43:00.731Z\"}",
       "createdAt": "2026-02-27T14:43:00.798Z"
+    },
+    {
+      "id": "50e0",
+      "typeOfLogin": "Create",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"1234\",\"updatedAt\":\"2026-02-28T10:16:47.311Z\"}",
+      "createdAt": "2026-02-28T10:16:47.393Z"
+    },
+    {
+      "id": "5b00",
+      "typeOfLogin": "Edit",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo123\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo123\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"1234\",\"updatedAt\":\"2026-02-28T10:27:40.175Z\"}",
+      "createdAt": "2026-02-28T10:27:40.205Z"
+    },
+    {
+      "id": "8d91",
+      "typeOfLogin": "Edit",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo123\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo123\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"123456\",\"updatedAt\":\"2026-02-28T10:34:51.939Z\"}",
+      "createdAt": "2026-02-28T10:34:51.971Z"
     }
   ],
   "teams": [
@@ -740,6 +761,16 @@
       "createdAt": "2026-02-26T09:54:59.536Z",
       "secretWord": "1234",
       "updatedAt": "2026-02-26T10:08:29.503Z"
+    },
+    {
+      "id": "a0e9",
+      "displayName": "TestUserCreate gogo123",
+      "email": "email@test.asd",
+      "firstName": "TestUserCreate",
+      "lastName": "gogo123",
+      "createdAt": "2026-02-28T10:16:47.311Z",
+      "secretWord": "123456",
+      "updatedAt": "2026-02-28T10:34:51.939Z"
     }
   ],
   "projects": [
