@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env.test.local" });
 
 
 

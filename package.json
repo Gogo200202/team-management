@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "server": "json-server --watch db.json --port 4000",
+    "testDb": "json-server --watch db.test.json --port 5000",
     "test": "jest"
   },
   "dependencies": {
