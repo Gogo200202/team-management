@@ -1,6 +1,36 @@
 {
-  "teams": [],
-  "users": [],
+  "teams": [
+    {
+      "id": "8e9c",
+      "name": "Test team Creation",
+      "users": [
+        "1"
+      ],
+      "createdAt": "2026-03-02T13:41:24.290Z",
+      "updatedAt": "2026-03-02T13:41:24.290Z"
+    },
+    {
+      "id": "a8f5",
+      "name": "Test team Creation",
+      "users": [
+        "1"
+      ],
+      "createdAt": "2026-03-02T14:47:31.655Z",
+      "updatedAt": "2026-03-02T14:47:31.655Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "displayName": "Alice Johnson",
+      "email": "alice@example.com",
+      "firstName": "Alice",
+      "lastName": "Johnson",
+      "createdAt": "2025-01-10T10:00:00Z",
+      "updatedAt": "2025-01-10T10:00:00Z",
+      "secretWord": "123456789"
+    }
+  ],
   "projects": [],
   "tasks": [],
   "roadmap": []

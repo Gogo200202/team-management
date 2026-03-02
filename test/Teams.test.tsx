@@ -4,6 +4,7 @@ import {
   fireEvent,
   renderHook,
   waitFor,
+  within,
 } from "@testing-library/react";
 import { TeamsPage } from "../src/pages/TeamsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -21,6 +22,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { routes } from "../src/pages/routes";
+import userEvent from "@testing-library/user-event";
+import TeamFormComponent from "../src/components/views/Teams/TeamFormComponent";
+import { SetStateAction } from "react";
 const router = createBrowserRouter(routes);
 const createWrapper = () => {
   const queryClient = new QueryClient({});
@@ -46,7 +50,7 @@ describe("Teams crud operation", () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toHaveLength(0);
+    expect(result.current.data).toHaveLength(1);
   });
   it("Create team", async () => {
     const { result } = renderHook(() => useCreateTeams(), {
@@ -86,25 +90,84 @@ describe("Teams crud operation", () => {
 });
 
 describe("Teams page", () => {
+  const routes = [
+    {
+      path: "/",
+      element: (
+        <QueryClientProvider client={new QueryClient({})}>
+          <TeamsPage />
+        </QueryClientProvider>
+      ),
+    },
+  ];
+
+  // 2. Create the Memory Router
+  const router = createMemoryRouter(routes, {
+    initialEntries: ["/"],
+  });
+
   it("renders Teams page", async () => {
-    const routes = [
+    render(<RouterProvider router={router} />);
+
+    expect(await screen.findByText(/Teams Page/i)).toBeInTheDocument();
+  });
+  it("open team details", async () => {
+    const user = userEvent.setup();
+    render(<RouterProvider router={router} />);
+    const button = screen.getByRole("button", { name: /Add new team/i });
+
+    await user.click(button);
+
+    expect(screen.getByText(/create team/i)).toBeVisible();
+  });
+
+  it("create team from form", async () => {
+    const user = userEvent.setup();
+
+    const routesForm = [
       {
         path: "/",
         element: (
           <QueryClientProvider client={new QueryClient({})}>
-            <TeamsPage />
+            <TeamFormComponent
+              allUsers={[
+                {
+                  id: "1",
+                  displayName: "Alice Johnson",
+                  email: "alice@example.com",
+                  firstName: "Alice",
+                  lastName: "Johnson",
+                  createdAt: "2025-01-10T10:00:00Z",
+                  updatedAt: "2025-01-10T10:00:00Z",
+                  secretWord: "123456789",
+                },
+              ]}
+              openDialog={true}
+              setOpenDialog={() => {}}
+            />
           </QueryClientProvider>
         ),
       },
     ];
 
-    // 2. Create the Memory Router
-    const router = createMemoryRouter(routes, {
+    const routerForm = createMemoryRouter(routesForm, {
       initialEntries: ["/"],
     });
+    render(<RouterProvider router={routerForm} />);
 
-    render(<RouterProvider router={router} />);
+    const nameInput = screen.getByLabelText(/Team Name/i);
+    const autocomplete = screen.getByLabelText(/Select users/i);
 
-    expect(await screen.findByText(/Teams Page/i)).toBeInTheDocument();
+    const submitButton = screen.getAllByText(/Agree/i)[1];
+
+    await user.type(nameInput, "Test team Creation");
+    await user.click(autocomplete);
+
+   // const listbox = screen.getByRole("combobox");
+
+    const option = await screen.findByRole('option', { name: /Alice/i });
+    await user.click(option);
+
+     await user.click(submitButton);
   });
 });
