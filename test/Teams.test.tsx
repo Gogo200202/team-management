@@ -25,7 +25,7 @@ import { routes } from "../src/pages/routes";
 import userEvent from "@testing-library/user-event";
 import TeamFormComponent from "../src/components/views/Teams/TeamFormComponent";
 import { SetStateAction } from "react";
-const router = createBrowserRouter(routes);
+
 const createWrapper = () => {
   const queryClient = new QueryClient({});
   return ({ children }) => (
@@ -33,11 +33,7 @@ const createWrapper = () => {
   );
 };
 
-describe("Jest start", () => {
-  it("test jest", () => {
-    expect(1).toBe(1);
-  });
-});
+
 
 describe("Teams crud operation", () => {
   let idOfTeam: string = "";
@@ -171,5 +167,5 @@ describe("Teams page", () => {
     render(<RouterProvider router={router} />);
    expect(screen.getAllByText(new RegExp(TeamName, "i"))[screen.getAllByText(new RegExp(TeamName, "i")).length - 1]).toBeInTheDocument();
   });
-  
+
 });

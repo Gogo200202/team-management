@@ -65,8 +65,8 @@ export const useEditUser = () => {
 
 export const useDeleteUser = () => {
   return useMutation({
-    mutationFn: async (id: number) => {
-      const { data: deletedUser } = await axiosClient.delete(`/users${id}`);
+    mutationFn: async (id: string) => {
+      const { data: deletedUser } = await axiosClient.delete(`/users/${id}`);
       return deletedUser;
     },
     onSuccess: () => {
