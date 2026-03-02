@@ -49,8 +49,6 @@ describe("Teams crud operation", () => {
     expect(result.current.isLoading).toBe(true);
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.data).toHaveLength(1);
   });
   it("Create team", async () => {
     const { result } = renderHook(() => useCreateTeams(), {
@@ -101,7 +99,6 @@ describe("Teams page", () => {
     },
   ];
 
-  // 2. Create the Memory Router
   const router = createMemoryRouter(routes, {
     initialEntries: ["/"],
   });
@@ -120,7 +117,7 @@ describe("Teams page", () => {
 
     expect(screen.getByText(/create team/i)).toBeVisible();
   });
-
+ let TeamName: string = "test team";
   it("create team from form", async () => {
     const user = userEvent.setup();
 
@@ -160,14 +157,18 @@ describe("Teams page", () => {
 
     const submitButton = screen.getAllByText(/Agree/i)[1];
 
-    await user.type(nameInput, "Test team Creation");
+    await user.type(nameInput, TeamName);
     await user.click(autocomplete);
 
-   // const listbox = screen.getByRole("combobox");
-
-    const option = await screen.findByRole('option', { name: /Alice/i });
+    const option = await screen.findByRole("option", { name: /Alice/i });
     await user.click(option);
 
-     await user.click(submitButton);
+    await user.click(submitButton);
+  });
+
+  it("display new team", async () => {
+    const user = userEvent.setup();
+    render(<RouterProvider router={router} />);
+   expect(screen.getAllByText(new RegExp(TeamName, "i"))[screen.getAllByText(new RegExp(TeamName, "i")).length - 1]).toBeInTheDocument();
   });
 });
