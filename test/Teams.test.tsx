@@ -171,4 +171,5 @@ describe("Teams page", () => {
     render(<RouterProvider router={router} />);
    expect(screen.getAllByText(new RegExp(TeamName, "i"))[screen.getAllByText(new RegExp(TeamName, "i")).length - 1]).toBeInTheDocument();
   });
+  
 });
