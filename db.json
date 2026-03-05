@@ -1,34 +1,544 @@
 {
+  "activity_log": [
+    {
+      "id": "d43f",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"9625\",\"adminIds\":[\"2\"],\"memberIds\":[\"3\"],\"teamIds\":[\"f84d\"],\"description\":\"asdasd\",\"name\":\"sdfvxc\",\"status\":\"active\",\"createdAt\":\"2026-02-26T13:22:08.244Z\",\"updatedAt\":\"2026-02-26T13:22:08.244Z\"}",
+      "createdAt": "2026-02-26T13:33:49.781Z"
+    },
+    {
+      "id": "3066",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e421\",\"adminIds\":[\"2\",\"3\"],\"memberIds\":[\"2\",\"3\"],\"teamIds\":[\"f84d\"],\"description\":\"asdasd\",\"name\":\"Test Ac\",\"status\":\"active\",\"createdAt\":\"2026-02-26T13:34:13.012Z\",\"updatedAt\":\"2026-02-26T13:34:13.012Z\"}",
+      "createdAt": "2026-02-26T13:34:13.127Z"
+    },
+    {
+      "id": "572b",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"a451\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"progress\",\"priority\":\"high\",\"projectId\":\"e421\",\"finishUntil\":\"Thu, 26 Feb 2026 13:37:07 GMT\",\"createdAt\":\"2026-02-26T13:37:26.016Z\",\"updatedAt\":\"2026-02-26T13:37:26.016Z\"}",
+      "createdAt": "2026-02-26T13:37:26.486Z"
+    },
+    {
+      "id": "8369",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e421\",\"adminIds\":[\"2\",\"3\"],\"memberIds\":[\"2\",\"3\"],\"teamIds\":[\"f84d\"],\"description\":\"asdasd\",\"name\":\"Test Ac\",\"status\":\"active\",\"createdAt\":\"2026-02-26T13:34:13.012Z\",\"updatedAt\":\"2026-02-26T13:34:13.012Z\"}",
+      "createdAt": "2026-02-26T13:38:27.949Z"
+    },
+    {
+      "id": "9af7",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"417e\",\"adminIds\":[],\"memberIds\":[],\"teamIds\":[],\"description\":\"\",\"name\":\"\",\"status\":\"paused\",\"createdAt\":\"2026-02-26T14:22:10.230Z\",\"updatedAt\":\"2026-02-26T14:22:10.232Z\"}",
+      "createdAt": "2026-02-26T14:22:10.311Z"
+    },
+    {
+      "id": "1dcb",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"c6ad\",\"adminIds\":[],\"memberIds\":[],\"teamIds\":[],\"description\":\"\",\"name\":\"\",\"status\":\"paused\",\"createdAt\":\"2026-02-26T14:22:14.738Z\",\"updatedAt\":\"2026-02-26T14:22:14.738Z\"}",
+      "createdAt": "2026-02-26T14:22:14.814Z"
+    },
+    {
+      "id": "a30a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0af7\",\"name\":\"qwe\",\"users\":[\"1\"],\"createdAt\":\"2026-02-26T14:23:02.970Z\",\"updatedAt\":\"2026-02-26T14:23:02.970Z\"}",
+      "createdAt": "2026-02-26T14:23:03.017Z"
+    },
+    {
+      "id": "8c55",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"76f2\",\"name\":\"efd\",\"users\":[\"3\"],\"createdAt\":\"2026-02-26T14:24:17.700Z\",\"updatedAt\":\"2026-02-26T14:24:17.700Z\"}",
+      "createdAt": "2026-02-26T14:24:17.773Z"
+    },
+    {
+      "id": "65e7",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"76f2\",\"name\":\"efd\",\"users\":[\"3\"],\"createdAt\":\"2026-02-26T14:24:17.700Z\",\"updatedAt\":\"2026-02-26T14:24:17.700Z\"}",
+      "createdAt": "2026-02-26T14:24:49.821Z"
+    },
+    {
+      "id": "a42d",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"c6ad\",\"adminIds\":[],\"memberIds\":[],\"teamIds\":[],\"description\":\"\",\"name\":\"\",\"status\":\"paused\",\"createdAt\":\"2026-02-26T14:22:14.738Z\",\"updatedAt\":\"2026-02-26T14:22:14.738Z\"}",
+      "createdAt": "2026-02-26T14:25:22.998Z"
+    },
+    {
+      "id": "2b61",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"417e\",\"adminIds\":[],\"memberIds\":[],\"teamIds\":[],\"description\":\"\",\"name\":\"\",\"status\":\"paused\",\"createdAt\":\"2026-02-26T14:22:10.230Z\",\"updatedAt\":\"2026-02-26T14:22:10.232Z\"}",
+      "createdAt": "2026-02-26T14:25:25.137Z"
+    },
+    {
+      "id": "022a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"989e\",\"adminIds\":[\"1\"],\"memberIds\":[\"1\"],\"teamIds\":[\"f84d\"],\"description\":\"asd\",\"name\":\"Test\",\"status\":\"active\",\"createdAt\":\"2026-02-26T15:13:37.235Z\",\"updatedAt\":\"2026-02-26T15:13:37.235Z\"}",
+      "createdAt": "2026-02-26T15:13:37.337Z"
+    },
+    {
+      "id": "a6d2",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"989e\",\"adminIds\":[\"1\"],\"memberIds\":[\"1\",\"2\"],\"teamIds\":[\"f84d\",\"0af7\"],\"description\":\"asd\",\"name\":\"Testasdasd\",\"status\":\"active\",\"createdAt\":\"2026-02-26T15:13:37.235Z\",\"updatedAt\":\"2026-02-26T15:14:08.483Z\"}",
+      "createdAt": "2026-02-26T15:14:08.585Z"
+    },
+    {
+      "id": "b56c",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"989e\",\"adminIds\":[\"1\"],\"memberIds\":[\"1\",\"2\"],\"teamIds\":[\"f84d\",\"0af7\"],\"description\":\"asd\",\"name\":\"Testasdasd\",\"status\":\"active\",\"createdAt\":\"2026-02-26T15:13:37.235Z\",\"updatedAt\":\"2026-02-26T15:14:08.483Z\"}",
+      "createdAt": "2026-02-26T15:14:32.472Z"
+    },
+    {
+      "id": "ae8a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"e68d\",\"name\":\"34wer\",\"users\":[\"2\"],\"createdAt\":\"2026-02-26T15:21:26.515Z\",\"updatedAt\":\"2026-02-26T15:21:26.515Z\"}",
+      "createdAt": "2026-02-26T15:21:26.548Z"
+    },
+    {
+      "id": "c05d",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"e68d\",\"name\":\"qweqwe34wer\",\"users\":[\"2\"],\"createdAt\":\"2026-02-26 17:21:26\",\"updatedAt\":\"2026-02-26T15:21:31.942Z\"}",
+      "createdAt": "2026-02-26T15:21:31.972Z"
+    },
+    {
+      "id": "42f5",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"e68d\",\"name\":\"qweqwe34wer\",\"users\":[\"3\"],\"createdAt\":\"2026-02-26 17:21:26\",\"updatedAt\":\"2026-02-26T15:21:39.236Z\"}",
+      "createdAt": "2026-02-26T15:21:39.253Z"
+    },
+    {
+      "id": "59e6",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test coller\",\"users\":[\"2\"],\"createdAt\":\"2026-02-27T08:08:04.632Z\",\"updatedAt\":\"2026-02-27T08:08:04.632Z\"}",
+      "createdAt": "2026-02-27T08:08:04.658Z"
+    },
+    {
+      "id": "9fd3",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasd\",\"users\":[\"2\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T08:08:15.985Z\"}",
+      "createdAt": "2026-02-27T08:08:16.002Z"
+    },
+    {
+      "id": "2de0",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasd\",\"users\":[],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T08:08:19.076Z\"}",
+      "createdAt": "2026-02-27T08:08:19.087Z"
+    },
+    {
+      "id": "5b7a",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"2\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:09:53.555Z\"}",
+      "createdAt": "2026-02-27T09:09:53.713Z"
+    },
+    {
+      "id": "1380",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"2\",\"1\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:45:06.013Z\"}",
+      "createdAt": "2026-02-27T09:45:06.163Z"
+    },
+    {
+      "id": "071c",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:57:31.021Z\"}",
+      "createdAt": "2026-02-27T09:57:31.174Z"
+    },
+    {
+      "id": "8216",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"1\",\"1\",\"ba58\",\"1\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:57:38.744Z\"}",
+      "createdAt": "2026-02-27T09:57:38.774Z"
+    },
+    {
+      "id": "9385",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:58:18.271Z\"}",
+      "createdAt": "2026-02-27T09:58:18.300Z"
+    },
+    {
+      "id": "a2e1",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"3\",\"2\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T09:58:23.852Z\"}",
+      "createdAt": "2026-02-27T09:58:23.884Z"
+    },
+    {
+      "id": "904d",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"a277\",\"f11b\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T10:05:29.870Z\"}",
+      "createdAt": "2026-02-27T10:05:30.024Z"
+    },
+    {
+      "id": "588f",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0f7d\",\"name\":\"test collerasdoieqwjkl\",\"users\":[\"a277\",\"f11b\"],\"createdAt\":\"2026-02-27 10:08:04\",\"updatedAt\":\"2026-02-27T10:05:29.870Z\"}",
+      "createdAt": "2026-02-27T11:15:31.774Z"
+    },
+    {
+      "id": "dd5c",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"4af2\",\"name\":\"test user\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T11:26:35.318Z\",\"updatedAt\":\"2026-02-27T11:26:35.319Z\"}",
+      "createdAt": "2026-02-27T11:26:35.359Z"
+    },
+    {
+      "id": "7bf5",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"4af2\",\"name\":\"test user\",\"users\":[\"1\",\"2\"],\"createdAt\":\"2026-02-27 13:26:35\",\"updatedAt\":\"2026-02-27T11:26:56.192Z\"}",
+      "createdAt": "2026-02-27T11:26:56.207Z"
+    },
+    {
+      "id": "4b97",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"4af2\",\"name\":\"test user\",\"users\":[\"1\",\"2\",\"3\"],\"createdAt\":\"2026-02-27 13:26:35\",\"updatedAt\":\"2026-02-27T11:27:23.333Z\"}",
+      "createdAt": "2026-02-27T11:27:23.351Z"
+    },
+    {
+      "id": "931a",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"4af2\",\"name\":\"test user3ewdas\",\"users\":[\"3\"],\"createdAt\":\"2026-02-27 13:26:35\",\"updatedAt\":\"2026-02-27T11:28:17.676Z\"}",
+      "createdAt": "2026-02-27T11:28:17.766Z"
+    },
+    {
+      "id": "5513",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"4af2\",\"name\":\"test user3ewdas\",\"users\":[\"3\"],\"createdAt\":\"2026-02-27 13:26:35\",\"updatedAt\":\"2026-02-27T11:28:17.676Z\"}",
+      "createdAt": "2026-02-27T11:28:35.060Z"
+    },
+    {
+      "id": "b589",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"a11d\",\"name\":\"qwsda\",\"users\":[\"3\"],\"createdAt\":\"2026-02-27T11:32:04.263Z\",\"updatedAt\":\"2026-02-27T11:32:04.263Z\"}",
+      "createdAt": "2026-02-27T11:32:04.290Z"
+    },
+    {
+      "id": "670c",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"a11d\",\"name\":\"qwsda\",\"users\":[\"3\"],\"createdAt\":\"2026-02-27T11:32:04.263Z\",\"updatedAt\":\"2026-02-27T11:32:04.263Z\"}",
+      "createdAt": "2026-02-27T11:32:07.780Z"
+    },
+    {
+      "id": "fa76",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"7f27\",\"name\":\"teat act update\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T11:35:43.161Z\",\"updatedAt\":\"2026-02-27T11:35:43.161Z\"}",
+      "createdAt": "2026-02-27T11:35:43.193Z"
+    },
+    {
+      "id": "6c68",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"7f27\",\"name\":\"teat act update\",\"users\":[\"2\"],\"createdAt\":\"2026-02-27 13:35:43\",\"updatedAt\":\"2026-02-27T11:35:51.140Z\"}",
+      "createdAt": "2026-02-27T11:35:51.163Z"
+    },
+    {
+      "id": "0d57",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"7f27\",\"name\":\"teat act update\",\"users\":[\"2\",\"1\"],\"createdAt\":\"2026-02-27 13:35:43\",\"updatedAt\":\"2026-02-27T11:35:56.782Z\"}",
+      "createdAt": "2026-02-27T11:35:56.806Z"
+    },
+    {
+      "id": "7294",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"7f27\",\"name\":\"teat act update\",\"users\":[\"2\",\"1\"],\"createdAt\":\"2026-02-27 13:35:43\",\"updatedAt\":\"2026-02-27T11:35:56.782Z\"}",
+      "createdAt": "2026-02-27T11:35:59.777Z"
+    },
+    {
+      "id": "f56f",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test history\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T12:55:47.077Z\",\"updatedAt\":\"2026-02-27T12:55:47.077Z\"}",
+      "createdAt": "2026-02-27T12:55:47.110Z"
+    },
+    {
+      "id": "9895",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test history\",\"users\":[\"1\",\"3\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:56:02.468Z\"}",
+      "createdAt": "2026-02-27T12:56:02.491Z"
+    },
+    {
+      "id": "270e",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test history\",\"users\":[\"1\",\"3\",\"2\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:56:21.866Z\"}",
+      "createdAt": "2026-02-27T12:56:21.891Z"
+    },
+    {
+      "id": "2c3c",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test history\",\"users\":[\"1\",\"3\",\"2\",\"1\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:56:39.959Z\"}",
+      "createdAt": "2026-02-27T12:56:39.991Z"
+    },
+    {
+      "id": "18db",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"f496\",\"name\":\"\",\"users\":[],\"createdAt\":\"2026-02-27T12:57:11.898Z\",\"updatedAt\":\"2026-02-27T12:57:11.898Z\"}",
+      "createdAt": "2026-02-27T12:57:11.932Z"
+    },
+    {
+      "id": "9902",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test history\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:58:25.157Z\"}",
+      "createdAt": "2026-02-27T12:58:25.183Z"
+    },
+    {
+      "id": "7092",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test historyiokl\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:58:54.648Z\"}",
+      "createdAt": "2026-02-27T12:58:54.674Z"
+    },
+    {
+      "id": "c264",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test historyiokl\",\"users\":[\"1\",\"3\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:59:18.334Z\"}",
+      "createdAt": "2026-02-27T12:59:18.362Z"
+    },
+    {
+      "id": "0e5a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"5e3c\",\"name\":\"asd\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T13:01:36.627Z\",\"updatedAt\":\"2026-02-27T13:01:36.627Z\"}",
+      "createdAt": "2026-02-27T13:01:36.668Z"
+    },
+    {
+      "id": "d784",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"1168\",\"name\":\"test historyiokl\",\"users\":[\"1\",\"3\"],\"createdAt\":\"2026-02-27 14:55:47\",\"updatedAt\":\"2026-02-27T12:59:18.334Z\"}",
+      "createdAt": "2026-02-27T13:03:56.458Z"
+    },
+    {
+      "id": "1d41",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"f84d\",\"name\":\"tsasd\",\"users\":[\"8816\",\"2\"],\"createdAt\":\"2026-02-26 14:25:00\",\"updatedAt\":\"2026-02-26T12:26:00.458Z\"}",
+      "createdAt": "2026-02-27T13:04:00.600Z"
+    },
+    {
+      "id": "867c",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"0af7\",\"name\":\"qwe\",\"users\":[\"1\"],\"createdAt\":\"2026-02-26T14:23:02.970Z\",\"updatedAt\":\"2026-02-26T14:23:02.970Z\"}",
+      "createdAt": "2026-02-27T13:04:03.699Z"
+    },
+    {
+      "id": "f137",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"e68d\",\"name\":\"qweqwe34wer\",\"users\":[\"3\"],\"createdAt\":\"2026-02-26 17:21:26\",\"updatedAt\":\"2026-02-26T15:21:39.236Z\"}",
+      "createdAt": "2026-02-27T13:04:06.427Z"
+    },
+    {
+      "id": "16e6",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"f496\",\"name\":\"\",\"users\":[],\"createdAt\":\"2026-02-27T12:57:11.898Z\",\"updatedAt\":\"2026-02-27T12:57:11.898Z\"}",
+      "createdAt": "2026-02-27T13:04:09.026Z"
+    },
+    {
+      "id": "c31b",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"5e3c\",\"name\":\"asd\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T13:01:36.627Z\",\"updatedAt\":\"2026-02-27T13:01:36.627Z\"}",
+      "createdAt": "2026-02-27T13:04:12.022Z"
+    },
+    {
+      "id": "fc2f",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"08de\",\"name\":\"sadx\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T13:04:19.406Z\",\"updatedAt\":\"2026-02-27T13:04:19.406Z\"}",
+      "createdAt": "2026-02-27T13:04:19.442Z"
+    },
+    {
+      "id": "729a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"aec5\",\"name\":\"asd\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27T13:04:59.020Z\",\"updatedAt\":\"2026-02-27T13:04:59.020Z\"}",
+      "createdAt": "2026-02-27T13:04:59.054Z"
+    },
+    {
+      "id": "9290",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"9e66\",\"name\":\"teas\",\"users\":[\"2\"],\"createdAt\":\"2026-02-27T13:05:43.010Z\",\"updatedAt\":\"2026-02-27T13:05:43.010Z\"}",
+      "createdAt": "2026-02-27T13:05:43.054Z"
+    },
+    {
+      "id": "7f1f",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"aec5\",\"name\":\"asd\",\"users\":[\"1\",\"3\",\"ba58\"],\"createdAt\":\"2026-02-27 15:04:59\",\"updatedAt\":\"2026-02-27T13:08:12.824Z\"}",
+      "createdAt": "2026-02-27T13:08:12.856Z"
+    },
+    {
+      "id": "65ba",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"aec5\",\"name\":\"asd\",\"users\":[\"a277\"],\"createdAt\":\"2026-02-27 15:04:59\",\"updatedAt\":\"2026-02-27T13:08:34.370Z\"}",
+      "createdAt": "2026-02-27T13:08:34.398Z"
+    },
+    {
+      "id": "dc03",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"aec5\",\"name\":\"asd\",\"users\":[\"1\"],\"createdAt\":\"2026-02-27 15:04:59\",\"updatedAt\":\"2026-02-27T13:14:48.153Z\"}",
+      "createdAt": "2026-02-27T13:14:48.325Z"
+    },
+    {
+      "id": "fac8",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"5bed\",\"adminIds\":[\"1\"],\"memberIds\":[\"1\"],\"teamIds\":[\"08de\"],\"description\":\"asdasd\",\"name\":\"test activity\",\"status\":\"active\",\"createdAt\":\"2026-02-27T13:21:03.468Z\",\"updatedAt\":\"2026-02-27T13:21:03.468Z\"}",
+      "createdAt": "2026-02-27T13:21:03.550Z"
+    },
+    {
+      "id": "8eb4",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"5bed\",\"adminIds\":[\"1\",\"a277\"],\"memberIds\":[\"1\",\"2\"],\"teamIds\":[\"08de\"],\"description\":\"asdasd\",\"name\":\"test activity\",\"status\":\"active\",\"createdAt\":\"2026-02-27T13:21:03.468Z\",\"updatedAt\":\"2026-02-27T13:48:57.246Z\"}",
+      "createdAt": "2026-02-27T13:48:57.330Z"
+    },
+    {
+      "id": "4827",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"5bed\",\"adminIds\":[\"1\",\"a277\"],\"memberIds\":[\"1\",\"2\"],\"teamIds\":[\"08de\",\"9e66\",\"aec5\"],\"description\":\"asdasd\",\"name\":\"test activity\",\"status\":\"active\",\"createdAt\":\"2026-02-27T13:21:03.468Z\",\"updatedAt\":\"2026-02-27T13:54:53.353Z\"}",
+      "createdAt": "2026-02-27T13:54:53.514Z"
+    },
+    {
+      "id": "b462",
+      "typeOfLogin": "Create",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\"],\"memberIds\":[\"2\"],\"teamIds\":[\"08de\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-02-27T14:07:49.548Z\"}",
+      "createdAt": "2026-02-27T14:07:49.641Z"
+    },
+    {
+      "id": "d2de",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\",\"8816\"],\"memberIds\":[\"2\",\"3\"],\"teamIds\":[\"08de\",\"aec5\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-02-27T14:08:09.013Z\"}",
+      "createdAt": "2026-02-27T14:08:09.104Z"
+    },
+    {
+      "id": "ef08",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\",\"8816\"],\"memberIds\":[\"2\",\"3\"],\"teamIds\":[\"08de\",\"aec5\",\"9e66\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-02-27T14:10:58.180Z\"}",
+      "createdAt": "2026-02-27T14:10:58.315Z"
+    },
+    {
+      "id": "a6c5",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\",\"8816\"],\"memberIds\":[\"2\",\"3\"],\"teamIds\":[],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-02-27T14:21:37.143Z\"}",
+      "createdAt": "2026-02-27T14:21:37.280Z"
+    },
+    {
+      "id": "dd4e",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"1\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-02-27T14:42:43.196Z\"}",
+      "createdAt": "2026-02-27T14:42:43.378Z"
+    },
+    {
+      "id": "0e62",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"f172\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:29.000Z\",\"createdAt\":\"2026-02-27T14:42:54.211Z\",\"updatedAt\":\"2026-02-27T14:42:54.211Z\"}",
+      "createdAt": "2026-02-27T14:42:54.276Z"
+    },
+    {
+      "id": "df39",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-02-27T14:43:00.731Z\"}",
+      "createdAt": "2026-02-27T14:43:00.798Z"
+    },
+    {
+      "id": "50e0",
+      "typeOfLogin": "Create",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"1234\",\"updatedAt\":\"2026-02-28T10:16:47.311Z\"}",
+      "createdAt": "2026-02-28T10:16:47.393Z"
+    },
+    {
+      "id": "5b00",
+      "typeOfLogin": "Edit",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo123\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo123\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"1234\",\"updatedAt\":\"2026-02-28T10:27:40.175Z\"}",
+      "createdAt": "2026-02-28T10:27:40.205Z"
+    },
+    {
+      "id": "8d91",
+      "typeOfLogin": "Edit",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo123\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo123\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"123456\",\"updatedAt\":\"2026-02-28T10:34:51.939Z\"}",
+      "createdAt": "2026-02-28T10:34:51.971Z"
+    }
+  ],
   "teams": [
     {
-      "id": "aec6",
-      "name": "alfa asdasd",
-      "users": [
-        "1",
-        "2",
-        "3"
-      ],
-      "createdAt": "2026-02-19 17:20:29",
-      "updatedAt": "2026-02-19T15:46:33.560Z"
-    },
-    {
-      "id": "b4e9",
-      "name": "neshto",
-      "users": [
-        2,
-        8816
-      ],
-      "createdAt": "2026-02-19T15:24:46.117Z",
-      "updatedAt": "2026-02-19T15:24:46.117Z"
-    },
-    {
-      "id": "a2c6",
-      "name": "test",
+      "id": "08de",
+      "name": "sadx",
       "users": [
         "1"
       ],
-      "createdAt": "2026-02-19 17:24:56",
-      "updatedAt": "2026-02-20T12:28:34.381Z"
+      "createdAt": "2026-02-27T13:04:19.406Z",
+      "updatedAt": "2026-02-27T13:04:19.406Z"
+    },
+    {
+      "id": "aec5",
+      "name": "asd",
+      "users": [
+        "1"
+      ],
+      "createdAt": "2026-02-27 15:04:59",
+      "updatedAt": "2026-02-27T13:14:48.153Z"
+    },
+    {
+      "id": "9e66",
+      "name": "teas",
+      "users": [
+        "2"
+      ],
+      "createdAt": "2026-02-27T13:05:43.010Z",
+      "updatedAt": "2026-02-27T13:05:43.010Z"
     }
   ],
   "users": [
@@ -241,23 +751,66 @@
       "createdAt": "2026-02-23T08:02:56.623Z",
       "secretWord": "1234",
       "updatedAt": "2026-02-23T08:02:56.623Z"
+    },
+    {
+      "id": "5e81",
+      "displayName": "teat editasd123 asd1asdasd",
+      "email": "asdqw@12.c",
+      "firstName": "teat editasd123",
+      "lastName": "asd1asdasd",
+      "createdAt": "2026-02-26T09:54:59.536Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-02-26T10:08:29.503Z"
+    },
+    {
+      "id": "a0e9",
+      "displayName": "TestUserCreate gogo123",
+      "email": "email@test.asd",
+      "firstName": "TestUserCreate",
+      "lastName": "gogo123",
+      "createdAt": "2026-02-28T10:16:47.311Z",
+      "secretWord": "123456",
+      "updatedAt": "2026-02-28T10:34:51.939Z"
     }
   ],
   "projects": [
     {
-      "id": "5ef7",
-      "adminIds": [],
+      "id": "5bed",
+      "adminIds": [
+        "1",
+        "a277"
+      ],
       "memberIds": [
-        "1"
+        "1",
+        "2"
       ],
       "teamIds": [
-        "b4e9"
+        "08de",
+        "9e66",
+        "aec5"
       ],
       "description": "asdasd",
-      "name": "neshto",
+      "name": "test activity",
       "status": "active",
-      "createdAt": "2026-02-19T15:46:03.359Z",
-      "updatedAt": "2026-02-20T12:57:20.471Z"
+      "createdAt": "2026-02-27T13:21:03.468Z",
+      "updatedAt": "2026-02-27T13:54:53.353Z"
+    },
+    {
+      "id": "e046",
+      "adminIds": [
+        "1",
+        "8816"
+      ],
+      "memberIds": [
+        "2",
+        "3"
+      ],
+      "teamIds": [],
+      "description": "asd",
+      "name": "test 2",
+      "status": "paused",
+      "createdAt": "2026-02-27T14:07:49.548Z",
+      "updatedAt": "2026-02-27T14:21:37.143Z"
     }
   ],
   "tasks": [
@@ -267,7 +820,7 @@
       "description": "Basic screens for dashboard",
       "status": "todo",
       "priority": "low",
-      "projectId": "5ef7",
+      "projectId": null,
       "assignedUserId": "2",
       "createdAt": "2025-01-10T10:00:00Z",
       "updatedAt": "2025-01-10T10:00:00Z",
@@ -316,7 +869,7 @@
       "description": "test",
       "status": "complete",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-26T22:00:00.000Z",
       "createdAt": "2026-02-23T11:05:22.381Z",
       "updatedAt": "2026-02-24T12:07:55.761Z"
@@ -328,7 +881,7 @@
       "description": "1",
       "status": "todo",
       "priority": "medium",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-26T22:00:00.000Z",
       "createdAt": "2026-02-24T07:46:24.383Z",
       "updatedAt": "2026-02-24T08:55:32.741Z"
@@ -340,7 +893,7 @@
       "description": "asd",
       "status": "inprogress",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-27T22:00:00.000Z",
       "createdAt": "2026-02-24T08:58:32.891Z",
       "updatedAt": "2026-02-24T09:03:54.255Z"
@@ -352,7 +905,7 @@
       "description": "asd",
       "status": "inprogress",
       "priority": "low",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-01-31T22:00:00.000Z",
       "createdAt": "2026-02-24T09:05:22.014Z",
       "updatedAt": "2026-02-24T09:05:22.014Z"
@@ -364,7 +917,7 @@
       "description": "wer",
       "status": "todo",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-28T11:55:25.000Z",
       "createdAt": "2026-02-24T11:55:37.774Z",
       "updatedAt": "2026-02-24T11:55:37.774Z"
@@ -376,10 +929,101 @@
       "description": "we",
       "status": "inprogress",
       "priority": "high",
-      "projectId": "5ef7",
+      "projectId": null,
       "finishUntil": "2026-02-23T22:00:00.000Z",
       "createdAt": "2026-02-24T11:56:10.694Z",
       "updatedAt": "2026-02-24T12:07:18.526Z"
+    },
+    {
+      "id": "4a3b",
+      "reporterId": "3d00",
+      "title": "qwe",
+      "assignedUserId": "1",
+      "description": "qwe",
+      "status": "progress",
+      "priority": "high",
+      "projectId": null,
+      "finishUntil": "Thu, 26 Feb 2026 09:31:56 GMT",
+      "createdAt": "2026-02-26T09:32:10.548Z",
+      "updatedAt": "2026-02-26T09:32:10.548Z"
+    },
+    {
+      "id": "2b77",
+      "reporterId": "3d00",
+      "title": "asd",
+      "assignedUserId": "2",
+      "description": "asd",
+      "status": "todo",
+      "priority": "high",
+      "projectId": null,
+      "finishUntil": "Thu, 26 Feb 2026 09:33:01 GMT",
+      "createdAt": "2026-02-26T09:33:12.216Z",
+      "updatedAt": "2026-02-26T09:33:12.216Z"
+    },
+    {
+      "id": "7339",
+      "reporterId": "3d00",
+      "title": "asd",
+      "assignedUserId": "2",
+      "description": "asd",
+      "status": "progress",
+      "priority": "high",
+      "projectId": null,
+      "finishUntil": "Thu, 26 Feb 2026 09:33:19 GMT",
+      "createdAt": "2026-02-26T09:33:37.546Z",
+      "updatedAt": "2026-02-26T09:33:37.546Z"
+    },
+    {
+      "id": "8f12",
+      "reporterId": "3d00",
+      "title": "asd",
+      "assignedUserId": "2",
+      "description": "asd",
+      "status": "todo",
+      "priority": "high",
+      "projectId": null,
+      "finishUntil": "2026-02-28T09:45:23.000Z",
+      "createdAt": "2026-02-26T09:48:06.179Z",
+      "updatedAt": "2026-02-26T09:48:06.179Z"
+    },
+    {
+      "id": "a451",
+      "reporterId": "5e81",
+      "title": "asd",
+      "assignedUserId": "1",
+      "description": "asd",
+      "status": "progress",
+      "priority": "high",
+      "projectId": null,
+      "finishUntil": "Thu, 26 Feb 2026 13:37:07 GMT",
+      "createdAt": "2026-02-26T13:37:26.016Z",
+      "updatedAt": "2026-02-26T13:37:26.016Z"
+    },
+    {
+      "id": "be13",
+      "reporterId": "5e81",
+      "title": "test task",
+      "assignedUserId": "8816",
+      "description": "asdasd",
+      "status": "todo",
+      "priority": "high",
+      "projectId": "5bed",
+      "finishUntil": "2026-02-28T14:42:24.000Z",
+      "createdAt": "2026-02-27T14:42:43.196Z",
+      "updatedAt": "2026-02-27T14:43:00.731Z"
+    },
+    {
+      "id": "f172",
+      "reporterId": "5e81",
+      "title": "asd",
+      "assignedUserId": "1",
+      "description": "asd",
+      "status": "todo",
+      "priority": "high",
+      "projectId": "5bed",
+      "finishUntil": "2026-02-28T14:42:29.000Z",
+      "createdAt": "2026-02-27T14:42:54.211Z",
+      "updatedAt": "2026-02-27T14:42:54.211Z"
     }
   ],
   "roadmap": [
@@ -511,7 +1155,7 @@
       "id": "4",
       "title": "Phase 4 — Tasks Module",
       "description": "Full CRUD task management with status, priority, and assignment. Implement task list filtering and sorting.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "4-1",
@@ -536,7 +1180,7 @@
         {
           "id": "4-5",
           "title": "Implement Task Filtering & Sorting",
-          "completed": false
+          "completed": true
         }
       ]
     },

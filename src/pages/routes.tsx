@@ -3,6 +3,8 @@ import { Outlet, type RouteObject } from "react-router-dom";
 import Layout from "../components/layout/Layout";
 import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
 import withAuth from "../middleware/withAuth";
+import { ActivityLogDetailsPage } from "./ActivityLogDetailsPage";
+import ActivityLogPage from "./ActivityLogPage";
 import { EditUserPage } from "./EditUserPage";
 import ErrorPage from "./ErrorPage";
 import { LogInPage } from "./LogInPage";
@@ -40,6 +42,14 @@ export const routes: RouteObject[] = [
       {
         path: "projects/details/:projectsId",
         element: <ProjectPageDetail />,
+      },
+      {
+        path: "activity",
+        element: <ActivityLogPage />,
+      },
+      {
+        path: "activity/details/:type/:itemId",
+        element: <ActivityLogDetailsPage />,
       },
     ],
   },

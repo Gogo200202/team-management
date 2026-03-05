@@ -1,14 +1,7 @@
-import {
-  Box,
-  Button,
-  Snackbar,
-  type SnackbarCloseReason,
-  Stack,
-  TextField,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Stack, TextField } from "@mui/material";
+import { useEffect } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 import {
   useEditUser,
@@ -34,21 +27,8 @@ export const EditUserPage = () => {
   const { currentUser, handleLogin } = useUserContext();
   const { data: allUsers } = useGetAllUsers();
   const { mutate: editUser } = useEditUser();
+  const navigate = useNavigate();
   const { data: userFromDB, isLoading } = useGetUser(currentUser!.id!);
-
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-
-  const handleOpenSnackBar = () => {
-    setOpenSnackBar(true);
-  };
-
-  const handleCloseSnackBar = (reason?: SnackbarCloseReason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnackBar(false);
-  };
 
   const {
     handleSubmit,
@@ -70,7 +50,14 @@ export const EditUserPage = () => {
         retypePassword: userFromDB?.secretWord,
       });
     }
-  }, [isLoading, reset]);
+  }, [
+    isLoading,
+    reset,
+    userFromDB?.email,
+    userFromDB?.firstName,
+    userFromDB?.lastName,
+    userFromDB?.secretWord,
+  ]);
 
   const onSubmit: SubmitHandler<EditForm> = async ({
     firstName,
@@ -105,7 +92,8 @@ export const EditUserPage = () => {
       secretWord: password,
       userName: firstName + " " + lastName,
     });
-    handleOpenSnackBar();
+
+    navigate("/");
   };
 
   return (
@@ -214,15 +202,6 @@ export const EditUserPage = () => {
           </Button>
         </Stack>
       </Form>
-      <Box>
-        <Button onClick={handleOpenSnackBar}>Open Snackbar</Button>
-        <Snackbar
-          open={openSnackBar}
-          autoHideDuration={1500}
-          onClose={handleCloseSnackBar}
-          message="You edit it"
-        />
-      </Box>
     </Box>
   );
 };

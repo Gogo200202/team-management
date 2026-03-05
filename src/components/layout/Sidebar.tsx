@@ -23,7 +23,7 @@ const navItems = [
   { label: "Roadmap", path: "/", icon: <EventNoteOutlinedIcon /> },
   { label: "Teams", path: "/teams", icon: <GroupsOutlinedIcon /> },
   { label: "Projects", path: "/projects", icon: <AccountTreeOutlinedIcon /> },
-  { label: "Activity log", path: undefined, icon: <QueryStatsIcon /> },
+  { label: "Activity log", path: "/activity", icon: <QueryStatsIcon /> },
   { label: "Dashboard", path: undefined, icon: <SpaceDashboardOutlinedIcon /> },
 ];
 
