@@ -5,12 +5,35 @@ import { useParams } from "react-router-dom";
 import { useGetAllActivityLog } from "../api/activityController";
 import { useGetAllProjects } from "../api/projectController";
 import { useGetAllTeams } from "../api/teamController";
+import type { ActivityLog } from "../api/types/activityLog";
+import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
 import { CustomTimeLineComponent } from "../components/views/Activity/CustomTimeLineComponent";
-import { createProjectActivityLogWithId } from "../utils/helpers/Activity/createProjectActivityLog";
-import { createTaskActivityLogWithId } from "../utils/helpers/Activity/createTaskActivityLog";
-import { createTeamActivityLogWithId } from "../utils/helpers/Activity/createTeamActivityLog";
-import { createUserActivityLogWhitId } from "../utils/helpers/Activity/createUserActivityLog";
+import {
+  createProjectActivityLogWithId,
+  type ProjectActivityWithAllDataWithUpdate,
+  type ProjectWithData,
+} from "../utils/helpers/Activity/createProjectActivityLog";
+import {
+  type ActivityWithTaskWithDataAndUpdate,
+  createTaskActivityLogWithId,
+  type TaskWithData,
+} from "../utils/helpers/Activity/createTaskActivityLog";
+import {
+  createTeamActivityLogWithId,
+  type TeamActivityLogWithUpdates,
+  type TeamWithUsers,
+} from "../utils/helpers/Activity/createTeamActivityLog";
+import {
+  createUserActivityLogWhitId,
+  type UpdatedActivityLogUser,
+} from "../utils/helpers/Activity/createUserActivityLog";
+
+type LoggedInDataAll = User & TeamWithUsers & TaskWithData & ProjectWithData;
+export type ActivityLogInterface = Omit<ActivityLog, "loggedInData"> & {
+  loggedInData: LoggedInDataAll;
+  update: string;
+};
 
 export const ActivityLogDetailsPage = () => {
   const { itemId, type } = useParams();
@@ -19,7 +42,14 @@ export const ActivityLogDetailsPage = () => {
   const { data: allTeams } = useGetAllTeams();
   const { data: allProjects } = useGetAllProjects();
 
-  const [itemLog, setItemLog] = useState();
+  const [itemLog, setItemLog] = useState<
+    (
+      | TeamActivityLogWithUpdates
+      | ProjectActivityWithAllDataWithUpdate
+      | ActivityWithTaskWithDataAndUpdate
+      | UpdatedActivityLogUser
+    )[]
+  >([]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -47,11 +77,8 @@ export const ActivityLogDetailsPage = () => {
           itemId!,
         );
         setItemLog(task.reverse());
-      }else if (type == "User") {
-        const user = createUserActivityLogWhitId(
-          allActivityLog,
-          itemId!,
-        );
+      } else if (type == "User") {
+        const user = createUserActivityLogWhitId(allActivityLog, itemId!);
         setItemLog(user.reverse());
       }
     }
@@ -62,7 +89,7 @@ export const ActivityLogDetailsPage = () => {
       <Typography variant="h2" sx={{ textAlign: "center" }}>
         Activity Log Details
       </Typography>
-      <CustomTimeLineComponent type={type!} itemLog={itemLog} />
+      <CustomTimeLineComponent itemLog={itemLog as ActivityLogInterface[]} />
     </Box>
   );
 };

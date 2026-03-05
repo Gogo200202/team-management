@@ -8,14 +8,13 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
-import type { FunctionComponent } from "react";
+import type { FunctionComponent, ReactElement } from "react";
 
-import type { ProjectActivityWithAllDataWithUpdate } from "../../../utils/helpers/Activity/createProjectActivityLog";
-import type { TeamActivityLogWithUpdates } from "../../../utils/helpers/Activity/createTeamActivityLog";
-import type { ActivityWithTaskWithDataAndUpdate } from "../../../utils/helpers/Activity/createTaskActivityLog";
-import type { UpdatedActivityLogUser } from "../../../utils/helpers/Activity/createUserActivityLog";
+import type { Team } from "../../../api/types/teamTypes";
+import type { User } from "../../../api/types/userTypes";
+import type { ActivityLogInterface } from "../../../pages/ActivityLogDetailsPage";
 
 interface ActionIcons {
   action: string;
@@ -41,216 +40,76 @@ const IconIfAction: FunctionComponent<ActionIcons> = ({ action }) => {
     </TimelineDot>
   );
 };
+
 export const CustomTimeLineComponent: FunctionComponent<{
-  type: string;
-  itemLog;
-}> = ({ type, itemLog }) => {
-  if (type == "Team") {
-    const itemLogTeam = itemLog as TeamActivityLogWithUpdates[];
-
-    return (
-      <Timeline position="alternate">
-        {itemLogTeam?.map((activity, index) => (
-          <TimelineItem key={index}>
-            <TimelineOppositeContent
-              sx={{ m: "auto 0", fontSize: 20 }}
-              variant="body2"
-              color="text.secondary"
-            >
-              {dayjs(activity.createdAt).format("MM/DD/YYYY")}
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineConnector />
-              <IconIfAction action={activity.typeOfLogin} />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent sx={{ py: "12px", px: 2 }}>
-              <Typography sx={{ fontSize: 40 }}>
-                Team {activity.loggedInData.name}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Users:{" "}
-                {activity.loggedInData.users.map((user) => (
-                  <>
-                    {user.firstName} {user.lastName} {user.email},{" "}
-                  </>
-                ))}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Created at:{" "}
-                {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Updated at:{" "}
-                {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20, color: "blue" }}>
-                {activity.updates.length != 0
-                  ? "Update log: " + activity.updates
-                  : ""}
-              </Typography>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-    );
-  } else if (type == "Project") {
-    const itemLogProject = itemLog as ProjectActivityWithAllDataWithUpdate[];
-    return (
-      <Timeline position="alternate">
-        {itemLogProject?.map((activity, index) => (
-          <TimelineItem key={index}>
-            <TimelineOppositeContent
-              sx={{ m: "auto 0", fontSize: 20 }}
-              variant="body2"
-              color="text.secondary"
-            >
-              {dayjs(activity.createdAt).format("MM/DD/YYYY")}
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineConnector />
-              <IconIfAction action={activity.typeOfLogin} />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent sx={{ py: "12px", px: 2 }}>
-              <Typography sx={{ fontSize: 40 }}>
-                Project {activity.loggedInData.name}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Admins:{" "}
-                {activity.loggedInData.admins.map((admins) => (
-                  <>
-                    {admins.firstName} {admins.lastName} {admins.email},{" "}
-                  </>
-                ))}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Members:{" "}
-                {activity.loggedInData.members.map((member) => (
-                  <>
-                    {member.firstName} {member.lastName} {member.email},{" "}
-                  </>
-                ))}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Team:{" "}
-                {activity.loggedInData.teams.map((team) => (
-                  <>{team.name}</>
-                ))}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                created at:{" "}
-                {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                updated at:{" "}
-                {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Updated log: {activity.update}
-              </Typography>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-    );
-  } else if (type == "Task") {
-    const itemLogTask = itemLog as ActivityWithTaskWithDataAndUpdate[];
-
-    return (
-      <Timeline position="alternate">
-        {itemLogTask?.map((activity, index) => (
-          <TimelineItem key={index}>
-            <TimelineOppositeContent
-              sx={{ m: "auto 0", fontSize: 20 }}
-              variant="body2"
-              color="text.secondary"
-            >
-              {dayjs(activity.createdAt).format("MM/DD/YYYY")}
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineConnector />
-              <IconIfAction action={activity.typeOfLogin} />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent sx={{ py: "12px", px: 2 }}>
-              <Typography sx={{ fontSize: 40 }}>
-                Task {activity.loggedInData.title}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Assigned User:{activity.loggedInData.assignedUser.firstName}{" "}
-                {activity.loggedInData.assignedUser.lastName}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Reporter {activity.loggedInData.reporter.firstName}{" "}
-                {activity.loggedInData.reporter.lastName}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Project: {activity.loggedInData.project.name}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                created at:{" "}
-                {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                updated at:{" "}
-                {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Updated log:{" "}
-                {activity.update.length != 0 ? activity.update : ""}
-              </Typography>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-    );
-  } else if (type == "User") {
-    const itemLogUser = itemLog as UpdatedActivityLogUser[];
-    return (
-      <Timeline position="alternate">
-        {itemLogUser?.map((activity, index) => (
-          <TimelineItem key={index}>
-            <TimelineOppositeContent
-              sx={{ m: "auto 0", fontSize: 20 }}
-              variant="body2"
-              color="text.secondary"
-            >
-              {dayjs(activity.createdAt).format("MM/DD/YYYY")}
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineConnector />
-              <IconIfAction action={activity.typeOfLogin} />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent sx={{ py: "12px", px: 2 }}>
-              <Typography sx={{ fontSize: 40 }}>
-                User {activity.loggedInData.firstName}{" "}
-                {activity.loggedInData.lastName}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Email: {activity.loggedInData.email}
-              </Typography>
-
-              <Typography sx={{ fontSize: 20 }}>
-                SecretWord: {activity.loggedInData.secretWord}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                created at:{" "}
-                {dayjs(activity.loggedInData.createdAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                updated at:{" "}
-                {dayjs(activity.loggedInData.updatedAt).format("MM/DD/YYYY")}
-              </Typography>
-              <Typography sx={{ fontSize: 20 }}>
-                Updated log: {activity.update.length != 0 ? activity.update : ""}
-              </Typography>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
-    );
+  itemLog: ActivityLogInterface[];
+}> = ({ itemLog }) => {
+  function checkValue(value: User & Team) {
+    if (value["displayName"] != undefined) {
+      return <>{value.firstName}</>;
+    } else if (value["name"] != undefined) {
+      return <>{value.name}</>;
+    } else {
+      return <>{value}</>;
+    }
   }
-  return <></>;
+
+  function generateDataFromLogData(itemToGenerate: object): ReactElement[] {
+    const jsxComponents = [];
+
+    for (const [key, value] of Object.entries(itemToGenerate)) {
+      if (Array.isArray(value)) {
+        jsxComponents.push(
+          <Box>
+            {key}:{" "}
+            {value.map((v) => (
+              <>{checkValue(v)} </>
+            ))}
+          </Box>,
+        );
+      } else {
+        if (key == "id" || key == "createdAt" || key == "updatedAt") {
+          continue;
+        }
+        jsxComponents.push(
+          <Box>
+            {key} : {checkValue(value)}
+          </Box>,
+        );
+      }
+    }
+
+    return jsxComponents;
+  }
+
+  return (
+    <Timeline position="alternate">
+      {itemLog?.map((activity, index) => (
+        <TimelineItem key={index}>
+          <TimelineOppositeContent
+            sx={{ m: "auto 0", fontSize: 20 }}
+            variant="body2"
+            color="text.secondary"
+          >
+            {dayjs(activity.createdAt).format("MM/DD/YYYY")}
+          </TimelineOppositeContent>
+          <TimelineSeparator>
+            <TimelineConnector />
+            <IconIfAction action={activity.typeOfLogin} />
+            <TimelineConnector />
+          </TimelineSeparator>
+          <TimelineContent sx={{ py: "12px", px: 2, fontSize: 20 }}>
+            {generateDataFromLogData(activity.loggedInData).map((x) => (
+              <>{x}</>
+            ))}
+            <Typography sx={{ fontSize: 20, color: "blue" }}>
+              {activity.update.length != 0
+                ? "Update log: " + activity.update
+                : ""}
+            </Typography>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  );
 };

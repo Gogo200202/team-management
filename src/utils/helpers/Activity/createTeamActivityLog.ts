@@ -15,7 +15,7 @@ export type TeamActivityLog = Omit<ActivityLog, "loggedInData"> & {
 };
 
 export interface TeamActivityLogWithUpdates extends TeamActivityLog {
-  updates: string;
+  update: string;
 }
 
 export function createTeamsActivityLogs(
@@ -124,8 +124,8 @@ export function createTeamActivityLogWithId(
       updates.push(update);
     }
   }
-  const teamUpdates: TeamActivityLogWithUpdates = teams.map((x, index) => {
-    return { ...x, updates: updates[index] };
+  const teamUpdates: TeamActivityLogWithUpdates[] = teams.map((x, index) => {
+    return { ...x, update: updates[index] };
   });
 
   return teamUpdates;

@@ -1,15 +1,10 @@
 import EditIcon from "@mui/icons-material/Edit";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  Collapse,
-  IconButton,
-  type IconButtonProps,
-  styled,
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
@@ -41,12 +36,9 @@ export const TeamCard: FunctionComponent<TeamCardProps> = ({
     handelOpenDeleteDialog!();
     handleDeleteClick?.();
   }
-  const [expanded, setExpanded] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
   return (
     <Box>
       <Card sx={{ maxWidth: 345 }}>

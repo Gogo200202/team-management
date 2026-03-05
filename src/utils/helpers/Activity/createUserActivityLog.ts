@@ -58,13 +58,11 @@ export function createUserActivityLogWhitId(
     }
     if (user1.email != user2.email) {
       update += `Email: ${user1.email} was changed to ${user2.email} `;
-    } 
-
-    if(user1.secretWord != user2.secretWord) {
-      update += `Secret Word: ${user1.secretWord} was changed to ${user2.secretWord} `;
     }
 
-
+    if (user1.secretWord != user2.secretWord) {
+      update += `Secret Word: ${user1.secretWord} was changed to ${user2.secretWord} `;
+    }
 
     updates.push(update);
   }

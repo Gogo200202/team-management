@@ -8,7 +8,10 @@ type ProjectActivity = Omit<ActivityLog, "loggedInData"> & {
   loggedInData: Project;
 };
 
-type ProjectWithData = Omit<Project, "adminIds" | "memberIds" | "teamIds"> & {
+export type ProjectWithData = Omit<
+  Project,
+  "adminIds" | "memberIds" | "teamIds"
+> & {
   admins: User[];
   members: User[];
   teams: Team[];
@@ -99,10 +102,15 @@ export function createProjectActivityLogWithId(
       });
 
       const allDataMappedProject: ProjectWithData = {
-        ...x.loggedInData,
         admins: admins,
         members: members,
         teams: teamsProject,
+        createdAt: x.loggedInData.createdAt,
+        description: x.loggedInData.description,
+        name: x.loggedInData.name,
+        id: x.loggedInData.id,
+        status: x.loggedInData.status,
+        updatedAt: x.loggedInData.updatedAt,
       };
 
       return {
@@ -165,7 +173,7 @@ export function createProjectActivityLogWithId(
     updates.push(update);
   }
 
-  const projectWithUpdateData: ProjectActivityWithAllDataWithUpdate =
+  const projectWithUpdateData: ProjectActivityWithAllDataWithUpdate[] =
     project.map((x) => {
       return { ...x, update: updates };
     });

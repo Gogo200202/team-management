@@ -22,15 +22,17 @@ import {
   type ProjectActivityWithAllData,
 } from "../utils/helpers/Activity/createProjectActivityLog";
 import {
-  createTaskActivityLog,
   type ActivityWithTaskWithData,
+  createTaskActivityLog,
 } from "../utils/helpers/Activity/createTaskActivityLog";
 import {
   createTeamsActivityLogs,
   type TeamActivityLog,
 } from "../utils/helpers/Activity/createTeamActivityLog";
-import { createUserActivityLog, type ActivityLogUser } from "../utils/helpers/Activity/createUserActivityLog";
-
+import {
+  type ActivityLogUser,
+  createUserActivityLog,
+} from "../utils/helpers/Activity/createUserActivityLog";
 
 function ActivityLogPage() {
   const { data: allActivityLog, isSuccess } = useGetAllActivityLog();
@@ -49,7 +51,12 @@ function ActivityLogPage() {
   const [users, setUsers] = useState<ActivityLogUser[]>();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (
+      isSuccess &&
+      allTeams?.length != 0 &&
+      allUsers?.length != 0 &&
+      allProjects?.length != 0
+    ) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       const teams = createTeamsActivityLogs(allActivityLog, allUsers);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -66,12 +73,13 @@ function ActivityLogPage() {
       );
 
       const users = createUserActivityLog(allActivityLog);
+
       setUsers(users.reverse());
       setTaskActivity(tasks.reverse());
       setTeamsActivity(teams.reverse());
       setProjectActivity(projects.reverse());
     }
-  }, [allActivityLog, isSuccess]);
+  }, [allActivityLog, allProjects, allTeams, allUsers, isSuccess]);
 
   const statusColors = new Map<string, any>();
   statusColors.set("Delete", <Chip label="Delete" color="error" />);
@@ -84,7 +92,7 @@ function ActivityLogPage() {
         Activity Log Page
       </Typography>
 
-      <Accordion>
+      <Accordion key={"Teams"}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography sx={{ fontSize: 50 }}>Teams</Typography>
         </AccordionSummary>
@@ -149,7 +157,7 @@ function ActivityLogPage() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion key={"Projects"}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography sx={{ fontSize: 50 }}>Projects</Typography>
         </AccordionSummary>
@@ -231,9 +239,9 @@ function ActivityLogPage() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion key={"Tasks"}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography sx={{ fontSize: 50 }}>Task</Typography>
+          <Typography sx={{ fontSize: 50 }}>Tasks</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {taskActivity?.map((ta, index) => (
@@ -303,9 +311,9 @@ function ActivityLogPage() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion>
+      <Accordion key={"Users"}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography sx={{ fontSize: 50 }}>User</Typography>
+          <Typography sx={{ fontSize: 50 }}>Users</Typography>
         </AccordionSummary>
         <AccordionDetails>
           {users?.map((user, index) => (
@@ -341,10 +349,9 @@ function ActivityLogPage() {
                         backgroundColor: `#${user.loggedInData.id}`,
                       }}
                     >
-                      {user.loggedInData.firstName} 
+                      {user.loggedInData.firstName}
                     </Box>
                   </Box>
-                
                 </Box>
               </Stack>
 
