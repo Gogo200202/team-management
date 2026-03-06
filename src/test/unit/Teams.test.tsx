@@ -189,12 +189,10 @@ describe("Teams page", () => {
 
     const deleteButton = within(card).getByRole("button", { name: /delete/i });
 
-    //You perform delete action
-
     await user.click(deleteButton);
 
     const dialog = screen.getByText(/Do you want to delete this team/i);
-    //expect(dialog.parentElement).toBe(2);
+
     expect(dialog).toBeVisible();
 
     const agreeButton = within(dialog.parentElement!).getByRole("button", {
