@@ -1,13 +1,13 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
+import dayjs from "dayjs";
+
 import {
   useCreateUser,
   useDeleteUser,
   useEditUser,
   useGetAllUsers,
-} from "../src/api/user.controller";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { User } from "../src/api/types/userTypes";
+} from "../../api/user.controller";
 const createWrapper = () => {
   const queryClient = new QueryClient({});
   return ({ children }) => (
@@ -65,7 +65,7 @@ describe("User crud operation", () => {
       wrapper: createWrapper(),
     });
     result.current.mutate(idOfUser);
-    
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
   });
 });

@@ -1,30 +1,23 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   render,
-  screen,
-  fireEvent,
   renderHook,
+  screen,
   waitFor,
   within,
 } from "@testing-library/react";
-import { TeamsPage } from "../src/pages/TeamsPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useGetAllTask } from "../src/api/taskController";
+import userEvent from "@testing-library/user-event";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+
 import {
   useCreateTeams,
   useDeleteTeam,
   useGetAllTeams,
   useUpdateTeam,
-} from "../src/api/teamController";
-import {
-  createBrowserRouter,
-  createMemoryRouter,
-  MemoryRouter,
-  RouterProvider,
-} from "react-router-dom";
-import { routes } from "../src/pages/routes";
-import userEvent from "@testing-library/user-event";
-import TeamFormComponent from "../src/components/views/Teams/TeamFormComponent";
-import { SetStateAction } from "react";
+} from "../../api/teamController";
+import TeamFormComponent from "../../components/views/Teams/TeamFormComponent";
+import { TeamsPage } from "../../pages/TeamsPage";
+import { mockCallback } from "../__mocks__/mockData";
 
 const createWrapper = () => {
   const queryClient = new QueryClient({});
@@ -33,19 +26,25 @@ const createWrapper = () => {
   );
 };
 
+describe("test mock data", () => {
+  it("test all mock", () => {
+    mockCallback(1);
 
-
-describe("Teams crud operation", () => {
-  let idOfTeam: string = "";
-  it("GetAllTeams", async () => {
+    expect(mockCallback.mock.results[0].value).toBe(43);
+  });
+  it("All mock teams data teams", async () => {
     const { result } = renderHook(() => useGetAllTeams(), {
       wrapper: createWrapper(),
     });
 
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data![0].name).toBe("Test team mock");
+    expect(result.current.data![0].users).toStrictEqual(["1"]);
   });
+});
+
+describe("Teams crud operation", () => {
+  let idOfTeam: string = "";
+
   it("Create team", async () => {
     const { result } = renderHook(() => useCreateTeams(), {
       wrapper: createWrapper(),
@@ -104,7 +103,8 @@ describe("Teams page", () => {
 
     expect(await screen.findByText(/Teams Page/i)).toBeInTheDocument();
   });
-  it("open team details", async () => {
+
+  it("open team dialog", async () => {
     const user = userEvent.setup();
     render(<RouterProvider router={router} />);
     const button = screen.getByRole("button", { name: /Add new team/i });
@@ -113,7 +113,7 @@ describe("Teams page", () => {
 
     expect(screen.getByText(/create team/i)).toBeVisible();
   });
- let TeamName: string = "test team";
+  const TeamName: string = "test team";
   it("create team from form", async () => {
     const user = userEvent.setup();
 
@@ -162,10 +162,54 @@ describe("Teams page", () => {
     await user.click(submitButton);
   });
 
-  it("display new team", async () => {
-    const user = userEvent.setup();
+  it("delete button open dialog", async () => {
     render(<RouterProvider router={router} />);
-   expect(screen.getAllByText(new RegExp(TeamName, "i"))[screen.getAllByText(new RegExp(TeamName, "i")).length - 1]).toBeInTheDocument();
+    const user = userEvent.setup();
+
+    const deleteButton = screen.getAllByRole("button", {
+      name: /delete/i,
+    })[0];
+
+    await user.click(deleteButton);
+    expect(screen.getByText(/Do you want to delete this team/i)).toBeVisible();
   });
 
+  it("Fined mocked data in teams", () => {
+    render(<RouterProvider router={router} />);
+    const teamMokeData = screen.getByText(/Test team mock/i);
+
+    expect(teamMokeData.innerHTML).toBe("Test team mock");
+  });
+
+  it("delete button action", async () => {
+    render(<RouterProvider router={router} />);
+    const user = userEvent.setup();
+    const teamMokeData = screen.getByText(/Test team mock/i);
+    const card = teamMokeData.parentElement;
+
+    const deleteButton = within(card).getByRole("button", { name: /delete/i });
+
+    //You perform delete action
+
+    await user.click(deleteButton);
+
+    const dialog = screen.getByText(/Do you want to delete this team/i);
+    //expect(dialog.parentElement).toBe(2);
+    expect(dialog).toBeVisible();
+
+    const agreeButton = within(dialog.parentElement!).getByRole("button", {
+      name: "Agree",
+    });
+    await user.click(agreeButton);
+    expect(screen.getByText(/You perform delete action/i)).toBeVisible();
+  });
+
+  it("display new team", async () => {
+    render(<RouterProvider router={router} />);
+    expect(
+      screen.getAllByText(new RegExp(TeamName, "i"))[
+        screen.getAllByText(new RegExp(TeamName, "i")).length - 1
+      ],
+    ).toBeInTheDocument();
+  });
 });
