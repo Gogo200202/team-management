@@ -21,11 +21,8 @@ import {
   useGetAllUsers,
 } from "../../api/user.controller";
 import * as allUserCrud from "../../api/user.controller";
-import {
-  UserContext,
-  UserProvider,
-  type UserStored,
-} from "../../components/context/UserContext";
+import { UserProvider } from "../../components/context/UserContext";
+import * as userContextMock from "../../components/context/UserContext";
 import { EditUserPage } from "../../pages/EditUserPage";
 import { LogInPage } from "../../pages/LogInPage";
 import { Register } from "../../pages/Register";
@@ -256,25 +253,9 @@ describe("User edit page", () => {
       path: "/edit",
       element: (
         <QueryClientProvider client={new QueryClient({})}>
-          <UserContext
-            value={{
-              isCheckCompleted: true,
-              currentUser: {
-                id: "1",
-                userName: "test",
-                email: "12qwes",
-                secretWord: "asd",
-              },
-              handleLogin: function (data: UserStored): void {
-                throw new Error("Function not implemented.");
-              },
-              handleLogOut: function (): void {
-                throw new Error("Function not implemented.");
-              },
-            }}
-          >
+          <UserProvider>
             <EditUserPage />
-          </UserContext>
+          </UserProvider>
         </QueryClientProvider>
       ),
     },
@@ -284,7 +265,7 @@ describe("User edit page", () => {
     initialEntries: ["/edit"],
   });
 
-  it("render edit page", () => {
+  it("render edit page", async () => {
     const mockDataUser = {
       data: {
         id: "1",
@@ -301,9 +282,35 @@ describe("User edit page", () => {
     } as UseQueryResult<User, Error>;
 
     jest.spyOn(allUserCrud, "useGetUser").mockReturnValue(mockDataUser);
+    const checkIfCall = jest.fn();
+    jest.spyOn(userContextMock, "useUserContext").mockReturnValue({
+      currentUser: {
+        id: mockDataUser.data!.email,
+        email: mockDataUser.data!.email,
+        secretWord: mockDataUser.data!.secretWord,
+        userName: mockDataUser.data!.displayName,
+      },
+      isCheckCompleted: true,
+      handleLogin: checkIfCall,
+      handleLogOut: function (): void {
+        throw new Error("Function not implemented.");
+      },
+    });
     render(<RouterProvider router={router} />);
 
-    const register = screen.getByText(/edit/i);
-    screen.debug();
+    const user = userEvent.setup();
+
+    const getFirstNameField = screen.getByLabelText(/First name/i);
+    const getLastNameField = screen.getByLabelText(/Last name/i);
+    const getEmailField = screen.getByLabelText(/Email/i);
+    const getPassword = screen.getByLabelText("Password");
+    const getRetryPassword = screen.getByLabelText("Retype password");
+    const editButton = screen.getByRole("button", { name: /edit/i });
+
+    await user.clear(getFirstNameField);
+    await user.type(getFirstNameField, "Gogo1");
+    await user.click(editButton);
+
+    expect(checkIfCall).toHaveBeenCalledTimes(1);
   });
 });
