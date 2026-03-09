@@ -15,8 +15,7 @@ const mockDataTeam = {
     },
   ] as Team[],
   isLoading: false,
-  error: {},
-} as UseQueryResult<Team[], Error>;
+} as UseQueryResult<Team[]>;
 
 const mockDataUsers = {
   data: [
@@ -32,15 +31,11 @@ const mockDataUsers = {
     },
   ] as User[],
   isLoading: false,
-  error: {},
-} as UseQueryResult<User[], Error>;
-
-
+} as UseQueryResult<User[]>;
 
 export const mockCallback = jest.fn((x) => {
   return 42 + x;
 });
 
 jest.spyOn(allUserCrud, "useGetAllUsers").mockReturnValue(mockDataUsers);
-
 jest.spyOn(allTeamCrud, "useGetAllTeams").mockReturnValue(mockDataTeam);

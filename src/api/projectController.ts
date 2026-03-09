@@ -35,7 +35,7 @@ export const useGetProject = (id: string) => {
   });
 };
 
-type CreateProject = Omit<Project, "id" | "createdAt" | "updatedAt">;
+export type CreateProject = Omit<Project, "id" | "createdAt" | "updatedAt">;
 export const useCreateProject = () => {
   return useMutation({
     mutationFn: async (project: CreateProject) => {
