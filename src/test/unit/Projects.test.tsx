@@ -43,7 +43,7 @@ describe("Project page", () => {
     render(<RouterProvider router={router} />);
     const nameOfProject = screen.getByText(mockDataProjects.data![0].name);
     const status = screen.getByText(mockDataProjects.data![0].status);
-    //screen.debug();
+
     expect(nameOfProject).toBeInTheDocument();
     expect(status).toBeInTheDocument();
   });
