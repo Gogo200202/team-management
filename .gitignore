@@ -1,5 +1,6 @@
 tasks.md
 dbCopy.json
+coverage
 # Logs
 logs
 *.log
