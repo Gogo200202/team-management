@@ -176,7 +176,7 @@ describe("Teams page", () => {
 
   it("Fined mocked data in teams", () => {
     render(<RouterProvider router={router} />);
-    const teamMokeData = screen.getByText(/Test team mock/i);
+    const teamMokeData = screen.getByText("Test team mock");
 
     expect(teamMokeData.innerHTML).toBe("Test team mock");
   });
@@ -184,7 +184,7 @@ describe("Teams page", () => {
   it("delete button action", async () => {
     render(<RouterProvider router={router} />);
     const user = userEvent.setup();
-    const teamMokeData = screen.getByText(/Test team mock/i);
+    const teamMokeData = screen.getByText("Test team mock");
     const card = teamMokeData.parentElement;
 
     const deleteButton = within(card).getByRole("button", { name: /delete/i });

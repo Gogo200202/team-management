@@ -220,7 +220,6 @@ describe("User register page", () => {
     });
     expect(emailValidation).toBeVisible();
     expect(passwordValidation).toBeVisible();
-    //screen.debug();
   });
 
   it("register form", async () => {
@@ -301,10 +300,6 @@ describe("User edit page", () => {
     const user = userEvent.setup();
 
     const getFirstNameField = screen.getByLabelText(/First name/i);
-    const getLastNameField = screen.getByLabelText(/Last name/i);
-    const getEmailField = screen.getByLabelText(/Email/i);
-    const getPassword = screen.getByLabelText("Password");
-    const getRetryPassword = screen.getByLabelText("Retype password");
     const editButton = screen.getByRole("button", { name: /edit/i });
 
     await user.clear(getFirstNameField);
