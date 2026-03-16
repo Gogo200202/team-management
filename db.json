@@ -510,6 +510,20 @@
       "typeOfData": "User",
       "loggedInData": "{\"id\":\"a0e9\",\"displayName\":\"TestUserCreate gogo123\",\"email\":\"email@test.asd\",\"firstName\":\"TestUserCreate\",\"lastName\":\"gogo123\",\"createdAt\":\"2026-02-28T10:16:47.311Z\",\"secretWord\":\"123456\",\"updatedAt\":\"2026-02-28T10:34:51.939Z\"}",
       "createdAt": "2026-02-28T10:34:51.971Z"
+    },
+    {
+      "id": "b4e1",
+      "typeOfLogin": "Create",
+      "typeOfData": "User",
+      "loggedInData": "{\"id\":\"150b\",\"displayName\":\"asdasc asxzas\",\"email\":\"123@asd.testas\",\"firstName\":\"asdasc\",\"lastName\":\"asxzas\",\"createdAt\":\"2026-03-13T09:03:07.718Z\",\"secretWord\":\"1234\",\"updatedAt\":\"2026-03-13T09:03:07.718Z\"}",
+      "createdAt": "2026-03-13T09:03:07.789Z"
+    },
+    {
+      "id": "db0a",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"e4fc\",\"reporterId\":\"150b\",\"title\":\"test\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 07:56:54 GMT\",\"createdAt\":\"2026-03-16T07:57:18.946Z\",\"updatedAt\":\"2026-03-16T07:57:18.946Z\"}",
+      "createdAt": "2026-03-16T07:57:19.323Z"
     }
   ],
   "teams": [
@@ -771,6 +785,16 @@
       "createdAt": "2026-02-28T10:16:47.311Z",
       "secretWord": "123456",
       "updatedAt": "2026-02-28T10:34:51.939Z"
+    },
+    {
+      "id": "150b",
+      "displayName": "asdasc asxzas",
+      "email": "123@asd.testas",
+      "firstName": "asdasc",
+      "lastName": "asxzas",
+      "createdAt": "2026-03-13T09:03:07.718Z",
+      "secretWord": "1234",
+      "updatedAt": "2026-03-13T09:03:07.718Z"
     }
   ],
   "projects": [
@@ -1024,6 +1048,19 @@
       "finishUntil": "2026-02-28T14:42:29.000Z",
       "createdAt": "2026-02-27T14:42:54.211Z",
       "updatedAt": "2026-02-27T14:42:54.211Z"
+    },
+    {
+      "id": "e4fc",
+      "reporterId": "150b",
+      "title": "test",
+      "assignedUserId": "1",
+      "description": "asd",
+      "status": "todo",
+      "priority": "high",
+      "projectId": "e046",
+      "finishUntil": "Mon, 16 Mar 2026 07:56:54 GMT",
+      "createdAt": "2026-03-16T07:57:18.946Z",
+      "updatedAt": "2026-03-16T07:57:18.946Z"
     }
   ],
   "roadmap": [
@@ -1188,27 +1225,27 @@
       "id": "5",
       "title": "Phase 5 — Activity Logging",
       "description": "Create activity_log table. Log events for user, team, project, and task updates. Build Activity Feed UI.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "5-1",
           "title": "Create activity_log table in DB",
-          "completed": false
+          "completed": true
         },
         {
           "id": "5-2",
           "title": "Log User and Team changes",
-          "completed": false
+          "completed": true
         },
         {
           "id": "5-3",
           "title": "Log Project and Task updates",
-          "completed": false
+          "completed": true
         },
         {
           "id": "5-4",
           "title": "Build Activity Feed UI with timestamps in tabular view which opens upon activity log button licked to each tracked element",
-          "completed": false
+          "completed": true
         }
       ]
     },
@@ -1221,7 +1258,7 @@
         {
           "id": "6-1",
           "title": "Build Dashboard Page",
-          "completed": false
+          "completed": true
         },
         {
           "id": "6-2",
