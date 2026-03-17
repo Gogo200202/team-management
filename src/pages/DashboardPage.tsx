@@ -1,9 +1,9 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
   Typography,
 } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -12,16 +12,30 @@ import { useEffect, useState } from "react";
 
 import { useGetAllProjects } from "../api/projectController";
 import { useGetAllTask } from "../api/taskController";
+import { useGetAllTeams } from "../api/teamController";
 import type { Project } from "../api/types/projectTypes";
 import type { Task } from "../api/types/taskType";
+import type { Team } from "../api/types/teamTypes";
 import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
+import { ChartBar } from "../components/views/dashboard/ChartBar";
 
+type StatusProm = {
+  complete: Task[];
+  progress: Task[];
+  todo: Task[];
+};
+type PriorityProp = {
+  high: Task[];
+  medium: Task[];
+  low: Task[];
+};
 export const DashboardPage = () => {
   const { data: allTask, isSuccess: isSuccessTasks } = useGetAllTask();
   const { data: allUser, isSuccess: isSuccessUsers } = useGetAllUsers();
   const { data: allProjects, isSuccess: isSuccessProjects } =
     useGetAllProjects();
+  const { data: allTeams, isSuccess: isSuccessTeam } = useGetAllTeams();
 
   const [userTask, setUserTask] = useState<Map<User, Task[]>>(
     new Map<User, Task[]>(),
@@ -33,13 +47,24 @@ export const DashboardPage = () => {
     new Map<Project, User[]>(),
   );
 
+  const [teamTask, setTeamTask] = useState<Map<Team, Task[]>>(
+    new Map<Team, Task[]>(),
+  );
+  const [status, setStatus] = useState<StatusProm>();
+
+  const [priority, setPriority] = useState<PriorityProp>();
+
   useEffect(() => {
-    if (isSuccessTasks && isSuccessUsers && isSuccessProjects) {
+    if (
+      isSuccessTasks &&
+      isSuccessUsers &&
+      isSuccessProjects &&
+      isSuccessTeam
+    ) {
       const userTaskCurrent = new Map<User, Task[]>();
       const projectTaskCurrent = new Map<Project, Task[]>();
       const userProjectCurrent = new Map<Project, User[]>();
-
-      console.log(allUser);
+      const teamTaskCurrent = new Map<Team, Task[]>();
       allUser.map((user) => {
         const allTaskForUser = allTask.filter(
           (task) => task.assignedUserId == user.id,
@@ -67,17 +92,45 @@ export const DashboardPage = () => {
         }
       });
 
+      allTeams?.map((team) => {
+        team.users.map((userTeam) => {
+          const result = allTask.filter((x) => x.assignedUserId == userTeam);
+          teamTaskCurrent.set(team, result);
+        });
+      });
+
+      const completeTask = allTask.filter((x) => x.status == "complete");
+      const completeProgress = allTask.filter((x) => x.status == "progress");
+      const completeTodo = allTask.filter((x) => x.status == "todo");
+
+      const priorityHigh = allTask.filter((x) => x.priority == "high");
+      const priorityMedium = allTask.filter((x) => x.priority == "medium");
+      const priorityLow = allTask.filter((x) => x.priority == "low");
+
       // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPriority({
+        high: priorityHigh,
+        medium: priorityMedium,
+        low: priorityLow,
+      });
+      setStatus({
+        complete: completeTask,
+        progress: completeProgress,
+        todo: completeTodo,
+      });
       setUserTask(userTaskCurrent);
       setProjectTask(projectTaskCurrent);
       setProjectUser(userProjectCurrent);
+      setTeamTask(teamTaskCurrent);
     }
   }, [
     allProjects,
     allTask,
+    allTeams,
     allUser,
     isSuccessProjects,
     isSuccessTasks,
+    isSuccessTeam,
     isSuccessUsers,
   ]);
 
@@ -90,8 +143,29 @@ export const DashboardPage = () => {
   });
   const userTaskChart = Array.from(userTask).map(([key, value]) => {
     return {
-      user: `${key.firstName} ${key.lastName}`,
-      tasks: value.length,
+      type: `${key.firstName} ${key.lastName}`,
+      value: value.length,
+    };
+  });
+
+  const projectTaskChart = Array.from(projectTask).map(([key, value]) => {
+    return {
+      type: `${key.name}`,
+      value: value.length,
+    };
+  });
+
+  const projectUserChart = Array.from(projectUser).map(([key, value]) => {
+    return {
+      type: `${key.name}`,
+      value: value.length,
+    };
+  });
+
+  const teamTaskChar = Array.from(teamTask).map(([key, value]) => {
+    return {
+      type: `${key.name}`,
+      value: value.length,
     };
   });
 
@@ -104,131 +178,82 @@ export const DashboardPage = () => {
   return (
     <>
       Dashboard page
-      <Box sx={{ display: "flex", height: 1 }}>
-        <Box sx={{ display: "flex", width: "75%" }}>
-          <Card sx={{ height: "40%", width: "20%", m: 2 }} variant="outlined">
-            <CardContent>
-              <Typography
-                gutterBottom
-                sx={{ color: "text.secondary", fontSize: 14 }}
-              >
-                Users
-              </Typography>
-              <Typography variant="h5" component="div">
-                Users
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                adjective
-              </Typography>
-              <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={() => console.log("Learn More")}>
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-
-          <Card sx={{ height: "40%", width: "20%", m: 2 }} variant="outlined">
-            <CardContent>
-              <Typography
-                gutterBottom
-                sx={{ color: "text.secondary", fontSize: 14 }}
-              >
-                Teams
-              </Typography>
-              <Typography variant="h5" component="div">
-                Teams
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                adjective
-              </Typography>
-              <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={() => console.log("Learn More")}>
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-
-          <Card sx={{ height: "40%", width: "20%", m: 2 }} variant="outlined">
-            <CardContent>
-              <Typography
-                gutterBottom
-                sx={{ color: "text.secondary", fontSize: 14 }}
-              >
-                Projects
-              </Typography>
-              <Typography variant="h5" component="div">
-                Projects
-              </Typography>
-              <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                adjective
-              </Typography>
-              <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={() => console.log("Learn More")}>
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-        </Box>
-        <Box sx={{ height: 200 }}>
-          <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-            Project task
-          </Typography>
-          <PieChart
-            series={[
-              {
-                innerRadius: 50,
-                outerRadius: 200,
-                data: piProject,
-                arcLabel: (item) => `${item.label} : ${item.value} `,
-              },
-            ]}
-            {...settings}
-          />
-        </Box>
-      </Box>
       <Box>
-        <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-          Task per user
-        </Typography>
-        <BarChart
-          dataset={userTaskChart}
-          yAxis={[
-            {
-              disableTicks: true,
-              scaleType: "band",
-              width: 120,
-              disableLine: true,
-              dataKey: "user",
-            },
-          ]}
-          xAxis={[
-            {
-              disableTicks: true,
-              tickMinStep: 1,
-            },
-          ]}
-          series={[{ dataKey: "tasks", label: "Tasks" }]}
-          layout="horizontal"
-          height={250}
-        />
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex" }}>
+            {" "}
+            <BarChart
+              xAxis={[{ data: ["Status"], label: "Status" }]}
+              series={[
+                { data: [status?.complete.length], label: "Complete" },
+                { data: [status?.progress.length], label: "Progress" },
+                { data: [status?.todo.length], label: "Todo" },
+              ]}
+              height={200}
+            />
+            <BarChart
+              xAxis={[{ data: ["Priority"], label: "Priority" }]}
+              series={[
+                { data: [priority?.high.length], label: "High" },
+                { data: [priority?.medium.length], label: "Medium" },
+                { data: [priority?.low.length], label: "Low" },
+              ]}
+              height={200}
+            />
+          </Box>
+          <Box sx={{ height: 1 }}>
+            <Typography sx={{ textAlign: "center", fontSize: 30 }}>
+              Project task
+            </Typography>
+            <PieChart
+              series={[
+                {
+                  innerRadius: 50,
+                  outerRadius: 200,
+                  data: piProject,
+                  arcLabel: (item) => `${item.label} : ${item.value} `,
+                },
+              ]}
+              {...settings}
+            />
+          </Box>
+        </Box>
+
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>Task</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ChartBar
+              title="User task"
+              userTaskChart={userTaskChart}
+              label="Task"
+            />
+
+            <ChartBar
+              title="Project task"
+              userTaskChart={projectTaskChart}
+              label="Task"
+            />
+            <ChartBar
+              title="Team task"
+              userTaskChart={teamTaskChar}
+              label="Task"
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>User</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ChartBar
+              title="Project user"
+              userTaskChart={projectUserChart}
+              label="User"
+            />
+          </AccordionDetails>
+        </Accordion>
       </Box>
     </>
   );
