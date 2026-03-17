@@ -608,6 +608,20 @@
       "typeOfData": "Task",
       "loggedInData": "{\"id\":\"52bd\",\"reporterId\":\"150b\",\"title\":\"new task\",\"assignedUserId\":\"5e81\",\"description\":\"123\",\"status\":\"progress\",\"priority\":\"high\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 11:47:14 GMT\",\"createdAt\":\"2026-03-16T11:47:31.462Z\",\"updatedAt\":\"2026-03-17T09:28:58.914Z\"}",
       "createdAt": "2026-03-17T09:28:58.990Z"
+    },
+    {
+      "id": "96fc",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"complete\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-17T09:40:25.656Z\"}",
+      "createdAt": "2026-03-17T09:40:26.050Z"
+    },
+    {
+      "id": "ac0f",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\"],\"memberIds\":[\"2\"],\"teamIds\":[],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-03-17T10:54:02.933Z\"}",
+      "createdAt": "2026-03-17T10:54:03.024Z"
     }
   ],
   "teams": [
@@ -845,19 +859,17 @@
     {
       "id": "e046",
       "adminIds": [
-        "1",
-        "8816"
+        "1"
       ],
       "memberIds": [
-        "2",
-        "3"
+        "2"
       ],
       "teamIds": [],
       "description": "asd",
       "name": "test 2",
       "status": "paused",
       "createdAt": "2026-02-27T14:07:49.548Z",
-      "updatedAt": "2026-02-27T14:21:37.143Z"
+      "updatedAt": "2026-03-17T10:54:02.933Z"
     },
     {
       "id": "4ddb",
@@ -1071,12 +1083,12 @@
       "title": "test task",
       "assignedUserId": "8816",
       "description": "asdasd",
-      "status": "todo",
+      "status": "complete",
       "priority": "high",
       "projectId": "5bed",
       "finishUntil": "2026-02-28T14:42:24.000Z",
       "createdAt": "2026-02-27T14:42:43.196Z",
-      "updatedAt": "2026-02-27T14:43:00.731Z"
+      "updatedAt": "2026-03-17T09:40:25.656Z"
     },
     {
       "id": "f172",

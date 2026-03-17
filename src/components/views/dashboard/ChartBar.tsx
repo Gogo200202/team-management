@@ -11,11 +11,13 @@ interface ChartBarProps {
   userTaskChart: dataChartProps[];
   title: string;
   label: string;
+  color?: string;
 }
 export const ChartBar: FunctionComponent<ChartBarProps> = ({
   userTaskChart,
   title,
   label,
+  color,
 }) => {
   return (
     <>
@@ -42,6 +44,7 @@ export const ChartBar: FunctionComponent<ChartBarProps> = ({
         series={[{ dataKey: "value", label }]}
         layout="horizontal"
         height={250}
+        colors={[color || "blue"]}
       />
     </>
   );
