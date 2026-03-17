@@ -38,12 +38,16 @@ export const DashboardPage = () => {
       const userTaskCurrent = new Map<User, Task[]>();
       const projectTaskCurrent = new Map<Project, Task[]>();
       const userProjectCurrent = new Map<Project, User[]>();
+
+      console.log(allUser);
       allUser.map((user) => {
         const allTaskForUser = allTask.filter(
           (task) => task.assignedUserId == user.id,
         );
         if (allTaskForUser.length != 0) {
-          userTaskCurrent.set(user, allTaskForUser);
+          if (!userTaskCurrent.has(user)) {
+            userTaskCurrent.set(user, allTaskForUser);
+          }
         }
       });
       allProjects.map((project) => {
@@ -77,21 +81,19 @@ export const DashboardPage = () => {
     isSuccessUsers,
   ]);
 
-  console.log(...projectUser);
-
-  const dataset = [
-    { create: 2, edit: 2, delete: 1, type: "User" },
-    { create: 2, edit: 23, delete: 1, type: "Team" },
-    { create: 2, edit: 2, delete: 11, type: "Project" },
-    { create: 23, edit: 2, delete: 13, type: "Task" },
-  ];
-
-  const dataPi = [
-    { label: "Teams", value: 400, color: "#0088FE" },
-    { label: "Users", value: 300, color: "#00C49F" },
-    { label: "Projects", value: 300, color: "#FFBB28" },
-    { label: "Tasks", value: 200, color: "#FF8042" },
-  ];
+  const piProject = Array.from(projectTask).map(([key, value]) => {
+    return {
+      label: key.name,
+      value: value.length,
+      color: "#" + key.id.toString(),
+    };
+  });
+  const userTaskChart = Array.from(userTask).map(([key, value]) => {
+    return {
+      user: `${key.firstName} ${key.lastName}`,
+      tasks: value.length,
+    };
+  });
 
   const settings = {
     margin: { right: 5 },
@@ -187,15 +189,15 @@ export const DashboardPage = () => {
         </Box>
         <Box sx={{ height: 200 }}>
           <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-            Total
+            Project task
           </Typography>
           <PieChart
             series={[
               {
                 innerRadius: 50,
                 outerRadius: 200,
-                data: dataPi,
-                arcLabel: (item) => `${item.label}  ${item.value} `,
+                data: piProject,
+                arcLabel: (item) => `${item.label} : ${item.value} `,
               },
             ]}
             {...settings}
@@ -204,21 +206,27 @@ export const DashboardPage = () => {
       </Box>
       <Box>
         <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-          All activities
+          Task per user
         </Typography>
         <BarChart
-          dataset={dataset}
+          dataset={userTaskChart}
+          yAxis={[
+            {
+              disableTicks: true,
+              scaleType: "band",
+              width: 120,
+              disableLine: true,
+              dataKey: "user",
+            },
+          ]}
           xAxis={[
             {
               disableTicks: true,
-              dataKey: "type",
+              tickMinStep: 1,
             },
           ]}
-          series={[
-            { dataKey: "create", label: "Create" },
-            { dataKey: "edit", label: "Edit" },
-            { dataKey: "delete", label: "Delete" },
-          ]}
+          series={[{ dataKey: "tasks", label: "Tasks" }]}
+          layout="horizontal"
           height={250}
         />
       </Box>
