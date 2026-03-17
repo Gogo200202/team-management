@@ -210,18 +210,36 @@ export const DashboardPage = () => {
           data: [dataSeries?.complete.length as number],
           label: "Complete",
           color: "green",
+          barLabel: "value",
         },
         {
           data: [dataSeries?.progress.length as number],
           label: "Progress",
+          barLabel: "value",
         },
-        { data: [dataSeries?.todo.length as number], label: "Todo" },
+        {
+          data: [dataSeries?.todo.length as number],
+          label: "Todo",
+          barLabel: "value",
+        },
       ];
     } else if (dataSeries.high) {
       return [
-        { data: [dataSeries?.low.length as number], label: "Low" },
-        { data: [dataSeries?.medium.length as number], label: "Medium" },
-        { data: [dataSeries?.high.length as number], label: "High" },
+        {
+          data: [dataSeries?.low.length as number],
+          label: "Low",
+          barLabel: "value",
+        },
+        {
+          data: [dataSeries?.medium.length as number],
+          label: "Medium",
+          barLabel: "value",
+        },
+        {
+          data: [dataSeries?.high.length as number],
+          label: "High",
+          barLabel: "value",
+        },
       ];
     }
   };
@@ -229,8 +247,10 @@ export const DashboardPage = () => {
     <>
       Dashboard page
       <Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", width: 1 }}
+          >
             <BarChart
               xAxis={[{ data: ["Status"], label: "Status" }]}
               series={seriesData(status)}
@@ -242,7 +262,70 @@ export const DashboardPage = () => {
               height={200}
             />
           </Box>
-          <Box sx={{ width: "50%" }}>
+
+          <Box sx={{ height: 1 }}>
+            <Typography sx={{ textAlign: "center", fontSize: 30 }}>
+              Project task
+            </Typography>
+            <PieChart
+              series={[
+                {
+                  innerRadius: 50,
+                  outerRadius: 200,
+                  data: piProject,
+                  arcLabel: (item) => `${item.label} : ${item.value} `,
+                },
+              ]}
+              margin={{ right: 5 }}
+              width={500}
+              height={400}
+              hideLegend={true}
+            />
+          </Box>
+        </Box>
+
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography sx={{ fontSize: 50 }}>Task</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ChartBar
+              title="User task"
+              userTaskChart={dataChar(userTask)}
+              label="Task"
+              color="#b2102f"
+            />
+
+            <ChartBar
+              title="Project task"
+              userTaskChart={dataChar(projectTask)}
+              label="Task"
+              color="#8bc34a"
+            />
+            <ChartBar
+              title="Team task"
+              userTaskChart={dataChar(teamTask)}
+              label="Task"
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography sx={{ fontSize: 50 }}>User</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ChartBar
+              title="Project user"
+              userTaskChart={dataChar(projectUser)}
+              label="User"
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography sx={{ fontSize: 50 }}>Project</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
             <Box>
               <Typography sx={{ textAlign: "center" }}>
                 Project priority
@@ -325,63 +408,6 @@ export const DashboardPage = () => {
                 colors={["blue"]}
               />
             </Box>
-          </Box>
-          <Box sx={{ height: 1 }}>
-            <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-              Project task
-            </Typography>
-            <PieChart
-              series={[
-                {
-                  innerRadius: 50,
-                  outerRadius: 200,
-                  data: piProject,
-                  arcLabel: (item) => `${item.label} : ${item.value} `,
-                },
-              ]}
-              margin={{ right: 5 }}
-              width={500}
-              height={400}
-              hideLegend={true}
-            />
-          </Box>
-        </Box>
-
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography sx={{ fontSize: 50 }}>Task</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ChartBar
-              title="User task"
-              userTaskChart={dataChar(userTask)}
-              label="Task"
-              color="#b2102f"
-            />
-
-            <ChartBar
-              title="Project task"
-              userTaskChart={dataChar(projectTask)}
-              label="Task"
-              color="#8bc34a"
-            />
-            <ChartBar
-              title="Team task"
-              userTaskChart={dataChar(teamTask)}
-              label="Task"
-            />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography sx={{ fontSize: 50 }}>User</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ChartBar
-              title="Project user"
-              userTaskChart={dataChar(projectUser)}
-              label="User"
-            />
           </AccordionDetails>
         </Accordion>
       </Box>
