@@ -643,6 +643,27 @@
       "typeOfData": "Task",
       "loggedInData": "{\"id\":\"52bd\",\"reporterId\":\"150b\",\"title\":\"new task\",\"assignedUserId\":\"5e81\",\"description\":\"123\",\"status\":\"progress\",\"priority\":\"medium\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 11:47:14 GMT\",\"createdAt\":\"2026-03-16T11:47:31.462Z\",\"updatedAt\":\"2026-03-17T12:54:23.625Z\"}",
       "createdAt": "2026-03-17T12:54:23.693Z"
+    },
+    {
+      "id": "2b50",
+      "typeOfLogin": "Create",
+      "typeOfData": "Team",
+      "loggedInData": "{\"id\":\"aedb\",\"name\":\"test mltipol user\",\"users\":[\"1\",\"8816\",\"0abe\",\"0056\"],\"createdAt\":\"2026-03-18T09:27:15.445Z\",\"updatedAt\":\"2026-03-18T09:27:15.445Z\"}",
+      "createdAt": "2026-03-18T09:27:15.500Z"
+    },
+    {
+      "id": "0b0f",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\"],\"memberIds\":[\"2\"],\"teamIds\":[\"aedb\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-03-18T09:27:37.869Z\"}",
+      "createdAt": "2026-03-18T09:27:37.965Z"
+    },
+    {
+      "id": "c06c",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Project",
+      "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\"],\"memberIds\":[\"2\"],\"teamIds\":[\"aedb\",\"08de\",\"9e66\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-03-18T09:37:03.124Z\"}",
+      "createdAt": "2026-03-18T09:37:03.286Z"
     }
   ],
   "teams": [
@@ -681,6 +702,18 @@
       ],
       "createdAt": "2026-03-17T08:21:19.601Z",
       "updatedAt": "2026-03-17T08:21:19.601Z"
+    },
+    {
+      "id": "aedb",
+      "name": "test mltipol user",
+      "users": [
+        "1",
+        "8816",
+        "0abe",
+        "0056"
+      ],
+      "createdAt": "2026-03-18T09:27:15.445Z",
+      "updatedAt": "2026-03-18T09:27:15.445Z"
     }
   ],
   "users": [
@@ -885,12 +918,16 @@
       "memberIds": [
         "2"
       ],
-      "teamIds": [],
+      "teamIds": [
+        "aedb",
+        "08de",
+        "9e66"
+      ],
       "description": "asd",
       "name": "test 2",
       "status": "paused",
       "createdAt": "2026-02-27T14:07:49.548Z",
-      "updatedAt": "2026-03-17T10:54:02.933Z"
+      "updatedAt": "2026-03-18T09:37:03.124Z"
     },
     {
       "id": "4ddb",
@@ -1419,7 +1456,7 @@
       "id": "6",
       "title": "Phase 6 — Dashboard UI & Analytics",
       "description": "Build Dashboard home with summary cards. Implement workload analytics and charts for project status and task priority.",
-      "completed": false,
+      "completed": true,
       "subtasks": [
         {
           "id": "6-1",
@@ -1429,17 +1466,17 @@
         {
           "id": "6-2",
           "title": "Create Summary Cards (Users, Teams, Projects)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "6-3",
           "title": "Implement Workload Analytics (Tasks per User/Team/Project), (Users per Project)",
-          "completed": false
+          "completed": true
         },
         {
           "id": "6-4",
           "title": "Add Charts for Project Statuses and Project Active Tasks",
-          "completed": false
+          "completed": true
         }
       ]
     },

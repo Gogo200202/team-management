@@ -43,8 +43,8 @@ export const DashboardPage = () => {
   const [projectTask, setProjectTask] = useState<Map<Project, Task[]>>(
     new Map<Project, Task[]>(),
   );
-  const [projectUser, setProjectUser] = useState<Map<Project, User[]>>(
-    new Map<Project, User[]>(),
+  const [projectUser, setProjectUser] = useState<Map<Project, Set<User>>>(
+    new Map<Project, Set<User>>(),
   );
 
   const [teamTask, setTeamTask] = useState<Map<Team, Task[]>>(
@@ -71,7 +71,7 @@ export const DashboardPage = () => {
     ) {
       const userTaskCurrent = new Map<User, Task[]>();
       const projectTaskCurrent = new Map<Project, Task[]>();
-      const userProjectCurrent = new Map<Project, User[]>();
+      const userProjectCurrent = new Map<Project, Set<User>>();
       const teamTaskCurrent = new Map<Team, Task[]>();
       const projectStatusCurrent = new Map<Project, StatusProm>();
       const projectPriorityCurrent = new Map<Project, PriorityProp>();
@@ -96,7 +96,19 @@ export const DashboardPage = () => {
         const members = project.memberIds.map(
           (mb) => allUser.find((al) => al.id == mb)!,
         );
-        userProjectCurrent.set(project, [...admins, ...members]);
+        const usersFromTeams = project.teamIds
+          .map((teamId) => allTeams.find((allTeam) => allTeam.id == teamId)!)
+          .map((team) => {
+            return team.users.map((userId) => {
+              return allUser.find((allUser) => allUser.id == userId);
+            });
+          })
+          .reduce((accumulator, userTeam) => [...accumulator, ...userTeam], []);
+
+        userProjectCurrent.set(
+          project,
+          new Set<User>([...admins, ...members, ...(usersFromTeams as User[])]),
+        );
 
         projectStatusCurrent.set(project, {
           complete: allTaskForProject.filter((x) => x.status == "complete"),
@@ -111,10 +123,14 @@ export const DashboardPage = () => {
         if (allTaskForProject.length != 0) {
           projectTaskCurrent.set(project, allTaskForProject);
           allTaskForProject.map((alt) => {
-            userProjectCurrent.set(project, [
-              ...userProjectCurrent.get(project)!,
-              allUser.find((x) => x.id == alt.assignedUserId)!,
-            ]);
+            userProjectCurrent.set(
+              project,
+              new Set<User>([
+                ...userProjectCurrent.get(project)!,
+                allUser.find((x) => x.id == alt.assignedUserId)!,
+                allUser.find((x) => x.id == alt.reporterId)!,
+              ]),
+            );
           });
         }
       });
@@ -193,6 +209,12 @@ export const DashboardPage = () => {
           value: value.length,
         };
       } else if (key.name) {
+        if (value.size) {
+          return {
+            type: `${key.name}`,
+            value: value.size,
+          };
+        }
         return {
           type: `${key.name}`,
           value: value.length,
@@ -201,7 +223,7 @@ export const DashboardPage = () => {
     });
   };
 
-  const seriesData = (dataSeries: any): any[] => {
+  const seriesData = (dataSeries: unknown): any[] => {
     if (!dataSeries) return [];
 
     if (dataSeries.complete) {
@@ -242,6 +264,7 @@ export const DashboardPage = () => {
         },
       ];
     }
+    return [];
   };
   return (
     <>
@@ -291,20 +314,20 @@ export const DashboardPage = () => {
           <AccordionDetails>
             <ChartBar
               title="User task"
-              userTaskChart={dataChar(userTask)}
+              userTaskChart={dataChar(userTask as unknown as unknown[])}
               label="Task"
               color="#b2102f"
             />
 
             <ChartBar
               title="Project task"
-              userTaskChart={dataChar(projectTask)}
+              userTaskChart={dataChar(projectTask as unknown as unknown[])}
               label="Task"
               color="#8bc34a"
             />
             <ChartBar
               title="Team task"
-              userTaskChart={dataChar(teamTask)}
+              userTaskChart={dataChar(teamTask as unknown as unknown[])}
               label="Task"
             />
           </AccordionDetails>
@@ -316,7 +339,7 @@ export const DashboardPage = () => {
           <AccordionDetails>
             <ChartBar
               title="Project user"
-              userTaskChart={dataChar(projectUser)}
+              userTaskChart={dataChar(projectUser as unknown as unknown[])}
               label="User"
             />
           </AccordionDetails>
@@ -331,7 +354,7 @@ export const DashboardPage = () => {
                 Project priority
               </Typography>
               <BarChart
-                dataset={dataChar(projectPriority)}
+                dataset={dataChar(projectPriority as unknown as unknown[])}
                 yAxis={[
                   {
                     disableTicks: true,
@@ -372,7 +395,7 @@ export const DashboardPage = () => {
                 Project Status
               </Typography>
               <BarChart
-                dataset={dataChar(projectStatus)}
+                dataset={dataChar(projectStatus as unknown as unknown[])}
                 yAxis={[
                   {
                     disableTicks: true,
