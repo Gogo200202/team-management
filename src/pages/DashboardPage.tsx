@@ -187,7 +187,7 @@ export const DashboardPage = () => {
     };
   });
 
-  const dataChar = (data: any[]): any[] => {
+  const dataChar = (data: any): any[] => {
     return Array.from(data).map(([key, value]) => {
       if (value.complete) {
         return {
@@ -267,173 +267,169 @@ export const DashboardPage = () => {
     return [];
   };
   return (
-    <>
-      Dashboard page
-      <Box>
-        <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-          <Box
-            sx={{ display: "flex", justifyContent: "space-between", width: 1 }}
-          >
-            <BarChart
-              xAxis={[{ data: ["Status"], label: "Status" }]}
-              series={seriesData(status)}
-              height={200}
-            />
-            <BarChart
-              xAxis={[{ data: ["Priority"], label: "Priority" }]}
-              series={seriesData(priority)}
-              height={200}
-            />
-          </Box>
-
-          <Box sx={{ height: 1 }}>
-            <Typography sx={{ textAlign: "center", fontSize: 30 }}>
-              Project task
-            </Typography>
-            <PieChart
-              series={[
-                {
-                  innerRadius: 50,
-                  outerRadius: 200,
-                  data: piProject,
-                  arcLabel: (item) => `${item.label} : ${item.value} `,
-                },
-              ]}
-              margin={{ right: 5 }}
-              width={500}
-              height={400}
-              hideLegend={true}
-            />
-          </Box>
+    <Box>
+      <Typography>Dashboard page</Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "space-between", width: 1 }}
+        >
+          <BarChart
+            xAxis={[{ data: ["Status"], label: "Status" }]}
+            series={seriesData(status)}
+            height={200}
+          />
+          <BarChart
+            xAxis={[{ data: ["Priority"], label: "Priority" }]}
+            series={seriesData(priority)}
+            height={200}
+          />
         </Box>
 
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography sx={{ fontSize: 50 }}>Task</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ChartBar
-              title="User task"
-              userTaskChart={dataChar(userTask as unknown as unknown[])}
-              label="Task"
-              color="#b2102f"
-            />
-
-            <ChartBar
-              title="Project task"
-              userTaskChart={dataChar(projectTask as unknown as unknown[])}
-              label="Task"
-              color="#8bc34a"
-            />
-            <ChartBar
-              title="Team task"
-              userTaskChart={dataChar(teamTask as unknown as unknown[])}
-              label="Task"
-            />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography sx={{ fontSize: 50 }}>User</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <ChartBar
-              title="Project user"
-              userTaskChart={dataChar(projectUser as unknown as unknown[])}
-              label="User"
-            />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography sx={{ fontSize: 50 }}>Project</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box>
-              <Typography sx={{ textAlign: "center" }}>
-                Project priority
-              </Typography>
-              <BarChart
-                dataset={dataChar(projectPriority as unknown as unknown[])}
-                yAxis={[
-                  {
-                    disableTicks: true,
-                    scaleType: "band",
-                    width: 120,
-                    disableLine: true,
-                    dataKey: "type",
-                  },
-                ]}
-                xAxis={[
-                  {
-                    disableTicks: true,
-                    tickMinStep: 1,
-                  },
-                ]}
-                series={[
-                  {
-                    dataKey: "low",
-                    color: "green",
-                    label: "Low",
-                    barLabel: "value",
-                  },
-                  { dataKey: "medium", label: "Medium", barLabel: "value" },
-                  {
-                    dataKey: "high",
-                    color: "red",
-                    label: "High",
-                    barLabel: "value",
-                  },
-                ]}
-                layout="horizontal"
-                height={250}
-                colors={["blue"]}
-              />
-            </Box>
-            <Box>
-              <Typography sx={{ textAlign: "center" }}>
-                Project Status
-              </Typography>
-              <BarChart
-                dataset={dataChar(projectStatus as unknown as unknown[])}
-                yAxis={[
-                  {
-                    disableTicks: true,
-                    scaleType: "band",
-                    width: 120,
-                    disableLine: true,
-                    dataKey: "type",
-                  },
-                ]}
-                xAxis={[
-                  {
-                    disableTicks: true,
-                    tickMinStep: 1,
-                  },
-                ]}
-                series={[
-                  {
-                    dataKey: "todo",
-                    color: "red",
-                    label: "Todo",
-                    barLabel: "value",
-                  },
-                  { dataKey: "progress", label: "Progress", barLabel: "value" },
-                  {
-                    dataKey: "complete",
-                    color: "green",
-                    label: "Complete",
-                    barLabel: "value",
-                  },
-                ]}
-                layout="horizontal"
-                height={250}
-                colors={["blue"]}
-              />
-            </Box>
-          </AccordionDetails>
-        </Accordion>
+        <Box sx={{ height: 1 }}>
+          <Typography sx={{ textAlign: "center", fontSize: 30 }}>
+            Project task
+          </Typography>
+          <PieChart
+            series={[
+              {
+                innerRadius: 50,
+                outerRadius: 200,
+                data: piProject,
+                arcLabel: (item) => `${item.label} : ${item.value} `,
+              },
+            ]}
+            margin={{ right: 5 }}
+            width={500}
+            height={400}
+            hideLegend={true}
+          />
+        </Box>
       </Box>
-    </>
+
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>Task</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ChartBar
+            title="User task"
+            userTaskChart={dataChar(userTask as any)}
+            label="Task"
+            color="#b2102f"
+          />
+
+          <ChartBar
+            title="Project task"
+            userTaskChart={dataChar(projectTask as any)}
+            label="Task"
+            color="#8bc34a"
+          />
+          <ChartBar
+            title="Team task"
+            userTaskChart={dataChar(teamTask as any)}
+            label="Task"
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>User</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ChartBar
+            title="Project user"
+            userTaskChart={dataChar(projectUser as any)}
+            label="User"
+          />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography sx={{ fontSize: 50 }}>Project</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box>
+            <Typography sx={{ textAlign: "center" }}>
+              Project priority
+            </Typography>
+            <BarChart
+              dataset={dataChar(projectPriority as any)}
+              yAxis={[
+                {
+                  disableTicks: true,
+                  scaleType: "band",
+                  width: 120,
+                  disableLine: true,
+                  dataKey: "type",
+                },
+              ]}
+              xAxis={[
+                {
+                  disableTicks: true,
+                  tickMinStep: 1,
+                },
+              ]}
+              series={[
+                {
+                  dataKey: "low",
+                  color: "green",
+                  label: "Low",
+                  barLabel: "value",
+                },
+                { dataKey: "medium", label: "Medium", barLabel: "value" },
+                {
+                  dataKey: "high",
+                  color: "red",
+                  label: "High",
+                  barLabel: "value",
+                },
+              ]}
+              layout="horizontal"
+              height={250}
+              colors={["blue"]}
+            />
+          </Box>
+          <Box>
+            <Typography sx={{ textAlign: "center" }}>Project Status</Typography>
+            <BarChart
+              dataset={dataChar(projectStatus as any)}
+              yAxis={[
+                {
+                  disableTicks: true,
+                  scaleType: "band",
+                  width: 120,
+                  disableLine: true,
+                  dataKey: "type",
+                },
+              ]}
+              xAxis={[
+                {
+                  disableTicks: true,
+                  tickMinStep: 1,
+                },
+              ]}
+              series={[
+                {
+                  dataKey: "todo",
+                  color: "red",
+                  label: "Todo",
+                  barLabel: "value",
+                },
+                { dataKey: "progress", label: "Progress", barLabel: "value" },
+                {
+                  dataKey: "complete",
+                  color: "green",
+                  label: "Complete",
+                  barLabel: "value",
+                },
+              ]}
+              layout="horizontal"
+              height={250}
+              colors={["blue"]}
+            />
+          </Box>
+        </AccordionDetails>
+      </Accordion>
+    </Box>
   );
 };
