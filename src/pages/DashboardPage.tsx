@@ -223,7 +223,7 @@ export const DashboardPage = () => {
     });
   };
 
-  const seriesData = (dataSeries: unknown): any[] => {
+  const seriesData = (dataSeries: any): any[] => {
     if (!dataSeries) return [];
 
     if (dataSeries.complete) {
