@@ -6,7 +6,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
+import { BarChart, type BarSeries } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useEffect, useState } from "react";
 
@@ -29,6 +29,11 @@ type PriorityProp = {
   high: Task[];
   medium: Task[];
   low: Task[];
+};
+type key = {
+  name?: string;
+  firstName?: string;
+  lastName?: string;
 };
 export const DashboardPage = () => {
   const { data: allTask, isSuccess: isSuccessTasks } = useGetAllTask();
@@ -187,46 +192,53 @@ export const DashboardPage = () => {
     };
   });
 
-  const dataChar = (data: any): any[] => {
+  const dataChar = (
+    data: Map<key, Task[] | Set<User> | StatusProm | PriorityProp>,
+  ): BarSeries[] => {
     return Array.from(data).map(([key, value]) => {
-      if (value.complete) {
+      if ("complete" in value) {
+        value = value as StatusProm;
         return {
           type: key.name,
           complete: value.complete.length,
-          progress: value.progress.length,
-          todo: value.todo.length,
+          progress: value.progress!.length,
+          todo: value.todo!.length,
         };
-      } else if (value.high) {
+      } else if ("high" in value) {
+        value = value as PriorityProp;
         return {
           type: key.name,
           high: value.high.length,
-          medium: value.medium.length,
-          low: value.low.length,
+          medium: value.medium!.length,
+          low: value.low!.length,
         };
       } else if (key.firstName) {
+        value = value as Task[];
         return {
           type: `${key.firstName} ${key.lastName}`,
           value: value.length,
         };
       } else if (key.name) {
-        if (value.size) {
+        if ("size" in value) {
+          value = value as Set<User>;
           return {
             type: `${key.name}`,
             value: value.size,
           };
         }
+        value = value as Task[];
         return {
           type: `${key.name}`,
           value: value.length,
         };
       }
-    });
+    }) as BarSeries[];
   };
 
-  const seriesData = (dataSeries: any): any[] => {
+  const seriesData = (dataSeries: StatusProm | PriorityProp): BarSeries[] => {
     if (!dataSeries) return [];
 
-    if (dataSeries.complete) {
+    if ("complete" in dataSeries) {
       return [
         {
           data: [dataSeries?.complete.length as number],
@@ -245,7 +257,7 @@ export const DashboardPage = () => {
           barLabel: "value",
         },
       ];
-    } else if (dataSeries.high) {
+    } else if ("high" in dataSeries) {
       return [
         {
           data: [dataSeries?.low.length as number],
@@ -275,12 +287,12 @@ export const DashboardPage = () => {
         >
           <BarChart
             xAxis={[{ data: ["Status"], label: "Status" }]}
-            series={seriesData(status)}
+            series={seriesData(status as StatusProm)}
             height={200}
           />
           <BarChart
             xAxis={[{ data: ["Priority"], label: "Priority" }]}
-            series={seriesData(priority)}
+            series={seriesData(priority as PriorityProp)}
             height={200}
           />
         </Box>
@@ -313,20 +325,20 @@ export const DashboardPage = () => {
         <AccordionDetails>
           <ChartBar
             title="User task"
-            userTaskChart={dataChar(userTask as any)}
+            userTaskChart={dataChar(userTask)}
             label="Task"
             color="#b2102f"
           />
 
           <ChartBar
             title="Project task"
-            userTaskChart={dataChar(projectTask as any)}
+            userTaskChart={dataChar(projectTask)}
             label="Task"
             color="#8bc34a"
           />
           <ChartBar
             title="Team task"
-            userTaskChart={dataChar(teamTask as any)}
+            userTaskChart={dataChar(teamTask)}
             label="Task"
           />
         </AccordionDetails>
@@ -338,7 +350,7 @@ export const DashboardPage = () => {
         <AccordionDetails>
           <ChartBar
             title="Project user"
-            userTaskChart={dataChar(projectUser as any)}
+            userTaskChart={dataChar(projectUser)}
             label="User"
           />
         </AccordionDetails>
@@ -353,7 +365,7 @@ export const DashboardPage = () => {
               Project priority
             </Typography>
             <BarChart
-              dataset={dataChar(projectPriority as any)}
+              dataset={dataChar(projectPriority)}
               yAxis={[
                 {
                   disableTicks: true,
@@ -392,7 +404,7 @@ export const DashboardPage = () => {
           <Box>
             <Typography sx={{ textAlign: "center" }}>Project Status</Typography>
             <BarChart
-              dataset={dataChar(projectStatus as any)}
+              dataset={dataChar(projectStatus)}
               yAxis={[
                 {
                   disableTicks: true,

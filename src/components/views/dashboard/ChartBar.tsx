@@ -1,14 +1,9 @@
 import { Typography } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
+import { BarChart, type BarSeries } from "@mui/x-charts/BarChart";
 import type { FunctionComponent } from "react";
 
-type dataChartProps = {
-  type: string;
-  value: number;
-};
-
 interface ChartBarProps {
-  userTaskChart: dataChartProps[];
+  userTaskChart: BarSeries[];
   title: string;
   label: string;
   color?: string;
