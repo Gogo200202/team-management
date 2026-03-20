@@ -24,7 +24,11 @@ const navItems = [
   { label: "Teams", path: "/teams", icon: <GroupsOutlinedIcon /> },
   { label: "Projects", path: "/projects", icon: <AccountTreeOutlinedIcon /> },
   { label: "Activity log", path: "/activity", icon: <QueryStatsIcon /> },
-  { label: "Dashboard", path: undefined, icon: <SpaceDashboardOutlinedIcon /> },
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+    icon: <SpaceDashboardOutlinedIcon />,
+  },
 ];
 
 export const Sidebar = () => {
