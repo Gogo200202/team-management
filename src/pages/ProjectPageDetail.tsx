@@ -1,12 +1,6 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Box, Button, Card, Chip, Stack, Typography } from "@mui/material";
-import {
-  DataGrid,
-  getGridDateOperators,
-  type GridColDef,
-} from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -21,7 +15,10 @@ import type { User } from "../api/types/userTypes";
 import { useGetAllUsers } from "../api/user.controller";
 import DeleteComponent from "../components/common/DeleteComponent";
 import { SnackbarComponent } from "../components/common/SnackbarComponent";
-import { useUserContext } from "../components/context/UserContext";
+import {
+  type ColumnProps,
+  TableComponents,
+} from "../components/views/Tables/TableComponents";
 import TaskDialog from "../components/views/Tasks/TaskDialog";
 
 type UserFromTeams = {
@@ -41,11 +38,21 @@ type TaskGrid = {
   finishUntil: string;
 };
 
+type TaskTable = {
+  id: string;
+  reporterName: string;
+  userName: string;
+  title: string;
+  status: string;
+  priority: string;
+  description: string;
+  finishUntil: string;
+};
+
 function ProjectPageDetail() {
   const { data: allUsers } = useGetAllUsers();
   const { data: allTeams } = useGetAllTeams();
   const { data: allTask } = useGetAllTask();
-  const { currentUser } = useUserContext();
   const { projectsId } = useParams();
   const { data: project, isFetched } = useGetProject(projectsId!);
 
@@ -86,9 +93,10 @@ function ProjectPageDetail() {
     setTaskToManipulate(undefined);
   };
   useEffect(() => {
-    if (isFetched && project != undefined) {
+    if (isFetched) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProjectLoaded(project);
-      const admins: (User | undefined)[] = project.adminIds.map((adminId) => {
+      const admins: (User | undefined)[] = project!.adminIds.map((adminId) => {
         const finedAdmin = allUsers?.find((x) => x.id == adminId);
         if (finedAdmin != null) {
           return finedAdmin;
@@ -97,7 +105,7 @@ function ProjectPageDetail() {
 
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setAdmins(admins);
-      const members: (User | undefined)[] = project.memberIds.map(
+      const members: (User | undefined)[] = project!.memberIds.map(
         (memberId) => {
           const finedMember = allUsers?.find(
             (x) => x.id == memberId.toString(),
@@ -133,7 +141,7 @@ function ProjectPageDetail() {
 
       setUsersFromTeams(userTeams);
       const taskToProjectFirst: Task[] | undefined = allTask?.filter(
-        (x) => x.projectId == project.id,
+        (x) => x.projectId == project!.id,
       );
 
       const taskToProjectGridFirst: TaskGrid[] | undefined =
@@ -159,149 +167,105 @@ function ProjectPageDetail() {
     }
   }, [allTask, allTeams, allUsers, isFetched, project]);
 
-  const columns: GridColDef<TaskGrid>[] = [
+  const cornetColum: ColumnProps<TaskTable>[] = [
     {
-      field: "id",
-      headerName: "Id of task",
-      flex: 0.4,
-      sortable: false,
-      filterable: false,
+      key: "id",
+      label: "Id of task",
     },
     {
-      field: "reporterName",
-      headerName: "Reporter",
-      flex: 0.4,
-      sortable: false,
-      filterable: false,
+      key: "reporterName",
+      label: "Reporter",
     },
     {
-      field: "userName",
-      headerName: "Assigned",
-      flex: 0.4,
-      sortable: false,
-      filterable: false,
+      key: "userName",
+      label: "User",
     },
     {
-      field: "title",
-      headerName: "Title",
-      flex: 1,
-      sortable: false,
-      filterable: false,
+      key: "title",
+      label: "Title",
     },
     {
-      field: "status",
-      headerName: "Status",
-      flex: 0.5,
-      renderCell: (params) => {
-        if (params.value == "todo") {
-          return <Chip label={params.value} color="primary" />;
-        } else if (params.value == "progress") {
-          return <Chip label={params.value} color="error" />;
-        } else if (params.value == "complete") {
-          return <Chip label={params.value} color="success" />;
+      key: "status",
+      label: "Status",
+      renderRowCell(row) {
+        if (row.status == "todo") {
+          return <Chip label={row.status} color="primary" />;
+        } else if (row.status == "progress") {
+          return <Chip label={row.status} color="error" />;
+        } else if (row.status == "complete") {
+          return <Chip label={row.status} color="success" />;
         }
+        return <></>;
       },
     },
     {
-      field: "priority",
-      headerName: "Priority",
-      flex: 0.5,
-      renderCell: (params) => {
-        if (params.value == "low") {
-          return <Chip label={params.value} color="primary" />;
-        } else if (params.value == "medium") {
-          return <Chip label={params.value} color="warning" />;
-        } else if (params.value == "high") {
-          return <Chip label={params.value} color="error" />;
+      key: "priority",
+      label: "Priority",
+      renderRowCell(row) {
+        if (row.priority == "low") {
+          return <Chip label={row.priority} color="primary" />;
+        } else if (row.priority == "medium") {
+          return <Chip label={row.priority} color="warning" />;
+        } else if (row.priority == "high") {
+          return <Chip label={row.priority} color="error" />;
         }
-      },
-      sortComparator: (v1, v2) => {
-        if (v1 == "low" && v2 == "medium") {
-          return 1;
-        } else if (v1 == "low" && v2 == "high") {
-          return 1;
-        } else if (v1 == "medium" && v2 == "high") {
-          return 1;
-        } else if (v1 == "high" && v2 == "medium") {
-          return -1;
-        } else if (v1 == "high" && v2 == "low") {
-          return -1;
-        } else if (v1 == "medium" && v2 == "low") {
-          return -1;
-        }
-        return 0;
+        return <></>;
       },
     },
     {
-      field: "description",
-      headerName: "Description",
-      flex: 1,
-      sortable: false,
-      filterable: false,
+      key: "description",
+      label: "Description",
     },
     {
-      field: "finishUntil",
-      headerName: "Finish until",
-
-      flex: 0.5,
-      renderCell: (params) => {
-        return <>{dayjs(params.value).format("MM/DD/YYYY")}</>;
-      },
-
-      filterOperators: getGridDateOperators().map((operator) => {
-        return {
-          ...operator,
-          InputComponentProps: {
-            type: "date",
-          },
-        };
-      }),
+      key: "finishUntil",
+      label: "Finish until",
     },
     {
-      field: "action",
-      headerName: "Actions",
-      width: 150,
-      sortable: false,
-      renderCell: (params) => {
-        let displayDelete: boolean = false;
-
-        if (
-          params.row.status == "complete" &&
-          params.row.reporter?.id != currentUser?.id
-        ) {
-          displayDelete = true;
-        }
-
-        const onClickDelete = () => {
-          const currentTask = allTask?.find((x) => x.id == params.id);
-          setTaskToManipulate(currentTask);
-          setTypeOfSnackAlert("delete");
-          setDeleteDialog(true);
-        };
-
-        const onClickEdit = () => {
-          const currentTask = allTask?.find((x) => x.id == params.id);
-          setTaskToManipulate(currentTask);
-          setTypeOfSnackAlert("edit");
-
-          setDialogOpen(true);
-        };
-
-        return (
+      key: "action",
+      label: "Action",
+      renderRowCell: (row) => (
+        <Box sx={{ display: "flex" }}>
           <Box>
-            <Button disabled={displayDelete} onClick={onClickDelete}>
+            <Button onClick={() => onClickDelete(row.id)}>
               <DeleteIcon />
             </Button>
-
-            <Button onClick={onClickEdit}>
+          </Box>
+          <Box>
+            <Button onClick={() => onClickEdit(row.id)}>
               <EditIcon />
             </Button>
           </Box>
-        );
-      },
-      flex: 0.5,
+        </Box>
+      ),
     },
   ];
+
+  const onClickEdit = (id: string) => {
+    const currentTask = allTask?.find((x) => x.id == id);
+    setTaskToManipulate(currentTask);
+    setTypeOfSnackAlert("edit");
+
+    setDialogOpen(true);
+  };
+  const onClickDelete = (id: string) => {
+    const currentTask = allTask?.find((x) => x.id == id);
+    setTaskToManipulate(currentTask);
+    setTypeOfSnackAlert("delete");
+    setDeleteDialog(true);
+  };
+
+  const test: TaskTable[] = taskToProjectGrid!.map((x) => {
+    return {
+      id: x.id,
+      reporterName: x.reporterName || "",
+      userName: x.userName || "",
+      title: x.title,
+      status: x.status || "",
+      priority: x.priority || "",
+      description: x.description,
+      finishUntil: dayjs(x.finishUntil).format("MM/DD/YYYY"),
+    };
+  });
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -370,13 +334,7 @@ function ProjectPageDetail() {
       </Box>
 
       <Box>
-        <DataGrid
-          showToolbar
-          rows={taskToProjectGrid}
-          columns={columns}
-          pageSizeOptions={[100]}
-          disableRowSelectionOnClick
-        />
+        <TableComponents columns={cornetColum} rows={test} />
       </Box>
       <DeleteComponent
         deleteItem={deleteDialogHandel}

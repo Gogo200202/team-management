@@ -664,6 +664,125 @@
       "typeOfData": "Project",
       "loggedInData": "{\"id\":\"e046\",\"adminIds\":[\"1\"],\"memberIds\":[\"2\"],\"teamIds\":[\"aedb\",\"08de\",\"9e66\"],\"description\":\"asd\",\"name\":\"test 2\",\"status\":\"paused\",\"createdAt\":\"2026-02-27T14:07:49.548Z\",\"updatedAt\":\"2026-03-18T09:37:03.124Z\"}",
       "createdAt": "2026-03-18T09:37:03.286Z"
+    },
+    {
+      "id": "91b3",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"f172\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:29.000Z\",\"createdAt\":\"2026-02-27T14:42:54.211Z\",\"updatedAt\":\"2026-03-19T14:10:51.673Z\"}",
+      "createdAt": "2026-03-19T14:10:51.934Z"
+    },
+    {
+      "id": "69be",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"f172\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"low\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:29.000Z\",\"createdAt\":\"2026-02-27T14:42:54.211Z\",\"updatedAt\":\"2026-03-19T14:10:58.010Z\"}",
+      "createdAt": "2026-03-19T14:10:58.094Z"
+    },
+    {
+      "id": "68fd",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"progress\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:11:10.482Z\"}",
+      "createdAt": "2026-03-19T14:11:10.575Z"
+    },
+    {
+      "id": "28ea",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"complete\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:11:15.090Z\"}",
+      "createdAt": "2026-03-19T14:11:15.162Z"
+    },
+    {
+      "id": "00d4",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:12:16.400Z\"}",
+      "createdAt": "2026-03-19T14:12:16.491Z"
+    },
+    {
+      "id": "314e",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"progress\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:12:22.658Z\"}",
+      "createdAt": "2026-03-19T14:12:22.732Z"
+    },
+    {
+      "id": "472e",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"progress\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:35:13.933Z\"}",
+      "createdAt": "2026-03-19T14:35:14.026Z"
+    },
+    {
+      "id": "c5f5",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"be13\",\"reporterId\":\"5e81\",\"title\":\"test task\",\"assignedUserId\":\"8816\",\"description\":\"asdasd\",\"status\":\"progress\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:24.000Z\",\"createdAt\":\"2026-02-27T14:42:43.196Z\",\"updatedAt\":\"2026-03-19T14:35:19.107Z\"}",
+      "createdAt": "2026-03-19T14:35:19.199Z"
+    },
+    {
+      "id": "e314",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"f172\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:29.000Z\",\"createdAt\":\"2026-02-27T14:42:54.211Z\",\"updatedAt\":\"2026-03-19T14:55:27.637Z\"}",
+      "createdAt": "2026-03-19T14:55:27.884Z"
+    },
+    {
+      "id": "3210",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"f172\",\"reporterId\":\"5e81\",\"title\":\"asd\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-02-28T14:42:29.000Z\",\"createdAt\":\"2026-02-27T14:42:54.211Z\",\"updatedAt\":\"2026-03-19T14:55:27.637Z\"}",
+      "createdAt": "2026-03-19T14:58:26.405Z"
+    },
+    {
+      "id": "3507",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"92bc\",\"reporterId\":\"150b\",\"title\":\"qwdaswasd\",\"assignedUserId\":\"1\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-03-26T14:58:26.000Z\",\"createdAt\":\"2026-03-19T14:58:43.606Z\",\"updatedAt\":\"2026-03-19T14:58:43.606Z\"}",
+      "createdAt": "2026-03-19T14:58:43.683Z"
+    },
+    {
+      "id": "840f",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"92bc\",\"reporterId\":\"150b\",\"title\":\"qwdaswasd\",\"assignedUserId\":\"1\",\"description\":\"asdasd\",\"status\":\"todo\",\"priority\":\"medium\",\"projectId\":\"5bed\",\"finishUntil\":\"2026-03-26T14:58:26.000Z\",\"createdAt\":\"2026-03-19T14:58:43.606Z\",\"updatedAt\":\"2026-03-19T14:58:51.384Z\"}",
+      "createdAt": "2026-03-19T14:58:51.464Z"
+    },
+    {
+      "id": "d84f",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"e4fc\",\"reporterId\":\"150b\",\"title\":\"test\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"medium\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 07:56:54 GMT\",\"createdAt\":\"2026-03-16T07:57:18.946Z\",\"updatedAt\":\"2026-03-20T08:17:05.237Z\"}",
+      "createdAt": "2026-03-20T08:17:05.481Z"
+    },
+    {
+      "id": "2369",
+      "typeOfLogin": "Delete",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"52bd\",\"reporterId\":\"150b\",\"title\":\"new task\",\"assignedUserId\":\"5e81\",\"description\":\"123\",\"status\":\"progress\",\"priority\":\"medium\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 11:47:14 GMT\",\"createdAt\":\"2026-03-16T11:47:31.462Z\",\"updatedAt\":\"2026-03-17T12:54:23.625Z\"}",
+      "createdAt": "2026-03-20T08:21:35.202Z"
+    },
+    {
+      "id": "90b3",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"95d4\",\"reporterId\":\"150b\",\"title\":\"sdasd\",\"assignedUserId\":\"1\",\"description\":\"123\",\"status\":\"todo\",\"priority\":\"high\",\"projectId\":\"e046\",\"finishUntil\":\"Fri, 20 Mar 2026 08:21:34 GMT\",\"createdAt\":\"2026-03-20T08:21:45.613Z\",\"updatedAt\":\"2026-03-20T08:21:45.613Z\"}",
+      "createdAt": "2026-03-20T08:21:45.678Z"
+    },
+    {
+      "id": "e8a6",
+      "typeOfLogin": "Edit",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"e4fc\",\"reporterId\":\"150b\",\"title\":\"test\",\"assignedUserId\":\"1\",\"description\":\"asd\",\"status\":\"todo\",\"priority\":\"medium\",\"projectId\":\"e046\",\"finishUntil\":\"Mon, 16 Mar 2026 07:56:54 GMT\",\"createdAt\":\"2026-03-16T07:57:18.946Z\",\"updatedAt\":\"2026-03-20T09:19:59.232Z\"}",
+      "createdAt": "2026-03-20T09:19:59.404Z"
+    },
+    {
+      "id": "71a7",
+      "typeOfLogin": "Create",
+      "typeOfData": "Task",
+      "loggedInData": "{\"id\":\"b32d\",\"reporterId\":\"150b\",\"title\":\"234\",\"assignedUserId\":\"2\",\"description\":\"234\",\"status\":\"progress\",\"priority\":\"high\",\"projectId\":\"e046\",\"finishUntil\":\"Fri, 20 Mar 2026 09:19:59 GMT\",\"createdAt\":\"2026-03-20T09:20:13.448Z\",\"updatedAt\":\"2026-03-20T09:20:13.448Z\"}",
+      "createdAt": "2026-03-20T09:20:13.508Z"
     }
   ],
   "teams": [
@@ -1141,25 +1260,12 @@
       "title": "test task",
       "assignedUserId": "8816",
       "description": "asdasd",
-      "status": "complete",
+      "status": "progress",
       "priority": "medium",
       "projectId": "5bed",
       "finishUntil": "2026-02-28T14:42:24.000Z",
       "createdAt": "2026-02-27T14:42:43.196Z",
-      "updatedAt": "2026-03-17T12:53:59.700Z"
-    },
-    {
-      "id": "f172",
-      "reporterId": "5e81",
-      "title": "asd",
-      "assignedUserId": "1",
-      "description": "asd",
-      "status": "todo",
-      "priority": "high",
-      "projectId": "5bed",
-      "finishUntil": "2026-02-28T14:42:29.000Z",
-      "createdAt": "2026-02-27T14:42:54.211Z",
-      "updatedAt": "2026-02-27T14:42:54.211Z"
+      "updatedAt": "2026-03-19T14:35:19.107Z"
     },
     {
       "id": "e4fc",
@@ -1168,11 +1274,11 @@
       "assignedUserId": "1",
       "description": "asd",
       "status": "todo",
-      "priority": "high",
+      "priority": "medium",
       "projectId": "e046",
       "finishUntil": "Mon, 16 Mar 2026 07:56:54 GMT",
       "createdAt": "2026-03-16T07:57:18.946Z",
-      "updatedAt": "2026-03-17T09:28:55.086Z"
+      "updatedAt": "2026-03-20T09:19:59.232Z"
     },
     {
       "id": "e90a",
@@ -1240,19 +1346,6 @@
       "updatedAt": "2026-03-17T12:49:51.237Z"
     },
     {
-      "id": "52bd",
-      "reporterId": "150b",
-      "title": "new task",
-      "assignedUserId": "5e81",
-      "description": "123",
-      "status": "progress",
-      "priority": "medium",
-      "projectId": "e046",
-      "finishUntil": "Mon, 16 Mar 2026 11:47:14 GMT",
-      "createdAt": "2026-03-16T11:47:31.462Z",
-      "updatedAt": "2026-03-17T12:54:23.625Z"
-    },
-    {
       "id": "6bfa",
       "reporterId": "150b",
       "title": "asd123123",
@@ -1264,6 +1357,45 @@
       "finishUntil": "Tue, 17 Mar 2026 08:21:49 GMT",
       "createdAt": "2026-03-17T08:22:12.833Z",
       "updatedAt": "2026-03-17T08:22:12.833Z"
+    },
+    {
+      "id": "92bc",
+      "reporterId": "150b",
+      "title": "qwdaswasd",
+      "assignedUserId": "1",
+      "description": "asdasd",
+      "status": "todo",
+      "priority": "medium",
+      "projectId": "5bed",
+      "finishUntil": "2026-03-26T14:58:26.000Z",
+      "createdAt": "2026-03-19T14:58:43.606Z",
+      "updatedAt": "2026-03-19T14:58:51.384Z"
+    },
+    {
+      "id": "95d4",
+      "reporterId": "150b",
+      "title": "sdasd",
+      "assignedUserId": "1",
+      "description": "123",
+      "status": "todo",
+      "priority": "high",
+      "projectId": "e046",
+      "finishUntil": "Fri, 20 Mar 2026 08:21:34 GMT",
+      "createdAt": "2026-03-20T08:21:45.613Z",
+      "updatedAt": "2026-03-20T08:21:45.613Z"
+    },
+    {
+      "id": "b32d",
+      "reporterId": "150b",
+      "title": "234",
+      "assignedUserId": "2",
+      "description": "234",
+      "status": "progress",
+      "priority": "high",
+      "projectId": "e046",
+      "finishUntil": "Fri, 20 Mar 2026 09:19:59 GMT",
+      "createdAt": "2026-03-20T09:20:13.448Z",
+      "updatedAt": "2026-03-20T09:20:13.448Z"
     }
   ],
   "roadmap": [
