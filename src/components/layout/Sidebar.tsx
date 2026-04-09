@@ -1,6 +1,7 @@
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import MessageIcon from "@mui/icons-material/Message";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import SpaceDashboardOutlinedIcon from "@mui/icons-material/SpaceDashboardOutlined";
 import {
@@ -28,6 +29,11 @@ const navItems = [
     label: "Dashboard",
     path: "/dashboard",
     icon: <SpaceDashboardOutlinedIcon />,
+  },
+  {
+    label: "LiveChat",
+    path: "/liveChat",
+    icon: <MessageIcon />,
   },
 ];
 

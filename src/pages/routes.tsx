@@ -1,7 +1,7 @@
-import { Dashboard } from "@mui/icons-material";
 import { Outlet, type RouteObject } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
+import { LiveChatPage } from "../components/views/LiveChat/LiveChatPage";
 import RedirectRegisterUsers from "../middleware/RedirectRegisterUsers";
 import withAuth from "../middleware/withAuth";
 import { ActivityLogDetailsPage } from "./ActivityLogDetailsPage";
@@ -56,6 +56,10 @@ export const routes: RouteObject[] = [
       {
         path: "dashboard",
         element: <DashboardPage />,
+      },
+      {
+        path: "liveChat",
+        element: <LiveChatPage />,
       },
     ],
   },
