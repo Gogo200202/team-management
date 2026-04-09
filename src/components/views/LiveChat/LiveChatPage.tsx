@@ -1,43 +1,83 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { Form } from "react-router-dom";
 import { io } from "socket.io-client";
 
+import { useUserContext } from "../../context/UserContext";
+
 type Message = {
   message: string;
+  userName: string;
 };
-const socket = io("http://localhost:8081");
+type MessageForm = Omit<Message, "userName">;
 
+const socket = io("http://localhost:8081");
 export const LiveChatPage = () => {
   const [receiveMessage, setReceiveMessage] = useState<Message[]>([]);
+  const { currentUser, isCheckCompleted } = useUserContext();
+  const [snackMessage, setSnackMessage] = useState<string>();
 
-  const { handleSubmit, control } = useForm<Message>();
+  const { handleSubmit, control } = useForm<MessageForm>();
 
-  const onSubmit: SubmitHandler<Message> = async (data) => {
-    socket.emit("Messages", data);
+  useEffect(() => {
+    if (isCheckCompleted) {
+      socket.emit("JoinedUser", { userName: currentUser?.userName });
+    }
+  }, [isCheckCompleted]);
+  const onSubmit: SubmitHandler<MessageForm> = async (data) => {
+    const newMessage: Message = {
+      message: data.message,
+      userName: currentUser!.userName || "",
+    };
+
+    socket.emit("Messages", newMessage);
   };
   useEffect(() => {
-    socket.on("Messages", (data) => {
-      const a: Message = {
-        message: data,
-      };
-
-      setReceiveMessage([...receiveMessage, a]);
+    socket.on("Messages", (data: Message) => {
+      setReceiveMessage([...receiveMessage, data]);
     });
 
-    return () => {
-      socket.off("Messages");
-    };
+    socket.on("JoinedUser", (data) => {
+      setSnackMessage(data.userName + " joined");
+    });
+
+    socket.on("LeftUser", (data) => {
+      setSnackMessage(data.userName + " left");
+    });
   }, [receiveMessage]);
+
+  useEffect(() => {
+    return () => {
+      socket.emit("LeftUser", { userName: currentUser?.userName });
+    };
+  }, []);
 
   return (
     <>
       <Box sx={{ mb: 1 }}>
         <Typography>View Receive messages: </Typography>
         {receiveMessage.map((x) => (
-          <Box sx={{ mt: 1, mb: 1 }}>{x.message}</Box>
+          <Box sx={{ mt: 1, mb: 1, display: "flex" }}>
+            <Tooltip title={x.userName}>
+              <Avatar
+                sx={{ width: 24, height: 24, fontSize: 15 }}
+                variant="rounded"
+              >
+                {x.userName[0]}
+              </Avatar>
+            </Tooltip>
+            : {x.message}
+          </Box>
         ))}
       </Box>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -54,6 +94,13 @@ export const LiveChatPage = () => {
           )}
         />
 
+        <Snackbar
+          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          open={!!snackMessage}
+          onClose={() => setSnackMessage("")}
+          message={snackMessage}
+          autoHideDuration={1000}
+        />
         <Button
           type="submit"
           sx={{ mt: 1 }}
