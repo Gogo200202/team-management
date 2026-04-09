@@ -66,19 +66,30 @@ export const LiveChatPage = () => {
     <>
       <Box sx={{ mb: 1 }}>
         <Typography>View Receive messages: </Typography>
-        {receiveMessage.map((x) => (
-          <Box sx={{ mt: 1, mb: 1, display: "flex" }}>
-            <Tooltip title={x.userName}>
-              <Avatar
-                sx={{ width: 24, height: 24, fontSize: 15 }}
-                variant="rounded"
-              >
-                {x.userName[0]}
-              </Avatar>
-            </Tooltip>
-            : {x.message}
-          </Box>
-        ))}
+        {receiveMessage.map((x) => {
+          const coleAvatar =
+            "#" +
+            (x.userName.charCodeAt(0) + x.userName.charCodeAt(1)) +
+            (x.userName.charCodeAt(2) + x.userName.charCodeAt(3));
+          return (
+            <Box sx={{ mt: 1, mb: 1, display: "flex" }}>
+              <Tooltip title={x.userName}>
+                <Avatar
+                  sx={{
+                    bgcolor: coleAvatar,
+                    width: 24,
+                    height: 24,
+                    fontSize: 15,
+                  }}
+                  variant="rounded"
+                >
+                  {x.userName[0]}
+                </Avatar>
+              </Tooltip>
+              : {x.message}
+            </Box>
+          );
+        })}
       </Box>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Controller
@@ -93,14 +104,6 @@ export const LiveChatPage = () => {
             />
           )}
         />
-
-        <Snackbar
-          anchorOrigin={{ horizontal: "right", vertical: "top" }}
-          open={!!snackMessage}
-          onClose={() => setSnackMessage("")}
-          message={snackMessage}
-          autoHideDuration={1000}
-        />
         <Button
           type="submit"
           sx={{ mt: 1 }}
@@ -110,6 +113,14 @@ export const LiveChatPage = () => {
           send
         </Button>
       </Form>
+
+      <Snackbar
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        open={!!snackMessage}
+        onClose={() => setSnackMessage("")}
+        message={snackMessage}
+        autoHideDuration={1000}
+      />
     </>
   );
 };
