@@ -440,7 +440,7 @@ export const LiveChatPage = () => {
                   return (
                     <Box sx={{ display: "flex", width: 1 }}>
                       <TextField
-                        sx={{ bgcolor: "#fff" }}
+                        sx={{ bgcolor: "black" }}
                         value={value}
                         required={true}
                         label="Message"
