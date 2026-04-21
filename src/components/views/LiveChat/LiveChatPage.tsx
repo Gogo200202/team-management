@@ -9,6 +9,7 @@ import {
   AvatarGroup,
   Box,
   Chip,
+  Divider,
   IconButton,
   InputAdornment,
   Paper,
@@ -63,10 +64,7 @@ export const LiveChatPage = () => {
   const [receiveMessage, setReceiveMessage] = useState<MessageResave[]>([]);
   const { currentUser, isCheckCompleted } = useUserContext();
   const [snackMessage, setSnackMessage] = useState<string>();
-  const [listCurrentUser, setListCurrentUser] = useState<string[]>([
-    "teas asd",
-    "asdasd asd",
-  ]);
+  const [listCurrentUser, setListCurrentUser] = useState<string[]>([]);
   const messagesEndRef = useRef<Element>(null);
   const [editMessage, setEditMessage] = useState<MessageResave | null>(null);
   const { reset, handleSubmit, control, setValue } = useForm<MessageForm>();
@@ -153,6 +151,15 @@ export const LiveChatPage = () => {
   }, [receiveMessage]);
 
   useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      socket.emit("LeftUser", {
+        userName: currentUser?.userName,
+        id: currentUser?.id,
+      } as ConnectionUser);
+    });
+  });
+
+  useEffect(() => {
     return () => {
       socket.emit("LeftUser", {
         userName: currentUser?.userName,
@@ -195,6 +202,7 @@ export const LiveChatPage = () => {
                       width: 35,
                       height: 35,
                       bgcolor: colorUserName(x),
+                      color: colorLetters,
                     }}
                   >
                     {x[0]}
@@ -206,7 +214,15 @@ export const LiveChatPage = () => {
           </Stack>
         </Box>
         <Box sx={{ ml: "20%", mr: "30%" }}>
-          <Box sx={{ mb: 10 }}>
+          <Box
+            sx={{
+              mb: 5,
+              padding: 5,
+              borderRight: 0.3,
+              borderLeft: 0.3,
+              borderColor: "gray",
+            }}
+          >
             {receiveMessage.map((x, index) => {
               const coleAvatar = colorUserName(x.user.userName);
 
@@ -413,78 +429,81 @@ export const LiveChatPage = () => {
                     </Box>
                   )}
                   {showTime && (
-                    <Box
+                    <Stack
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
                         mt: 1,
                         mb: 1,
                       }}
                     >
-                      {dayjs(receiveMessage[index + 1]?.createdDate).format(
-                        "YYYY/MM/DD",
-                      )}
-                    </Box>
+                      <Divider>
+                        {dayjs(receiveMessage[index + 1]?.createdDate).format(
+                          "YYYY/MM/DD",
+                        )}
+                      </Divider>
+                    </Stack>
                   )}
                 </Box>
               );
             })}
           </Box>
 
-          <Box sx={{ position: "fixed", bottom: 20, width: "40%" }}>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                control={control}
-                name="message"
-                render={({ field: { onChange, value } }) => {
-                  return (
-                    <Box sx={{ display: "flex", width: 1 }}>
-                      <TextField
-                        sx={{ bgcolor: "black" }}
-                        value={value}
-                        required={true}
-                        label="Message"
-                        fullWidth
-                        onChange={onChange}
-                        slotProps={{
-                          inputLabel: { shrink: !!value },
-                          input: {
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <>
-                                  {!!editMessage && (
-                                    <IconButton
-                                      onClick={() => {
-                                        reset({ message: "" });
-                                        setEditMessage(null);
-                                      }}
-                                    >
-                                      <ClearIcon color="warning" />
-                                    </IconButton>
-                                  )}
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              control={control}
+              name="message"
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <TextField
+                    sx={{
+                      bgcolor: "black",
+                      position: "fixed",
+                      bottom: 20,
 
-                                  <IconButton
-                                    color={editMessage ? "success" : "info"}
-                                    sx={{
-                                      bgcolor: colorLettersAvatars,
-                                      borderRadius: 1,
-                                    }}
-                                    type="submit"
-                                  >
-                                    <SendIcon />
-                                  </IconButton>
-                                </>
-                              </InputAdornment>
-                            ),
-                          },
-                        }}
-                      />
-                    </Box>
-                  );
-                }}
-              />
-            </Form>
-          </Box>
+                      width: "41%",
+                    }}
+                    value={value}
+                    required={true}
+                    label="Message"
+                    fullWidth
+                    onChange={onChange}
+                    slotProps={{
+                      inputLabel: { shrink: !!value },
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <>
+                              {!!editMessage && (
+                                <IconButton
+                                  onClick={() => {
+                                    reset({ message: "" });
+                                    setEditMessage(null);
+                                  }}
+                                >
+                                  <ClearIcon color="disabled" />
+                                </IconButton>
+                              )}
+
+                              <IconButton
+                                style={{
+                                  color: editMessage ? "#2196f3" : "",
+                                }}
+                                sx={{
+                                  borderRadius: 1,
+                                }}
+                                type="submit"
+                              >
+                                <SendIcon />
+                              </IconButton>
+                            </>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                );
+              }}
+            />
+          </Form>
         </Box>
 
         <Snackbar
