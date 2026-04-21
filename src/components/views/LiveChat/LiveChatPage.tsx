@@ -1,9 +1,10 @@
 import ClearIcon from "@mui/icons-material/Clear";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SendIcon from "@mui/icons-material/Send";
-import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import SubdirectoryArrowLeftIcon from "@mui/icons-material/SubdirectoryArrowLeft";
 import {
   Avatar,
   AvatarGroup,
@@ -12,6 +13,9 @@ import {
   Divider,
   IconButton,
   InputAdornment,
+  List,
+  ListItemButton,
+  ListItemText,
   Paper,
   Snackbar,
   Stack,
@@ -79,6 +83,7 @@ export const LiveChatPage = () => {
         setReceiveMessage(data);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCheckCompleted]);
 
   const onSubmit: SubmitHandler<MessageForm> = async (data) => {
@@ -107,7 +112,6 @@ export const LiveChatPage = () => {
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      //   console.log(messagesEndRef.current);
       messagesEndRef.current.scrollIntoView();
     }
     socket.on("Messages", (data: newMessageResave) => {
@@ -115,6 +119,7 @@ export const LiveChatPage = () => {
 
       setReceiveMessage([...receiveMessage, newData]);
     });
+
     socket.on("ModifyMessage", (data: ModifyMessage) => {
       if (data.typeMod === "Edit") {
         const newNotDeletedMessages: MessageResave[] = receiveMessage.map(
@@ -185,14 +190,46 @@ export const LiveChatPage = () => {
 
     return coleAvatar;
   };
+  const [selectedIndex, setSelectedIndex] = useState(1);
+
+  const handleListItemClick = (
+    _event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number,
+  ) => {
+    if (index !== -1) {
+      setSelectedIndex(index);
+    }
+  };
   return (
     <>
       <Box>
+        <Box sx={{ position: "fixed", width: "15%" }}>
+          <Typography sx={{ fontSize: 35 }}>Rooms</Typography>
+          <List>
+            <ListItemButton
+              sx={{ borderRadius: 1 }}
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
+              <ListItemText primary="Main chat" />
+            </ListItemButton>
+
+            <Divider sx={{ mt: 1, mb: 1 }} />
+            <ListItemButton
+              selected={selectedIndex === -1}
+              onClick={(event) => handleListItemClick(event, -1)}
+              sx={{ justifyContent: "center", borderRadius: 1 }}
+            >
+              <ControlPointIcon />
+            </ListItemButton>
+          </List>
+        </Box>
         <Box sx={{ position: "fixed", top: "2/3", right: "10%" }}>
-          <Box sx={{ mb: 10 }}>
+          <Box sx={{ mb: 2 }}>
             <Typography>Messages: {receiveMessage[0]?.room}</Typography>
           </Box>
           <Stack>
+            <Divider />
             <Typography sx={{ textAlign: "right" }}>Current Users</Typography>
             <AvatarGroup spacing={15}>
               {listCurrentUser?.map((x) => (
@@ -231,40 +268,23 @@ export const LiveChatPage = () => {
 
               const showTime = !date2.isSame(date1, "day");
 
+              const minutes = dayjs().diff(date1, "minutes");
+
               const isItEditing: boolean = editMessage?.id == x.id;
 
               return (
                 <Box sx={{ mt: 2, mb: 2 }} ref={messagesEndRef}>
                   {currentUser?.id == x.user.id ? (
-                    <Box sx={{ display: "flex", position: "relative" }}>
-                      <Box sx={{ mt: 1, mr: 1, display: "flex" }}>
-                        {isItEditing && <SubdirectoryArrowRightIcon />}
-                        <Avatar
-                          sx={{
-                            bgcolor: coleAvatar,
-                            color: colorLettersAvatars,
-                            fontSize: 15,
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {x.user.userName
-                            .split(" ")
-                            .map((x) => x[0])
-                            .join(" ")}
-                        </Avatar>
-                      </Box>
-                      <Box
-                        sx={{
-                          mt: 1.5,
-                          width: 0,
-                          height: 0,
-                          borderTop: "10px solid transparent",
-                          borderBottom: "10px solid transparent",
+                    <Box
+                      sx={{
+                        display: "flex",
 
-                          borderRight: "10px solid grey",
-                          //bgcolor: coleAvatar,
-                        }}
-                      />
+                        justifyContent: "flex-end",
+                        position: "relative",
+                      }}
+                    >
+                      <Box sx={{ mt: 1, mr: 1, display: "flex" }}></Box>
+
                       <Box
                         sx={{
                           ...(x.text.length > 60 && { width: "80%" }),
@@ -274,7 +294,6 @@ export const LiveChatPage = () => {
                           sx={{
                             borderRadius: 3,
                             border: 1,
-
                             borderColor: colorLetters,
                           }}
                           elevation={12}
@@ -346,12 +365,14 @@ export const LiveChatPage = () => {
                                         label="Delete"
                                       />
 
-                                      <Chip
-                                        color="info"
-                                        onClick={() => handelEdit(x)}
-                                        icon={<EditIcon />}
-                                        label="Edit"
-                                      />
+                                      {minutes < 5 && (
+                                        <Chip
+                                          color="info"
+                                          onClick={() => handelEdit(x)}
+                                          icon={<EditIcon />}
+                                          label="Edit"
+                                        />
+                                      )}
                                     </Box>
                                   </Stack>
                                 }
@@ -365,15 +386,45 @@ export const LiveChatPage = () => {
                           </Box>
                         </Paper>
                       </Box>
+                      <Avatar
+                        sx={{
+                          bgcolor: coleAvatar,
+                          color: colorLettersAvatars,
+                          fontSize: 15,
+                          fontWeight: "bold",
+                          ml: 1,
+                        }}
+                      >
+                        {x.user.userName
+                          .split(" ")
+                          .map((x) => x[0])
+                          .join(" ")}
+                      </Avatar>
+                      {isItEditing && <SubdirectoryArrowLeftIcon />}
                     </Box>
                   ) : (
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "flex-end",
+
                         right: 0,
                       }}
                     >
+                      <Avatar
+                        sx={{
+                          bgcolor: coleAvatar,
+                          fontSize: 15,
+                          color: colorLettersAvatars,
+                          mr: 1,
+                          fontWeight: "bold",
+                          mt: 1,
+                        }}
+                      >
+                        {x.user.userName
+                          .split(" ")
+                          .map((x) => x[0])
+                          .join(" ")}
+                      </Avatar>
                       <Box
                         sx={{
                           ...(x.text.length > 60 && { width: "80%" }),
@@ -410,22 +461,6 @@ export const LiveChatPage = () => {
                           </Box>
                         </Paper>
                       </Box>
-
-                      <Avatar
-                        sx={{
-                          bgcolor: coleAvatar,
-                          fontSize: 15,
-                          color: colorLettersAvatars,
-                          ml: 1,
-                          fontWeight: "bold",
-                          mt: 1,
-                        }}
-                      >
-                        {x.user.userName
-                          .split(" ")
-                          .map((x) => x[0])
-                          .join(" ")}
-                      </Avatar>
                     </Box>
                   )}
                   {showTime && (
@@ -455,10 +490,9 @@ export const LiveChatPage = () => {
                 return (
                   <TextField
                     sx={{
-                      bgcolor: "black",
                       position: "fixed",
                       bottom: 20,
-
+                      bgcolor: "#121212",
                       width: "41%",
                     }}
                     value={value}
