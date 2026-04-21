@@ -6,6 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import {
   Avatar,
+  AvatarGroup,
   Box,
   Chip,
   IconButton,
@@ -53,6 +54,8 @@ type ModifyMessage = MessageResave & {
   typeMod: "Edit" | "Delete";
 };
 
+const colorLetters = "grey.500";
+const colorLettersAvatars = "grey.400";
 type MessageForm = Omit<MessageSend, "userName">;
 
 const socket = io("http://localhost:8081");
@@ -79,6 +82,7 @@ export const LiveChatPage = () => {
       });
     }
   }, [isCheckCompleted]);
+
   const onSubmit: SubmitHandler<MessageForm> = async (data) => {
     const newMessage: MessageSend = {
       message: data.message,
@@ -177,32 +181,29 @@ export const LiveChatPage = () => {
   return (
     <>
       <Box>
-        <Box sx={{ position: "fixed" }}>
-          <Typography>Messages: main room</Typography>
-        </Box>
         <Box sx={{ position: "fixed", top: "2/3", right: "10%" }}>
-          <Box>
-            <Typography sx={{ textAlign: "center" }}>Current Users</Typography>
-            <Stack sx={{ mt: 1 }} spacing={1}>
+          <Box sx={{ mb: 10 }}>
+            <Typography>Messages: {receiveMessage[0]?.room}</Typography>
+          </Box>
+          <Stack>
+            <Typography sx={{ textAlign: "right" }}>Current Users</Typography>
+            <AvatarGroup spacing={15}>
               {listCurrentUser?.map((x) => (
-                <Typography
-                  sx={{
-                    bgcolor: colorUserName(x),
-                    borderRadius: 1,
-                    textAlign: "center",
-                  }}
-                >
-                  {x}
-                </Typography>
+                <Tooltip title={x}>
+                  <Avatar
+                    sx={{
+                      width: 35,
+                      height: 35,
+                      bgcolor: colorUserName(x),
+                    }}
+                  >
+                    {x[0]}
+                  </Avatar>
+                </Tooltip>
               ))}
-            </Stack>
-          </Box>
-          <Box>
-            {/* <Typography>All users</Typography>
-            <Stack>
-              <Box>asd</Box>
-            </Stack> */}
-          </Box>
+            </AvatarGroup>
+            {/* <Stack sx={{ mt: 1 }} spacing={1}></Stack> */}
+          </Stack>
         </Box>
         <Box sx={{ ml: "20%", mr: "30%" }}>
           <Box sx={{ mb: 10 }}>
@@ -210,34 +211,44 @@ export const LiveChatPage = () => {
               const coleAvatar = colorUserName(x.user.userName);
 
               const date1 = dayjs(x.createdDate);
-              const date2 = dayjs(receiveMessage[index + 1]?.createdDate);
+              const date2 = dayjs(receiveMessage[++index]?.createdDate);
 
-              const showTime: boolean = date1.diff(date2, "day") !== 0;
+              const showTime = !date2.isSame(date1, "day");
+
               const isItEditing: boolean = editMessage?.id == x.id;
 
               return (
                 <Box sx={{ mt: 2, mb: 2 }} ref={messagesEndRef}>
                   {currentUser?.id == x.user.id ? (
-                    <Box sx={{ display: "flex" }}>
-                      <Tooltip title={x.user.userName}>
-                        <Box sx={{ mt: 1, mr: 1, display: "flex" }}>
-                          {isItEditing && <SubdirectoryArrowRightIcon />}
-                          <Avatar
-                            sx={{
-                              bgcolor: coleAvatar,
-                              color: "grey.400",
-                              fontSize: 15,
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {x.user.userName
-                              .split(" ")
-                              .map((x) => x[0])
-                              .join(" ")}
-                          </Avatar>
-                        </Box>
-                      </Tooltip>
+                    <Box sx={{ display: "flex", position: "relative" }}>
+                      <Box sx={{ mt: 1, mr: 1, display: "flex" }}>
+                        {isItEditing && <SubdirectoryArrowRightIcon />}
+                        <Avatar
+                          sx={{
+                            bgcolor: coleAvatar,
+                            color: colorLettersAvatars,
+                            fontSize: 15,
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {x.user.userName
+                            .split(" ")
+                            .map((x) => x[0])
+                            .join(" ")}
+                        </Avatar>
+                      </Box>
+                      <Box
+                        sx={{
+                          mt: 1.5,
+                          width: 0,
+                          height: 0,
+                          borderTop: "10px solid transparent",
+                          borderBottom: "10px solid transparent",
 
+                          borderRight: "10px solid grey",
+                          //bgcolor: coleAvatar,
+                        }}
+                      />
                       <Box
                         sx={{
                           ...(x.text.length > 60 && { width: "80%" }),
@@ -248,13 +259,28 @@ export const LiveChatPage = () => {
                             borderRadius: 3,
                             border: 1,
 
-                            borderColor: "grey.500",
+                            borderColor: colorLetters,
                           }}
                           elevation={12}
                         >
                           <Box sx={{ pl: 1, pr: 1 }}>
-                            <Box sx={{ color: "grey.500", fontSize: 13 }}>
-                              You
+                            <Box
+                              sx={{
+                                fontSize: 13,
+                                display: "flex",
+                              }}
+                            >
+                              You :
+                              <Box
+                                sx={{
+                                  color: colorLetters,
+                                  fontSize: 10,
+                                  mt: 0.3,
+                                  ml: 0.5,
+                                }}
+                              >
+                                ({x.user.userName})
+                              </Box>
                             </Box>
                             <Typography
                               sx={{
@@ -266,8 +292,8 @@ export const LiveChatPage = () => {
                             <Box
                               sx={{
                                 display: "flex",
-                                justifyContent: "right",
-                                color: "grey.500",
+                                justifyContent: "end",
+                                color: colorLetters,
                               }}
                             >
                               <Tooltip
@@ -287,7 +313,10 @@ export const LiveChatPage = () => {
                                 title={
                                   <Stack spacing={1}>
                                     <Box
-                                      sx={{ textAlign: "center", fontSize: 15 }}
+                                      sx={{
+                                        textAlign: "center",
+                                        fontSize: 15,
+                                      }}
                                     >
                                       settings
                                     </Box>
@@ -313,7 +342,9 @@ export const LiveChatPage = () => {
                               >
                                 <MoreHorizIcon />
                               </Tooltip>
-                              {dayjs(x.createdDate).format("H:mm")}
+                              <Box sx={{ ml: 1 }}>
+                                {dayjs(x.createdDate).format("H:mm")}
+                              </Box>
                             </Box>
                           </Box>
                         </Paper>
@@ -336,12 +367,12 @@ export const LiveChatPage = () => {
                           sx={{
                             borderRadius: 3,
                             border: 1,
-                            borderColor: "grey.500",
+                            borderColor: colorLetters,
                           }}
                           elevation={12}
                         >
                           <Box sx={{ pl: 1, pr: 1 }}>
-                            <Box sx={{ color: "grey.500", fontSize: 13 }}>
+                            <Box sx={{ color: colorLetters, fontSize: 13 }}>
                               {x.user.userName}
                             </Box>
 
@@ -355,7 +386,7 @@ export const LiveChatPage = () => {
                             <Box
                               sx={{
                                 fontSize: 13,
-                                color: "grey.500",
+                                color: colorLetters,
                               }}
                             >
                               {dayjs(x.createdDate).format("H:mm")}
@@ -363,23 +394,22 @@ export const LiveChatPage = () => {
                           </Box>
                         </Paper>
                       </Box>
-                      <Tooltip title={x.user.userName}>
-                        <Avatar
-                          sx={{
-                            bgcolor: coleAvatar,
-                            fontSize: 15,
-                            color: "grey.400",
-                            ml: 1,
-                            fontWeight: "bold",
-                            mt: 1,
-                          }}
-                        >
-                          {x.user.userName
-                            .split(" ")
-                            .map((x) => x[0])
-                            .join(" ")}
-                        </Avatar>
-                      </Tooltip>
+
+                      <Avatar
+                        sx={{
+                          bgcolor: coleAvatar,
+                          fontSize: 15,
+                          color: colorLettersAvatars,
+                          ml: 1,
+                          fontWeight: "bold",
+                          mt: 1,
+                        }}
+                      >
+                        {x.user.userName
+                          .split(" ")
+                          .map((x) => x[0])
+                          .join(" ")}
+                      </Avatar>
                     </Box>
                   )}
                   {showTime && (
@@ -436,7 +466,7 @@ export const LiveChatPage = () => {
                                   <IconButton
                                     color={editMessage ? "success" : "info"}
                                     sx={{
-                                      bgcolor: "grey.400",
+                                      bgcolor: colorLettersAvatars,
                                       borderRadius: 1,
                                     }}
                                     type="submit"
